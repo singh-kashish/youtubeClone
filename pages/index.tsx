@@ -11,7 +11,6 @@ export default function Home() {
       <Head>
         <title>Youtube Clone</title>
       </Head>
-      <Header />
     </div>
   );
 }
