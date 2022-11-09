@@ -1,0 +1,435 @@
+type Comment {
+  created_at: DateTime
+  dislikeCount: Int
+  id: ID!
+  likeCount: Int
+  text: String
+  user_id: ID
+  users: Users
+    @materializer(
+      query: "getUsers"
+      arguments: [{ name: "id", field: "user_id" }]
+    )
+  video: Video
+    @materializer(
+      query: "getVideo"
+      arguments: [{ name: "id", field: "video_id" }]
+    )
+  video_id: ID
+}
+
+type DislikedVideos {
+  created_at: DateTime
+  id: ID!
+  user_id: ID
+  users: Users
+    @materializer(
+      query: "getUsers"
+      arguments: [{ name: "id", field: "user_id" }]
+    )
+  video: Video
+    @materializer(
+      query: "getVideo"
+      arguments: [{ name: "id", field: "video_id" }]
+    )
+  video_id: ID
+}
+
+type LikedVideos {
+  created_at: DateTime
+  id: ID!
+  user_id: ID
+  users: Users
+    @materializer(
+      query: "getUsers"
+      arguments: [{ name: "id", field: "user_id" }]
+    )
+  video: Video
+    @materializer(
+      query: "getVideo"
+      arguments: [{ name: "id", field: "video_id" }]
+    )
+  video_id: ID
+}
+
+type Subscribers {
+  created_at: DateTime
+  id: ID!
+  subscribed_to_id: ID
+  user_id: ID
+  usersUsingSubscribed_to_id: Users
+    @materializer(
+      query: "getUsers"
+      arguments: [{ name: "id", field: "subscribed_to_id" }]
+    )
+  usersUsingUser_id: Users
+    @materializer(
+      query: "getUsers"
+      arguments: [{ name: "id", field: "user_id" }]
+    )
+}
+
+type Users {
+  commentList: [Comment] @materializer(query: "getCommentUsingUser_id")
+  created_at: DateTime
+  dislikedVideosList: [DislikedVideos]
+    @materializer(query: "getDislikedVideosUsingUser_id")
+  emailAddress: String
+  firstName: String
+  fullName: String
+  id: ID!
+  lastName: String
+  likedVideosList: [LikedVideos]
+    @materializer(query: "getLikedVideosUsingUser_id")
+  subscribersListUsingSubscribed_to_id: [Subscribers]
+    @materializer(query: "getSubscribersUsingSubscribed_to_id")
+  subscribersListUsingUser_id: [Subscribers]
+    @materializer(query: "getSubscribersUsingUser_id")
+  videoList: [Video] @materializer(query: "getVideoUsingUser_id")
+}
+
+type Video {
+  commentList: [Comment] @materializer(query: "getCommentUsingVideo_id")
+  created_at: DateTime
+  description: String
+  dislikedVideosList: [DislikedVideos]
+    @materializer(query: "getDislikedVideosUsingVideo_id")
+  dislikes: Int
+  id: ID!
+  likedVideosList: [LikedVideos]
+    @materializer(query: "getLikedVideosUsingVideo_id")
+  likes: Int
+  title: String
+  user_id: ID
+  users: Users
+    @materializer(
+      query: "getUsers"
+      arguments: [{ name: "id", field: "user_id" }]
+    )
+  videoStatus: Boolean
+  videoUrl: String
+  viewCount: Int
+}
+
+"""
+These are some examples of queries generated from the schema. Feel free to modify them or add your own.
+"""
+type Query {
+  getCommentList: [Comment]
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      table: "comment"
+      configuration: "postgresql_config"
+    )
+  getComment(id: ID!): Comment
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      table: "comment"
+      configuration: "postgresql_config"
+    )
+  getDislikedVideosList: [DislikedVideos]
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      table: "dislikedVideos"
+      configuration: "postgresql_config"
+    )
+  getDislikedVideos(id: ID!): DislikedVideos
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      table: "dislikedVideos"
+      configuration: "postgresql_config"
+    )
+  getLikedVideosList: [LikedVideos]
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      table: "likedVideos"
+      configuration: "postgresql_config"
+    )
+  getLikedVideos(id: ID!): LikedVideos
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      table: "likedVideos"
+      configuration: "postgresql_config"
+    )
+  getSubscribersList: [Subscribers]
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      table: "subscribers"
+      configuration: "postgresql_config"
+    )
+  getSubscribers(id: ID!): Subscribers
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      table: "subscribers"
+      configuration: "postgresql_config"
+    )
+  getUsersList: [Users]
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      table: "users"
+      configuration: "postgresql_config"
+    )
+  getUsers(id: ID!): Users
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      table: "users"
+      configuration: "postgresql_config"
+    )
+  getCommentUsingUser_id(id: ID!): [Comment]
+    @dbquery(
+      type: "postgresql"
+      query: """
+      SELECT T."created_at", T."dislikeCount", T."id", T."likeCount", T."text", T."user_id", T."video_id"
+        FROM "public"."comment" T
+        WHERE T."user_id" = $1
+      """
+      configuration: "postgresql_config"
+    )
+  getDislikedVideosUsingUser_id(id: ID!): [DislikedVideos]
+    @dbquery(
+      type: "postgresql"
+      query: """
+      SELECT T."created_at", T."id", T."user_id", T."video_id"
+        FROM "public"."dislikedVideos" T
+        WHERE T."user_id" = $1
+      """
+      configuration: "postgresql_config"
+    )
+  getLikedVideosUsingUser_id(id: ID!): [LikedVideos]
+    @dbquery(
+      type: "postgresql"
+      query: """
+      SELECT T."created_at", T."id", T."user_id", T."video_id"
+        FROM "public"."likedVideos" T
+        WHERE T."user_id" = $1
+      """
+      configuration: "postgresql_config"
+    )
+  getSubscribersUsingSubscribed_to_id(id: ID!): [Subscribers]
+    @dbquery(
+      type: "postgresql"
+      query: """
+      SELECT T."created_at", T."id", T."subscribed_to_id", T."user_id"
+        FROM "public"."subscribers" T
+        WHERE T."subscribed_to_id" = $1
+      """
+      configuration: "postgresql_config"
+    )
+  getSubscribersUsingUser_id(id: ID!): [Subscribers]
+    @dbquery(
+      type: "postgresql"
+      query: """
+      SELECT T."created_at", T."id", T."subscribed_to_id", T."user_id"
+        FROM "public"."subscribers" T
+        WHERE T."user_id" = $1
+      """
+      configuration: "postgresql_config"
+    )
+  getVideoUsingUser_id(id: ID!): [Video]
+    @dbquery(
+      type: "postgresql"
+      query: """
+      SELECT T."created_at", T."description", T."dislikes", T."id", T."likes", T."title", T."user_id", T."videoStatus", T."videoUrl", T."viewCount"
+        FROM "public"."video" T
+        WHERE T."user_id" = $1
+      """
+      configuration: "postgresql_config"
+    )
+  getVideoList: [Video]
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      table: "video"
+      configuration: "postgresql_config"
+    )
+  getVideo(id: ID!): Video
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      table: "video"
+      configuration: "postgresql_config"
+    )
+  getCommentUsingVideo_id(id: ID!): [Comment]
+    @dbquery(
+      type: "postgresql"
+      query: """
+      SELECT T."created_at", T."dislikeCount", T."id", T."likeCount", T."text", T."user_id", T."video_id"
+        FROM "public"."comment" T
+        WHERE T."video_id" = $1
+      """
+      configuration: "postgresql_config"
+    )
+  getDislikedVideosUsingVideo_id(id: ID!): [DislikedVideos]
+    @dbquery(
+      type: "postgresql"
+      query: """
+      SELECT T."created_at", T."id", T."user_id", T."video_id"
+        FROM "public"."dislikedVideos" T
+        WHERE T."video_id" = $1
+      """
+      configuration: "postgresql_config"
+    )
+  getLikedVideosUsingVideo_id(id: ID!): [LikedVideos]
+    @dbquery(
+      type: "postgresql"
+      query: """
+      SELECT T."created_at", T."id", T."user_id", T."video_id"
+        FROM "public"."likedVideos" T
+        WHERE T."video_id" = $1
+      """
+      configuration: "postgresql_config"
+    )
+}
+
+"""
+These are some examples of mutations generated from the schema. Feel free to modify them or add your own.
+"""
+type Mutation {
+  insertComment(
+    created_at: DateTime
+    dislikeCount: Int
+    likeCount: Int
+    text: String
+    user_id: ID
+    video_id: ID
+    id: ID!
+  ): Comment
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      table: "comment"
+      dml: INSERT
+      configuration: "postgresql_config"
+    )
+  deleteComment(id: ID!): Comment
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      table: "comment"
+      dml: DELETE
+      configuration: "postgresql_config"
+    )
+  insertDislikedVideos(
+    id: ID!
+    created_at: DateTime
+    user_id: ID
+    video_id: ID
+  ): DislikedVideos
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      table: "dislikedVideos"
+      dml: INSERT
+      configuration: "postgresql_config"
+    )
+  deleteDislikedVideos(id: ID!): DislikedVideos
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      table: "dislikedVideos"
+      dml: DELETE
+      configuration: "postgresql_config"
+    )
+  insertLikedVideos(
+    id: ID!
+    created_at: DateTime
+    user_id: ID
+    video_id: ID
+  ): LikedVideos
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      table: "likedVideos"
+      dml: INSERT
+      configuration: "postgresql_config"
+    )
+  deleteLikedVideos(id: ID!): LikedVideos
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      table: "likedVideos"
+      dml: DELETE
+      configuration: "postgresql_config"
+    )
+  insertSubscribers(
+    id: ID!
+    created_at: DateTime
+    user_id: ID
+    subscribed_to_id: ID
+  ): Subscribers
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      table: "subscribers"
+      dml: INSERT
+      configuration: "postgresql_config"
+    )
+  deleteSubscribers(id: ID!): Subscribers
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      table: "subscribers"
+      dml: DELETE
+      configuration: "postgresql_config"
+    )
+  insertUsers(
+    lastName: String
+    fullName: String
+    created_at: DateTime
+    emailAddress: String
+    id: ID!
+    firstName: String
+  ): Users
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      table: "users"
+      dml: INSERT
+      configuration: "postgresql_config"
+    )
+  deleteUsers(id: ID!): Users
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      table: "users"
+      dml: DELETE
+      configuration: "postgresql_config"
+    )
+  insertVideo(
+    created_at: DateTime
+    description: String
+    dislikes: Int
+    title: String
+    videoUrl: String
+    likes: Int
+    user_id: ID
+    id: ID!
+    videoStatus: Boolean
+    viewCount: Int
+  ): Video
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      table: "video"
+      dml: INSERT
+      configuration: "postgresql_config"
+    )
+  deleteVideo(id: ID!): Video
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      table: "video"
+      dml: DELETE
+      configuration: "postgresql_config"
+    )
+}
