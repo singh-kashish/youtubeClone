@@ -3,17 +3,28 @@ import type { AppProps } from "next/app";
 import Header from "../components/Header";
 import { ApolloProvider } from "@apollo/client";
 import client from "../apollo-client";
+import { createBrowserSupabaseClient } from "@supabase/auth-helpers-nextjs";
+import { SessionContextProvider, Session } from "@supabase/auth-helpers-react";
+import { useState } from "react";
 
 export default function App({
   Component,
   pageProps: { session, ...pageProps },
-}: AppProps) {
+}: AppProps<{
+  initialSession: Session;
+}>) {
+  const [supabaseClient] = useState(() => createBrowserSupabaseClient());
   return (
     <ApolloProvider client={client}>
-      <div>
-        <Header />
-        <Component {...pageProps} />
-      </div>
+      <SessionContextProvider
+        supabaseClient={supabaseClient}
+        initialSession={pageProps.initialSession}
+      >
+        <div>
+          <Header />
+          <Component {...pageProps} />
+        </div>
+      </SessionContextProvider>
     </ApolloProvider>
   );
 }

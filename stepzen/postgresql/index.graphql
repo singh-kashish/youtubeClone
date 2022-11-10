@@ -13,9 +13,17 @@ type Comment {
   video: Video
     @materializer(
       query: "getVideo"
-      arguments: [{ name: "id", field: "video_id" }]
+      arguments: [
+        { name: "id", field: "video_id" }
+        { name: "id", field: "video_id" }
+      ]
     )
   video_id: ID
+  profiles: Profiles
+    @materializer(
+      query: "getProfiles"
+      arguments: [{ name: "id", field: "user_id" }]
+    )
 }
 
 type DislikedVideos {
@@ -30,9 +38,17 @@ type DislikedVideos {
   video: Video
     @materializer(
       query: "getVideo"
-      arguments: [{ name: "id", field: "video_id" }]
+      arguments: [
+        { name: "id", field: "video_id" }
+        { name: "id", field: "video_id" }
+      ]
     )
   video_id: ID
+  profiles: Profiles
+    @materializer(
+      query: "getProfiles"
+      arguments: [{ name: "id", field: "user_id" }]
+    )
 }
 
 type LikedVideos {
@@ -47,9 +63,17 @@ type LikedVideos {
   video: Video
     @materializer(
       query: "getVideo"
-      arguments: [{ name: "id", field: "video_id" }]
+      arguments: [
+        { name: "id", field: "video_id" }
+        { name: "id", field: "video_id" }
+      ]
     )
   video_id: ID
+  profiles: Profiles
+    @materializer(
+      query: "getProfiles"
+      arguments: [{ name: "id", field: "user_id" }]
+    )
 }
 
 type Subscribers {
@@ -65,6 +89,16 @@ type Subscribers {
   usersUsingUser_id: Users
     @materializer(
       query: "getUsers"
+      arguments: [{ name: "id", field: "user_id" }]
+    )
+  profilesUsingSubscribed_to_id: Profiles
+    @materializer(
+      query: "getProfiles"
+      arguments: [{ name: "id", field: "subscribed_to_id" }]
+    )
+  profilesUsingUser_id: Profiles
+    @materializer(
+      query: "getProfiles"
       arguments: [{ name: "id", field: "user_id" }]
     )
 }
@@ -109,6 +143,11 @@ type Video {
   videoStatus: Boolean
   videoUrl: String
   viewCount: Int
+  profiles: Profiles
+    @materializer(
+      query: "getProfiles"
+      arguments: [{ name: "id", field: "user_id" }]
+    )
 }
 
 """

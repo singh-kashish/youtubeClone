@@ -77,3 +77,15 @@
 .input:focus {
   outline: none !important;
 }
+#signOutButton {
+  background-color: #ff0000;
+  width: 100px;
+}
+#signOutButton:hover {
+  background-color: #ff4a4a;
+}
+.addVideo:hover {
+  background-color: #3d3d3d;
+  border-radius: 25px;
+  cursor: pointer;
+}
