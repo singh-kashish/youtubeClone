@@ -1,19 +1,52 @@
-import React,{useEffect,useState} from "react";
-import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
+import React, { useEffect, useState } from "react";
+import {
+  useSession,
+  useSupabaseClient,
+  useUser,
+} from "@supabase/auth-helpers-react";
 import styles from "./styles/Header.module.css";
 import MoreVertRoundedIcon from "@mui/icons-material/MoreVertRounded";
 import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 import Link from "next/link";
 import VideoCallOutlinedIcon from "@mui/icons-material/VideoCallOutlined";
+import Avatar from "./Avatar";
 
 const HeaderEnd = () => {
   const session = useSession();
   const supabase = useSupabaseClient();
+  const user = useUser();
+  const [avatar_url, setAvatarUrl] = useState(null);
+  const [username, setUsername] = useState(null);
+  const [full_name, setFull_name] = useState(null);
+  useEffect(() => {
+    getProfile();
+  }, [session]);
 
+  async function getProfile() {
+    try {
+      let { data, error, status } = await supabase
+        .from("profiles")
+        .select(`username, full_name, avatar_url`)
+        .eq("id", user.id)
+        .single();
+
+      if (error && status !== 406) {
+        throw error;
+      }
+
+      if (data) {
+        setUsername(data.username);
+        setFull_name(data.full_name);
+        setAvatarUrl(data.avatar_url);
+      }
+    } catch (error) {
+      
+    }
+  }
   return (
     <div>
       {!session ? (
-        <div id={styles.headerEnd} className="invisible md:visible">
+        <div id={styles.headerEnd}>
           <div>
             <MoreVertRoundedIcon />
           </div>
@@ -28,8 +61,9 @@ const HeaderEnd = () => {
           </Link>
         </div>
       ) : (
-        <div className="space-x-2">
-          <VideoCallOutlinedIcon fontSize="large" className={styles.addVideo} />
+        <div className="hidden md:hidden space-x-2" id={styles.headerEnd}>
+          <Link href="/uploadVideo"><VideoCallOutlinedIcon fontSize="large" className={styles.addVideo} /></Link>
+          <Avatar uid={user.id} url={avatar_url} size={30} where="header" />
           <Link href="/">
             <button
               className="py-2 px-4 shadow-md no-underline rounded-full bg-red text-white font-sans font-semibold text-sm border-red btn-primary hover:text-white hover:bg-red-light focus:outline-none active:shadow-none"

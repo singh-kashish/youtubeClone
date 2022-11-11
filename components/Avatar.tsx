@@ -4,13 +4,17 @@ import { Database } from "../utils/database.types";
 import styles from "./styles/Avatar.module.css";
 type Profiles = Database["public"]["Tables"]["profiles"]["Row"];
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import Link from "next/link";
+import UploadFileIcon from "@mui/icons-material/UploadFile";
 
 export default function Avatar({
+  where,
   uid,
   url,
   size,
   onUpload,
 }: {
+  where: string;
   uid: string;
   url: Profiles["avatar_url"];
   size: number;
@@ -51,18 +55,22 @@ export default function Avatar({
 
       const file = event.target.files[0];
       const fileExt = file.name.split(".").pop();
-      const fileName = `${uid}.${fileExt}`;
-      const filePath = `${fileName}`;
+      const allowedfileTypes = ["jpeg", "jpg", "png", "hevc"];
+      if (allowedfileTypes.includes(fileExt?.toLowerCase())) {
+        const fileName = `${uid}.${fileExt}`;
+        const filePath = `${fileName}`;
+        let { error: uploadError } = await supabase.storage
+          .from("avatars")
+          .upload(filePath, file, { upsert: true });
 
-      let { error: uploadError } = await supabase.storage
-        .from("avatars")
-        .upload(filePath, file, { upsert: true });
+        if (uploadError) {
+          throw uploadError;
+        }
 
-      if (uploadError) {
-        throw uploadError;
+        onUpload(filePath);
+      } else {
+        alert("This file type is not allowed.");
       }
-
-      onUpload(filePath);
     } catch (error) {
       alert("Error uploading avatar!");
       console.log(error);
@@ -72,9 +80,10 @@ export default function Avatar({
   };
   const message = avatarUrl
     ? "Upload another image for your profile picture, hit update below to save."
-    : "Upload another image for your profile picture.";
-  return (
-    <div className="my-2">
+    : "Upload an image for your profile picture.";
+  if (where === "login") {
+    return (
+      <div className="my-2">
         <div className="font-sans font-bold text-lg flex items-center">
           Current Profile Avatar
           <img
@@ -84,12 +93,21 @@ export default function Avatar({
             style={{ height: size, width: size }}
           />
         </div>
-        <div className="flex-col mb-4 px-4 border-dashed border-2 border-sky-500 rounded-3xl">
+        <div
+          onDrop={(e) => {
+            console.log(e);
+            uploadAvatar(e);
+          }}
+          className="flex-col my-2 h-[120px] px-4 border-dashed border-2 border-sky-500 rounded-3xl bg-gray-800"
+          id={styles.uploadDiv}
+        >
           <label className="button primary block md:w-max" htmlFor="single">
-            {uploading
-              ? "Uploading ..."
-              : `${message}`}
+            {uploading ? "Uploading ..." : `${message}`}
           </label>
+          <div id={styles.upload}>
+            <div>Click Choose File below or drop it here.</div>
+            <UploadFileIcon fontSize="medium" />
+          </div>
           <div className={styles.inputRow}>
             <div>
               <CloudUploadIcon fontSize="large" id={styles.cloudUpload} />
@@ -109,6 +127,23 @@ export default function Avatar({
             </div>
           </div>
         </div>
-    </div>
-  );
+      </div>
+    );
+  } else if (where === "header") {
+    return (
+      <div className="font-sans font-semibold text-md">
+        <Link href="/login">
+          <button className="flex items-center h-9 px-3 transition-colors duration-150 bg-indigo-700 rounded-full focus:shadow-outline hover:bg-indigo-800">
+            <img
+              src={avatarUrl}
+              alt="Avatar"
+              className="rounded-full mr-1"
+              style={{ height: size, width: size }}
+            />
+            Edit Profile
+          </button>
+        </Link>
+      </div>
+    );
+  }
 }

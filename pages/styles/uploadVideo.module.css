@@ -1,0 +1,11 @@
+#main{
+    background-color: #3d3d3d;
+    border: 1px solid #1d1d1d;
+    border-radius: 7px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    z-index: 50;
+    margin: 50px;
+}

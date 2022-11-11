@@ -46,17 +46,27 @@
   background-color: #3d3d3d;
 }
 #headerMiddle {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
+  display: none;
+}
+@media screen and (min-width: 970px) {
+  #headerMiddle {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
 }
 #headerEnd {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-end;
-  cursor: pointer;
+  display: none;
+}
+@media screen and (min-width: 550px) {
+  #headerEnd {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    cursor: pointer;
+  }
 }
 #signIn {
   color: #00b7eb;

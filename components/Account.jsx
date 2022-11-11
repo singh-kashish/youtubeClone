@@ -77,6 +77,7 @@ export default function Account({ session }) {
         uid={user.id}
         url={avatar_url}
         size={150}
+        where="login"
         onUpload={(url) => {
           setAvatarUrl(url);
           updateProfile({ username, full_name, avatar_url });
