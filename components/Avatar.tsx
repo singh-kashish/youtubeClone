@@ -145,5 +145,19 @@ export default function Avatar({
         </Link>
       </div>
     );
+  } else if (where === "video") {
+    const link = `profile/${uid}`;
+    return (
+      <div className="font-sans font-semibold text-md">
+        <Link href={link}>
+          <img
+            src={avatarUrl}
+            alt="Avatar"
+            className="rounded-full mr-1"
+            style={{ height: size, width: size }}
+          />
+        </Link>
+      </div>
+    );
   }
 }

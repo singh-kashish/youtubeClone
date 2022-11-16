@@ -48,7 +48,7 @@
 #headerMiddle {
   display: none;
 }
-@media screen and (min-width: 970px) {
+@media screen and (min-width: 1050px) {
   #headerMiddle {
     display: flex;
     flex-direction: row;

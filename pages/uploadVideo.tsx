@@ -1,14 +1,160 @@
-import { useUser } from "@supabase/auth-helpers-react";
-import React from "react";
-import styles from './styles/uploadVideo.module.css';
+import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
+import styles from "./styles/uploadVideo.module.css";
+import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import { useMutation } from "@apollo/client";
+import client from "../apollo-client";
+import { toast } from "react-hot-toast";
+import { ADD_VIDEO } from "../graphql/mutations";
+import { Router, useRouter } from "next/router";
 
-const uploadVideo = () => {
+type FormData = {
+  videoTitle: string;
+  videoDescription: string;
+  thumbnailUrl: string;
+  videoUrl: string;
+  videoStatus: boolean;
+};
+
+function uploadVideo() {
+  const Router = useRouter();
   const user = useUser();
+  const [insertVideo] = useMutation(ADD_VIDEO);
+  const {
+    register,
+    setValue,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<FormData>();
+  function isValidHttpUrl(string:String) {
+    let url;
+    try {
+      url = new URL(string);
+    } catch (_) {
+      return false;
+    }
+    return url.protocol === "http:" || url.protocol === "https:";
+  }
+  const onSubmit = handleSubmit(async (formData) => {
+    const notification = toast.loading("Creating new video...");
+    try {
+      formData.thumbnailUrl=isValidHttpUrl(formData.thumbnailUrl)===false?"":formData.thumbnailUrl;
+      formData.videoUrl=isValidHttpUrl(formData.videoUrl)===false?"":formData.videoUrl;
+      const {
+        data: { insertVideo: newVideo },
+      } = await insertVideo({
+        variables: {
+          user_id: user?.id,
+          video_status: formData.videoStatus,
+          videoUrl: formData.videoUrl,
+          thumbnailUrl: formData.thumbnailUrl,
+          title: formData.videoTitle,
+          videoStatus: formData.videoStatus,
+          description: formData.videoDescription,
+          likes: 0,
+          dislikes: 0,
+          viewCount: 0,
+        },
+      });
+      console.warn(newVideo);
+      console.log(newVideo.id);
+      toast.success("New Post Created!", {
+        id: notification,
+      });
+      toast.dismiss();
+      Router.push(`video/${newVideo.id}`);
+    } catch (error) {
+      toast.error("Whoops something went wrong!", {
+        id: notification,
+      });
+      console.error(error);
+    }
+  });
   if (user) {
-    return( 
-       <div className="mx-5 z-50 background-white" id={styles.main}>
-        
-       </div>
+    return (
+      <div className="mx-5 z-50" id={styles.main}>
+        <h1 className="font-sans font-bold text-xl border-b-2 border-gray-400 w-full text-center text-white mb-1 pb-1">
+          Upload a Video
+        </h1>
+        <form
+          onSubmit={onSubmit}
+          className="z-50 border-gray-300 p-2 flex flex-col items-center justify-start space-x-2"
+        >
+          <div className="flex flex-col items-start space-x-8">
+            <div className="flex items-center px-2">
+              <p className="md:min-w-[90px]">Video Title:</p>
+              <input
+                className="m-2 flex-1 rounded-md p-2 outline-none md:min-w-[600px]"
+                {...register("videoTitle", { required: true })}
+                disabled={!user}
+                type="text"
+                placeholder="Type the title of the video (required)"
+              />
+            </div>
+          </div>
+          {!!watch("videoTitle") && (
+            <div className="flex flex-col py-2">
+              <div className="flex items-center px-2">
+                <p className="md:min-w-[90px]">Description:</p>
+                <input
+                  className="m-2 flex-1 p-2 outline-none md:min-w-[600px]"
+                  {...register("videoDescription")}
+                  type="text"
+                  placeholder="Text (optional)"
+                  style={{ color: "white" }}
+                />
+              </div>
+              {/* Upload video start */}
+              <div>
+                <label>Video Link:</label>
+                <input
+                  {...register("videoUrl")}
+                  placeholder="Leave this empty if you want to upload the video to our servers else paste link of video here."
+                  className="m-2 flex-1 p-2 outline-none md:min-w-[600px]"
+                />
+              </div>
+              {/*Upload video ends*/}
+              {/* upload thumbnail starts */}
+              <div>
+                <label>Thumbnail Link:</label>
+                <input
+                  {...register("thumbnailUrl")}
+                  placeholder="Leave this empty if you want to upload the thumbnail to our servers, else paste link of thumbnail here."
+                  className="m-2 flex-1 p-2 outline-none md:min-w-[600px]"
+                />
+              </div>
+              {/* upload thumbnail ends */}
+              <div className="flex items-center px-4 ml-2 mb-2">
+                <p className="pr-4">Video Visibility:</p>
+                <select
+                  {...register("videoStatus", { required: true })}
+                  className="w-40 md:w-160 "
+                >
+                  <option value="true">PUBLIC</option>
+                  <option value="false">PRIVATE</option>
+                </select>
+              </div>
+              {/*Error Handling with react-hook-form */}
+              {Object.keys(errors).length > 0 && (
+                <div className="space-y-2 p-2 text-red-500">
+                  {errors.videoTitle?.type === "required" && (
+                    <p> A Video Title is required</p>
+                  )}
+                </div>
+              )}
+              {!!watch("videoTitle") && (
+                <button
+                  type="submit"
+                  className="w-full rounded-full p-2 bg-blue-600 text-white"
+                >
+                  Create Video
+                </button>
+              )}
+            </div>
+          )}
+        </form>
+      </div>
     );
   } else {
     return (
@@ -17,6 +163,6 @@ const uploadVideo = () => {
       </div>
     );
   }
-};
+}
 
 export default uploadVideo;

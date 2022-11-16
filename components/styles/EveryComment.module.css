@@ -1,0 +1,21 @@
+#everyComment {
+  display: flex;
+  flex-direction: row;
+  margin-top: 5px;
+}
+#column {
+  display: flex;
+  flex-direction: column;
+}
+#iconLine {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+}
+#icon {
+  margin-left: 5px;
+  cursor: pointer;
+  border-radius: 15px;
+  padding: 2px;
+}

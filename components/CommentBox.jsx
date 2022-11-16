@@ -1,0 +1,69 @@
+import React, { useState } from "react";
+import Avatar from "./Avatar";
+import { MAKE_COMMENT } from "../graphql/mutations";
+import {GET_VIDEO_BY_ID} from "../graphql/queries";
+import { useMutation } from "@apollo/client";
+import client from "../apollo-client";
+import { toast } from "react-hot-toast";
+
+function CommentBox({ video, user }) {
+  const [comment, setComment] = useState("");
+  const [insertComment] = useMutation(MAKE_COMMENT,{refetchQueries: [GET_VIDEO_BY_ID, "getVideoById"],});
+  const onSubmit = async () => {
+    const notification = toast.loading("Posting your comment...");
+    try {
+      const {
+        data: { insertComment: newComment },
+      } = await insertComment({
+        variables: {
+          video_id: video.id,
+          text: comment,
+          user_id: user.id,
+          dislikeCount: 0,
+          likeCount: 0,
+        },
+      });
+      toast.success("New Comment Created!", {
+        id: notification,
+      });
+      setComment("");
+      toast.dismiss();
+    } catch (error) {
+      toast.error("Whoops something went wrong while posting that comment !", {
+        id: notification,
+      });
+      console.error(error);
+    }
+  };
+  return (
+    <div
+      style={{ display: "flex", flexDirection: "row", alignItems: "center" }}
+    >
+      <Avatar
+        uid={user?.id}
+        url={video.profiles.avatar_url}
+        size={55}
+        where="video"
+      />
+      <input
+        type="text"
+        placeholder="Make your comment"
+        style={{ height: "40px", paddingLeft: "5px" }}
+        className="w-[200px] md:w-[700px]"
+        value={comment}
+        onChange={(e) => {
+          e.preventDefault();
+          setComment(e.target.value);
+        }}
+      />
+      <button
+        className="ml-2 bg-primary shadow-md no-underline rounded-full text-white font-sans font-semibold text-sm border-red hover:bg-gray-900 hover:bg-red-light focus:outline-none active:shadow-none px-4 py-2"
+        onClick={onSubmit}
+      >
+        Save
+      </button>
+    </div>
+  );
+}
+
+export default CommentBox;

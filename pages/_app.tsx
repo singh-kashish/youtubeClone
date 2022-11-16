@@ -6,6 +6,7 @@ import client from "../apollo-client";
 import { createBrowserSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { SessionContextProvider, Session } from "@supabase/auth-helpers-react";
 import { useState } from "react";
+import { Toaster } from "react-hot-toast";
 
 export default function App({
   Component,
@@ -20,6 +21,7 @@ export default function App({
         supabaseClient={supabaseClient}
         initialSession={pageProps.initialSession}
       >
+        <Toaster />
         <div>
           <Header />
           <Component {...pageProps} />
