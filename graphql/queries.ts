@@ -44,3 +44,50 @@ export const GET_VIDEO_BY_ID = gql`
     }
   }
 `;
+export const GET_LIKES_ON_COMMENT_USING_COMMENT_ID = gql`
+  query q($id: ID!) {
+    getLikedCommentsUsingLikedComments_comment_id_fkey(id: $id) {
+      comment_id
+      created_at
+      id
+      like
+      user_id
+      comment {
+        text
+      }
+    }
+  }
+`;
+export const GET_VIDEOS = gql`
+  query q {
+    getVideoList {
+      dislikes
+      id
+      likes
+      thumbnailUrl
+      title
+      user_id
+      videoStatus
+      videoUrl
+      viewCount
+      description
+      profiles {
+        avatar_url
+        full_name
+        id
+        updated_at
+        username
+      }
+    }
+  }
+`;
+export const GET_LIKES_ON_VIDEO_USING_VIDEO_ID = gql`
+  query q($id: ID!) {
+    getLikedVideosUsingLikedVideos_video_id_fkey(id: $id) {
+      liked
+      id
+      video_id
+      user_id
+    }
+  }
+`;

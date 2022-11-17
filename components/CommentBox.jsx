@@ -1,14 +1,16 @@
 import React, { useState } from "react";
 import Avatar from "./Avatar";
 import { MAKE_COMMENT } from "../graphql/mutations";
-import {GET_VIDEO_BY_ID} from "../graphql/queries";
+import { GET_VIDEO_BY_ID } from "../graphql/queries";
 import { useMutation } from "@apollo/client";
 import client from "../apollo-client";
 import { toast } from "react-hot-toast";
 
 function CommentBox({ video, user }) {
   const [comment, setComment] = useState("");
-  const [insertComment] = useMutation(MAKE_COMMENT,{refetchQueries: [GET_VIDEO_BY_ID, "getVideoById"],});
+  const [insertComment] = useMutation(MAKE_COMMENT, {
+    refetchQueries: [GET_VIDEO_BY_ID],
+  });
   const onSubmit = async () => {
     const notification = toast.loading("Posting your comment...");
     try {

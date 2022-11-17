@@ -4,6 +4,7 @@ import { Roboto } from "@next/font/google";
 import { Auth, ThemeSupa } from "@supabase/auth-ui-react";
 import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import Account from "../components/Account";
+import SuggestedVideos from "../components/SuggestedVideos";
 
 const roboto = Roboto({
   weight: "400",
@@ -17,7 +18,7 @@ export default function Home() {
       <Head>
         <title>Youtube Clone</title>
       </Head>
-      
+      <SuggestedVideos where="Home" />
     </div>
   );
 }

@@ -45,6 +45,7 @@ export const UPDATE_VIDEO = gql`
     $videoStatus: Boolean
     $videoUrl: String
     $thumbnailUrl: String
+    $viewCount: Number
   ) {
     updateVideo(
       id: $id
@@ -54,6 +55,7 @@ export const UPDATE_VIDEO = gql`
       videoStatus: $videoStatus
       videoUrl: $videoUrl
       thumbnailUrl: $thumbnailUrl
+      viewCount: $viewCount
     ) {
       id
       description
@@ -62,6 +64,7 @@ export const UPDATE_VIDEO = gql`
       videoStatus
       videoUrl
       thumbnailUrl
+      viewCount
     }
   }
 `;
@@ -90,13 +93,9 @@ export const UPDATE_COMMENT = gql`
   mutation MyMutation(
     $id: ID!
     $text: String!
-    $dislikeCount: Int
-    $likeCount: Int
   ) {
     updateComment(
       id: $id
-      dislikeCount: $dislikeCount
-      likeCount: $likeCount
       text: $text
     ) {
       id
@@ -109,6 +108,70 @@ export const DELETE_COMMENT = gql`
   mutation MyMutation($id: ID!) {
     deleteComment(id: $id) {
       id
+    }
+  }
+`;
+export const ADD_LIKE_ON_COMMENT = gql`
+  mutation MyMutation($like: Boolean!, $comment_id: ID!, $user_id: ID!) {
+    insertLikedComments(
+      comment_id: $comment_id
+      user_id: $user_id
+      like: $like
+    ) {
+      id
+      created_at
+      comment_id
+      like
+      user_id
+    }
+  }
+`;
+
+export const REMOVE_LIKE_ON_COMMENT = gql`
+  mutation myMutation($id: ID!) {
+    deleteLikedComments(id: $id) {
+      id
+    }
+  }
+`;
+
+export const MODIFY_LIKE_ON_COMMENT = gql`
+  mutation myMutation($id: ID!, $like: Boolean) {
+    updateLikedComments(id: $id, like: $like) {
+      id
+      like
+    }
+  }
+`;
+export const ADD_LIKE_ON_VIDEO = gql`
+  mutation MyMutation($liked: Boolean!, $video_id: ID!, $user_id: ID!) {
+    insertLikedVideos(
+      video_id: $video_id
+      user_id: $user_id
+      liked: $liked
+    ) {
+      id
+      created_at
+      video_id
+      liked
+      user_id
+    }
+  }
+`;
+
+export const REMOVE_LIKE_ON_VIDEO = gql`
+  mutation myMutation($id: ID!) {
+    deleteLikedVideos(id: $id) {
+      id
+    }
+  }
+`;
+
+export const MODIFY_LIKE_ON_VIDEO = gql`
+  mutation myMutation($id: ID!, $liked: Boolean) {
+    updateLikedVideos(id: $id, liked: $liked) {
+      id
+      liked
     }
   }
 `;

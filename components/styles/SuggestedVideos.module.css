@@ -1,0 +1,12 @@
+#video{
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px;
+}
+#home{
+      display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  grid-auto-rows: minmax(100px, auto);
+  margin: 100px 0px 0px 100px;
+}

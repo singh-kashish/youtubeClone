@@ -1,9 +1,9 @@
-import { useQuery } from "@apollo/client";
+import { useQuery,useMutation } from "@apollo/client";
 import { useUser } from "@supabase/auth-helpers-react";
 import { LineWobble } from "@uiball/loaders";
 import { useRouter } from "next/router";
-import React from "react";
-import { GET_VIDEO_BY_ID } from "../../graphql/queries";
+import React,{useEffect,useState} from "react";
+import { GET_VIDEO_BY_ID,GET_LIKES_ON_VIDEO_USING_VIDEO_ID } from "../../graphql/queries";
 import styles from "./[video_id].module.css";
 import ReactPlayer from "react-player/lazy";
 import { Roboto } from "@next/font/google";
@@ -18,19 +18,147 @@ import DownloadIcon from '@mui/icons-material/Download';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import Link from "next/link";
 import Comment from '../../components/Comment';
+import SuggestedVideo from '../../components/SuggestedVideos';
+import {UPDATE_VIDEO,ADD_LIKE_ON_VIDEO,REMOVE_LIKE_ON_VIDEO,MODIFY_LIKE_ON_VIDEO} from '../../graphql/mutations';
+import toast from "react-hot-toast";
 
 const roboto = Roboto({ weight: "700" });
 const r = Roboto({ weight: "500" });
 function Video() {
   const Router = useRouter();
   const user = useUser();
-  const { loading, error, data } = useQuery(GET_VIDEO_BY_ID, {
+    const { loading, error, data } = useQuery(GET_VIDEO_BY_ID, {
     variables: {
       id: Router.query.video_id,
     },
   });
-  const video: any = data?.getVideo;
-  console.log(video);
+  const [liked, setLiked] = useState<boolean>();
+  const [likedId, setLikedId] = useState<any>();
+  const { data:likeData, loading:likeLoading, error:likeError } = useQuery(
+    GET_LIKES_ON_VIDEO_USING_VIDEO_ID,
+    {
+      variables: {
+        id: Router.query.video_id,
+      },
+    }
+  );
+  const [insertLikedVideos] = useMutation(ADD_LIKE_ON_VIDEO, {
+    refetchQueries: [
+      GET_LIKES_ON_VIDEO_USING_VIDEO_ID,
+      "getLikedVideosUsingLikedVideos_video_id_fkey",
+    ],
+  });
+
+  const [deleteLikedVideos] = useMutation(REMOVE_LIKE_ON_VIDEO, {
+    refetchQueries: [
+      GET_LIKES_ON_VIDEO_USING_VIDEO_ID,
+      "getLikedVideosUsingLikedVideos_video_id_fkey",
+    ],
+  });
+
+  const [updateLikedVideos] = useMutation(MODIFY_LIKE_ON_VIDEO, {
+    refetchQueries: [
+      GET_LIKES_ON_VIDEO_USING_VIDEO_ID,
+      "getLikedVideosUsingLikedVideos_video_id_fkey",
+    ],
+  });
+  const upVote = async (typeOfLike) => {
+    if (!user) {
+      toast("Hey, You need to sign in to be able to vote!");
+      return;
+    }
+    // UpVote exists , again hitting upvote removes your vote, thereby deleting it
+    else if (liked && typeOfLike) {
+      toast("Removing your Like!");
+      const {
+        data: { deleteLikedVideos: oldLike },
+      } = await deleteLikedVideos({
+        variables: {
+          id: likedId,
+        },
+      });
+      toast("Your like was successfully removed!");
+      return;
+    }
+    // DownVote exists, again hitting downvote removes your vote,thereby deleting it
+    else if (liked === false && !typeOfLike) {
+      toast("Removing your Unlike");
+      const {
+        data: { deleteLikedVideos: oldLike },
+      } = await deleteLikedVideos({
+        variables: {
+          id: likedId,
+        },
+      });
+      toast("Your unlike was removed successfully!");
+      return;
+    }
+    // upvote exists, but the user want to downvote ...  so we modify the existing row in the votes table
+    else if (liked === true && typeOfLike === false) {
+      toast("Changing your Like to Unlike");
+      await updateLikedVideos({
+        variables: {
+          id: likedId,
+          liked: typeOfLike,
+        },
+      });
+      toast("Changed to Unlike!");
+    }
+    // vote exists as a downvote but the user wants to change to upvote , so modify the row in the vote table
+    else if (liked === false && typeOfLike === true) {
+      toast("Changing your Unlike to Like!");
+      await updateLikedVideos({
+        variables: {
+          id: likedId,
+          liked: typeOfLike,
+        },
+      });
+      toast("Changed to Like!");
+    } else {
+      toast("Inserting your Like!");
+      const {
+        data: { addLike: newLike },
+      } = await insertLikedVideos({
+        variables: {
+          video_id: Router.query.video_id,
+          user_id: user.id,
+          liked: typeOfLike,
+        },
+      });
+      toast("Your like was inserted!");
+    }
+  };
+
+  const displayLikes = (data) => {
+    const likes = data?.getLikedVideosUsingLikedVideos_video_id_fkey;
+    const displayNumber = likes?.reduce(
+      (total, vote) => (vote.liked ? (total += 1) : total),
+      0
+    );
+
+    if (likes?.length === 0) return 0;
+    return displayNumber;
+  };
+  const displayUnlikes = (data) => {
+    const likes = data?.getLikedVideosUsingLikedVideos_video_id_fkey;
+    const displayNumber = likes?.reduce(
+      (total, vote) => (vote.liked === false ? (total += 1) : total),
+      0
+    );
+
+    if (likes?.length === 0) return 0;
+    return displayNumber;
+  };
+  useEffect(() => {
+    console.log('likeData->',likeData);
+    const likes = likeData?.getLikedVideosUsingLikedVideos_video_id_fkey;
+    const liked = likes?.find((vote) => vote.user_id === user?.id)?.liked;
+    const likeId = likes?.find((vote) => vote.user_id === user?.id)?.id;
+    setLiked(liked);
+    setLikedId(likeId);
+  }, [likeData]);
+  const video:any = data?.getVideo;
+  const [updateVideo] = useMutation(UPDATE_VIDEO);
   if (!video) {
     return (
       <div className="flex w-full items-center justify-center p-10 text-xxl m-5">
@@ -54,7 +182,7 @@ function Video() {
   const accountUrl : string = `/account/${video.user_id}`;
     return (
       <div className="px-5 z-50 pt-7" id={styles.main}>
-        <div className="w-[100px] md:w-auto ml-7">
+        <div className="w-[100px] md:w-[940px] ml-7">
           <ReactPlayer
             url={video.videoUrl}
             playing={true}
@@ -106,8 +234,14 @@ function Video() {
                   id={styles.likeUnlikeButton}
                   className="mr-2 shadow-md no-underline rounded-full text-white font-sans font-semibold text-sm border-red hover:bg-gray-900 hover:bg-red-light focus:outline-none active:shadow-none"
                 >
-                  <div id={styles.like} className="px-2 py-1"><ThumbUpIcon className="pr-2" />{video.likes}</div><p className="text-gray-800" id={styles.diwaar}>|</p>
-                  <div id={styles.like} className="px-2 py-1"><ThumbDownOffAltIcon className="pr-2"/>{video.dislikes}</div>
+                  <div id={styles.like} className="px-2 py-1"><ThumbUpIcon className="pr-2"onClick={(e) => {
+                e.preventDefault();
+                upVote(true);
+              }} />{displayLikes(likeData)}</div><p className="text-gray-800" id={styles.diwaar}>|</p>
+                  <div id={styles.like} className="px-2 py-1"><ThumbDownOffAltIcon className="pr-2" onClick={(e) => {
+                e.preventDefault();
+                upVote(false);
+              }}/>{displayUnlikes(likeData)}</div>
                 </button>
               </div>
                <div className="hidden ml-2 md:inline-block">
@@ -140,7 +274,7 @@ function Video() {
             <Comment comments={video.comment} video={video} />
         </div>
         {/* suggestedVideo */}
-        <div></div>
+        <SuggestedVideo where="Video"/>
       </div>
     );
   } else {
