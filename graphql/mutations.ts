@@ -45,7 +45,7 @@ export const UPDATE_VIDEO = gql`
     $videoStatus: Boolean
     $videoUrl: String
     $thumbnailUrl: String
-    $viewCount: Number
+    $viewCount: Int
   ) {
     updateVideo(
       id: $id
@@ -90,14 +90,8 @@ export const MAKE_COMMENT = gql`
   }
 `;
 export const UPDATE_COMMENT = gql`
-  mutation MyMutation(
-    $id: ID!
-    $text: String!
-  ) {
-    updateComment(
-      id: $id
-      text: $text
-    ) {
+  mutation MyMutation($id: ID!, $text: String!) {
+    updateComment(id: $id, text: $text) {
       id
       text
       user_id
@@ -145,11 +139,7 @@ export const MODIFY_LIKE_ON_COMMENT = gql`
 `;
 export const ADD_LIKE_ON_VIDEO = gql`
   mutation MyMutation($liked: Boolean!, $video_id: ID!, $user_id: ID!) {
-    insertLikedVideos(
-      video_id: $video_id
-      user_id: $user_id
-      liked: $liked
-    ) {
+    insertLikedVideos(video_id: $video_id, user_id: $user_id, liked: $liked) {
       id
       created_at
       video_id
@@ -172,6 +162,24 @@ export const MODIFY_LIKE_ON_VIDEO = gql`
     updateLikedVideos(id: $id, liked: $liked) {
       id
       liked
+    }
+  }
+`;
+export const INSERT_SUBSCRIBER = gql`
+  mutation myMutation($user_id: ID!, $subscribed_to_id: ID!) {
+    insertSubscribers(subscribed_to_id: $subscribed_to_id, user_id: $user_id) {
+      id
+      user_id
+      subscribed_to_id
+    }
+  }
+`;
+export const DELETE_SUBSCRIBER = gql`
+  mutation myMutation($id: ID!) {
+    deleteSubscribers(id: $id) {
+      id
+      user_id
+      subscribed_to_id
     }
   }
 `;

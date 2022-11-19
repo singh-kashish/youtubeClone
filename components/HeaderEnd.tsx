@@ -39,9 +39,7 @@ const HeaderEnd = () => {
         setFull_name(data.full_name);
         setAvatarUrl(data.avatar_url);
       }
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   }
   return (
     <div>
@@ -61,8 +59,13 @@ const HeaderEnd = () => {
           </Link>
         </div>
       ) : (
-        <div className="hidden md:hidden space-x-2" id={styles.headerEnd}>
-          <Link href="/uploadVideo"><VideoCallOutlinedIcon fontSize="large" className={styles.addVideo} /></Link>
+        <div className="hidden md:flex space-x-2" id={styles.headerEnd}>
+          <Link href="/uploadVideo">
+            <VideoCallOutlinedIcon
+              fontSize="large"
+              className={styles.addVideo}
+            />
+          </Link>
           <Avatar uid={user.id} url={avatar_url} size={30} where="header" />
           <Link href="/">
             <button

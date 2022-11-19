@@ -5,12 +5,16 @@
 #text {
   color: #b4b4b4;
 }
-#home{
-  display:flex;
+#home {
+  display: flex;
   flex-direction: column;
 }
-#row{
+#row {
   display: flex;
   flex-direction: row;
   align-items: center;
+}
+#image {
+  width: 300px !important;
+  height: 200px !important;
 }

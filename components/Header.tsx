@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 import styles from "./styles/Header.module.css";
 import { Roboto } from "@next/font/google";
 import DensityMediumRoundedIcon from "@mui/icons-material/DensityMediumRounded";
@@ -8,11 +8,13 @@ import MicRoundedIcon from "@mui/icons-material/MicRounded";
 import { TextField } from "@mui/material";
 import Link from "next/link";
 import HeaderEnd from "./HeaderEnd";
+import LeftHeader from "./LeftHeader";
 
 const roboto = Roboto({
   weight: "700",
 });
 const Header = () => {
+  const [densityClicked, setDensityClicked] = useState<boolean>(false);
   return (
     <div className={styles.main}>
       <div className={styles.headerStart}>
@@ -21,7 +23,13 @@ const Header = () => {
             marginRight: "-10px",
             marginLeft: "10px",
           }}
+          onClick={(e) => {
+            e.preventDefault();
+            setDensityClicked(!densityClicked);
+          }}
+          className="hover:bg-[#3d3d3d] hover:cursor-pointer focus:outline-none  shadow-md active:shadow-none no-underline rounded-full"
         />
+        <LeftHeader densityClicked={densityClicked} />
         <Link href="/">
           <div className={styles.logoDiv}>
             <div className="relative h-10 w-20 flex-shrink-0 cursor-pointer">

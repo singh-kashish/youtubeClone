@@ -61,3 +61,8 @@
 #description:hover {
   background-color: rgb(69, 69, 69);
 }
+#video {
+  width: 940px !important;
+  height: 530px !important;
+  background-color: black;
+}

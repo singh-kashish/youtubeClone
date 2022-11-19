@@ -91,3 +91,91 @@ export const GET_LIKES_ON_VIDEO_USING_VIDEO_ID = gql`
     }
   }
 `;
+export const GET_SUBSCRIBERS_USING_USER_ID = gql`
+  query q($id: ID!) {
+    getSubscribersUsingSubscribers_user_id_fkey(id: $id) {
+      id
+      subscribed_to_id
+      user_id
+      profilesUsingSubscribers_subscribed_to_id_fkey {
+        avatar_url
+        full_name
+        username
+        id
+        video {
+          description
+          title
+          user_id
+          videoStatus
+          videoUrl
+          viewCount
+          thumbnailUrl
+          profiles {
+            avatar_url
+            full_name
+            id
+            username
+          }
+        }
+      }
+    }
+  }
+`;
+export const GET_PROFILE = gql`
+  query myq($id: ID!) {
+    getProfiles(id: $id) {
+      avatar_url
+      full_name
+      id
+      username
+      subscribersUsingSubscribers_subscribed_to_id_fkey {
+        id
+        subscribed_to_id
+        user_id
+      }
+      video {
+        created_at
+        description
+        dislikes
+        id
+        likes
+        thumbnailUrl
+        title
+        user_id
+        videoStatus
+        videoUrl
+        viewCount
+        profiles {
+          avatar_url
+          full_name
+          id
+          username
+        }
+      }
+    }
+  }
+`;
+export const GET_LIKED_VIDEOS_BY_USER_ID = gql`
+  query q($id: ID!) {
+    getLikedVideosUsingLikedVideos_user_id_fkey(id: $id) {
+      liked
+      video {
+        description
+        id
+        thumbnailUrl
+        title
+        user_id
+        videoStatus
+        videoUrl
+        viewCount
+        profiles {
+          avatar_url
+          full_name
+          id
+          username
+        }
+      }
+      video_id
+    }
+  }
+`;

@@ -7,9 +7,9 @@ import { UPDATE_VIDEO } from "../../../graphql/mutations";
 import { SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import styles from "./[video_id].module.css";
-import { CloudUploadIcon } from "@mui/icons-material/CloudUpload";
-import { UploadFileIcon } from "@mui/icons-material/UploadFile";
+import UploadFileIcon from "@mui/icons-material/UploadFile";
 import { LineWobble } from "@uiball/loaders";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 
 type FormData = {
   videoTitle: string;
@@ -130,6 +130,7 @@ function EditVideo() {
         "mov",
         "m4p",
         "m4v",
+        "mov",
       ];
       if (allowedfileTypes.includes(fileExt?.toLowerCase())) {
         const uid = video.id;
@@ -142,6 +143,10 @@ function EditVideo() {
         if (uploadError) {
           throw uploadError;
         }
+        setValue(
+          "videoUrl",
+          `https://jsoabxvsywdylbhbxecn.supabase.co/storage/v1/object/public/video/${filePath}`
+        );
         console.error(data);
       } else {
         toast.error("This file type is not allowed.");
@@ -176,6 +181,10 @@ function EditVideo() {
         if (uploadError) {
           throw uploadError;
         }
+        setValue(
+          "thumbnailUrl",
+          `https://jsoabxvsywdylbhbxecn.supabase.co/storage/v1/object/public/thumbnail/${filePath}`
+        );
       } else {
         toast.error("This file type is not allowed.");
       }
@@ -235,6 +244,47 @@ function EditVideo() {
                   className="m-2 flex-1 p-2 outline-none md:min-w-[600px]"
                 />
               </div>
+              {!watch("videoUrl") && (
+                <div
+                  onDrop={(e) => {
+                    console.log(e);
+                    videoUpload(e);
+                  }}
+                  className="flex-col my-2 h-[120px] px-4 border-dashed border-2 border-sky-500 rounded-3xl bg-gray-800"
+                  id={styles.uploadDiv}
+                >
+                  <div className="button primary block md:w-max">
+                    {videoUploading
+                      ? "Video Uploading..."
+                      : "Upload the video or put the url above"}
+                  </div>
+                  <div id={styles.upload}>
+                    <div>Click Choose File below or drop it here.</div>
+                    <UploadFileIcon fontSize="medium" />
+                  </div>
+                  <div className={styles.inputRow}>
+                    <div>
+                      <CloudUploadIcon
+                        fontSize="large"
+                        id={styles.cloudUpload}
+                      />
+                    </div>
+                    <div className="ml-2">
+                      <input
+                        style={{
+                          position: "absolute",
+                        }}
+                        type="file"
+                        id="single"
+                        accept="video/*"
+                        onChange={videoUpload}
+                        disabled={videoUploading}
+                        className="w-40 md:w-max"
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
               {/*Upload video ends*/}
               {/* upload thumbnail starts */}
               <div>
@@ -245,6 +295,47 @@ function EditVideo() {
                   className="m-2 flex-1 p-2 outline-none md:min-w-[600px]"
                 />
               </div>
+              {!watch("thumbnailUrl") && (
+                <div
+                  onDrop={(e) => {
+                    console.log(e);
+                    uploadThumbnail(e);
+                  }}
+                  className="flex-col my-2 h-[120px] px-4 border-dashed border-2 border-sky-500 rounded-3xl bg-gray-800"
+                  id={styles.uploadDiv}
+                >
+                  <div className="button primary block md:w-max">
+                    {thumbnailUploading
+                      ? "Thumbnail Uploading..."
+                      : "Upload the thumbnail or put the url above"}
+                  </div>
+                  <div id={styles.upload}>
+                    <div>Click Choose File below or drop it here.</div>
+                    <UploadFileIcon fontSize="medium" />
+                  </div>
+                  <div className={styles.inputRow}>
+                    <div>
+                      <CloudUploadIcon
+                        fontSize="large"
+                        id={styles.cloudUpload}
+                      />
+                    </div>
+                    <div className="ml-2">
+                      <input
+                        style={{
+                          position: "absolute",
+                        }}
+                        type="file"
+                        id="single"
+                        accept="image/*"
+                        onChange={uploadThumbnail}
+                        disabled={thumbnailUploading}
+                        className="w-40 md:w-max"
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
               {/* upload thumbnail ends */}
               <div className="flex items-center px-4 ml-2 mb-2">
                 <p className="pr-4">Video Visibility:</p>

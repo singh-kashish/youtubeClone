@@ -63,7 +63,7 @@ function uploadVideo() {
         id: notification,
       });
       toast.dismiss();
-      Router.push(`video/${newVideo.id}`);
+      Router.push(`video/edit/${newVideo.id}`);
     } catch (error) {
       toast.error("Whoops something went wrong!", {
         id: notification,

@@ -1,0 +1,16 @@
+#main {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  grid-auto-rows: minmax(100px, auto);
+  margin: 100px 0px 0px 0px;
+}
+@media screen and (min-width: 376px) {
+  #main {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  grid-auto-rows: minmax(100px, auto);
+  margin: 100px 0px 0px 250px;
+}
+}

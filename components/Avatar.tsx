@@ -6,6 +6,7 @@ type Profiles = Database["public"]["Tables"]["profiles"]["Row"];
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import Link from "next/link";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
+import { DotSpinner } from "@uiball/loaders";
 
 export default function Avatar({
   where,
@@ -101,9 +102,9 @@ export default function Avatar({
           className="flex-col my-2 h-[120px] px-4 border-dashed border-2 border-sky-500 rounded-3xl bg-gray-800"
           id={styles.uploadDiv}
         >
-          <label className="button primary block md:w-max" htmlFor="single">
-            {uploading ? "Uploading ..." : `${message}`}
-          </label>
+          <div className="button primary block md:w-max">
+            {uploading ? "Uploading..." : `${message}`}
+          </div>
           <div id={styles.upload}>
             <div>Click Choose File below or drop it here.</div>
             <UploadFileIcon fontSize="medium" />
