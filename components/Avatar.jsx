@@ -1,35 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
-import { Database } from "../utils/database.types";
 import styles from "./styles/Avatar.module.css";
-type Profiles = Database["public"]["Tables"]["profiles"]["Row"];
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import Link from "next/link";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 import { DotSpinner } from "@uiball/loaders";
 
-export default function Avatar({
-  where,
-  uid,
-  url,
-  size,
-  onUpload,
-}: {
-  where: string;
-  uid: string;
-  url: Profiles["avatar_url"];
-  size: number;
-  onUpload: (url: string) => void;
-}) {
-  const supabase = useSupabaseClient<Database>();
-  const [avatarUrl, setAvatarUrl] = useState<Profiles["avatar_url"]>(null);
+export default function Avatar({ uid, url, size, onUpload, where }) {
+  const supabase = useSupabaseClient();
+  const [avatarUrl, setAvatarUrl] = useState(null);
   const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     if (url) downloadImage(url);
   }, [url]);
 
-  async function downloadImage(path: string) {
+  async function downloadImage(path) {
     try {
       const { data, error } = await supabase.storage
         .from("avatars")
@@ -44,22 +30,20 @@ export default function Avatar({
     }
   }
 
-  const uploadAvatar: React.ChangeEventHandler<HTMLInputElement> = async (
-    event
-  ) => {
+  const uploadAvatar = async (event) => {
     try {
       setUploading(true);
 
       if (!event.target.files || event.target.files.length === 0) {
         throw new Error("You must select an image to upload.");
       }
-
       const file = event.target.files[0];
       const fileExt = file.name.split(".").pop();
       const allowedfileTypes = ["jpeg", "jpg", "png", "hevc"];
       if (allowedfileTypes.includes(fileExt?.toLowerCase())) {
         const fileName = `${uid}.${fileExt}`;
         const filePath = `${fileName}`;
+
         let { error: uploadError } = await supabase.storage
           .from("avatars")
           .upload(filePath, file, { upsert: true });
@@ -82,6 +66,18 @@ export default function Avatar({
   const message = avatarUrl
     ? "Upload another image for your profile picture, hit update below to save."
     : "Upload an image for your profile picture.";
+  const returnSpinner = () => {
+    if (uploading) {
+      return (
+        <div className="flex">
+          <p className="mr-2">Uploading...</p>
+          <DotSpinner size={30} speed={0.9} color="orange" />
+        </div>
+      );
+    } else {
+      return <span>{message}</span>;
+    }
+  };
   if (where === "login") {
     return (
       <div className="my-2">
@@ -102,9 +98,7 @@ export default function Avatar({
           className="flex-col my-2 h-[120px] px-4 border-dashed border-2 border-sky-500 rounded-3xl bg-gray-800"
           id={styles.uploadDiv}
         >
-          <div className="button primary block md:w-max">
-            {uploading ? "Uploading..." : `${message}`}
-          </div>
+          <div className="button primary block md:w-max">{returnSpinner()}</div>
           <div id={styles.upload}>
             <div>Click Choose File below or drop it here.</div>
             <UploadFileIcon fontSize="medium" />

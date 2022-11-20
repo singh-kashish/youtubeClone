@@ -8,7 +8,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import styles from "./[video_id].module.css";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
-import { LineWobble } from "@uiball/loaders";
+import { DotSpinner, LineWobble } from "@uiball/loaders";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 
 type FormData = {
@@ -195,6 +195,38 @@ function EditVideo() {
       setThumbnailUploading(false);
     }
   };
+  const returnSpinnerVideo = () => {
+    if (videoUploading) {
+      return (
+        <div className="flex">
+          <p className="mr-2">
+            {videoUploading
+              ? "Video Uploading..."
+              : "Upload the video or put the url above"}
+          </p>
+          <DotSpinner size={30} speed={0.9} color="orange" />
+        </div>
+      );
+    } else {
+      return <span>Upload the video or put the url above</span>;
+    }
+  };
+  const returnSpinnerThumb = () => {
+    if (thumbnailUploading) {
+      return (
+        <div className="flex">
+          <p className="mr-2">
+            {thumbnailUploading
+              ? "Thumbnail Uploading..."
+              : "Upload the thumbnail or put the url above"}
+          </p>
+          <DotSpinner size={30} speed={0.9} color="orange" />
+        </div>
+      );
+    } else {
+      return <span>Upload the thumbnail or put the url above</span>;
+    }
+  };
   if (!video) {
     return (
       <div className="flex w-full items-center justify-center p-10 text-xxl m-5">
@@ -254,9 +286,7 @@ function EditVideo() {
                   id={styles.uploadDiv}
                 >
                   <div className="button primary block md:w-max">
-                    {videoUploading
-                      ? "Video Uploading..."
-                      : "Upload the video or put the url above"}
+                    {returnSpinnerVideo()}
                   </div>
                   <div id={styles.upload}>
                     <div>Click Choose File below or drop it here.</div>
@@ -305,9 +335,7 @@ function EditVideo() {
                   id={styles.uploadDiv}
                 >
                   <div className="button primary block md:w-max">
-                    {thumbnailUploading
-                      ? "Thumbnail Uploading..."
-                      : "Upload the thumbnail or put the url above"}
+                    {returnSpinnerThumb()}
                   </div>
                   <div id={styles.upload}>
                     <div>Click Choose File below or drop it here.</div>

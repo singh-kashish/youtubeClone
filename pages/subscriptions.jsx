@@ -15,15 +15,17 @@ function subscriptions() {
   const videosFound = () => {
     if (data?.getSubscribersUsingSubscribers_user_id_fkey?.length == 0) {
       return (
-        <h6 className="font-sans font-bold text-xl w-full text-center text-red-400 mb-1 pb-1 ml-[50%]">
+        <h6 className="font-sans font-bold text-xl text-center text-red-400 mb-1 pb-1 ml-[15%]">
           You haven't subscribed to any creator yet
         </h6>
       );
-    } else if(!user){
-        return(<h6 className="font-sans font-bold text-xl w-full text-center text-red-300 mb-1 pb-1">
-        Login First!
-      </h6>);
-    } else{
+    } else if (!user) {
+      return (
+        <h6 className="font-sans font-bold text-xl text-center text-red-300 mb-1 pb-1 ml-[15%]">
+          Login First!
+        </h6>
+      );
+    } else {
       return (
         <div id={styles.main}>
           {data?.getSubscribersUsingSubscribers_user_id_fkey.map((pie) =>

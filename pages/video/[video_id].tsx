@@ -238,8 +238,8 @@ function Video() {
       let toUseType = toUseUrl.substr(lastDotIndx);
       return (
         <div>
-          <video controls width={pidth} height="530" id={styles.video}>
-            <source src={video.videoUrl} type={`video/${toUseType}`} />
+          <video controls width={pidth} height="530" id={styles.video} src={video.videoUrl}>
+            {/* // <source src={video.videoUrl} type={`video/${toUseType}`} /> */}
           </video>
         </div>
       );
@@ -333,7 +333,7 @@ function Video() {
                 </div>
                 <div>
                   <button
-                    id={styles.subscribe}
+                    id={subscribed?styles.subscribed:styles.subscribe}
                     className="py-2 px-4 mr-2 shadow-md no-underline rounded-full text-white font-sans font-semibold text-sm border-red hover:bg-gray-900 hover:bg-red-light focus:outline-none active:shadow-none"
                     onClick={(e) => {
                       e.preventDefault;
@@ -354,7 +354,10 @@ function Video() {
                   id={styles.likeUnlikeButton}
                   className="mr-2 shadow-md no-underline rounded-full text-white font-sans font-semibold text-sm border-red hover:bg-gray-900 hover:bg-red-light focus:outline-none active:shadow-none"
                 >
-                  <div id={styles.like} className="px-2 py-1">
+                  <div
+                    id={liked ? styles.likeD : styles.like}
+                    className="px-2 py-1"
+                  >
                     <ThumbUpIcon
                       className="pr-2"
                       onClick={(e) => {
@@ -367,7 +370,10 @@ function Video() {
                   <p className="text-gray-800" id={styles.diwaar}>
                     |
                   </p>
-                  <div id={styles.like} className="px-2 py-1">
+                  <div
+                    id={!liked ? styles.likeD : styles.like}
+                    className="px-2 py-1"
+                  >
                     <ThumbDownOffAltIcon
                       className="pr-2"
                       onClick={(e) => {

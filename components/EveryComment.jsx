@@ -268,7 +268,7 @@ const EveryComment = ({ comment, user }) => {
         <div id={styles.iconLine}>
           <div>
             <ThumbUpOutlinedIcon
-              id={styles.icon}
+              id={like ? styles.iconLiked : styles.icon}
               className="hover:bg-gray-900 hover:bg-red-light focus:outline-none  shadow-md active:shadow-none no-underline rounded-full"
               onClick={(e) => {
                 e.preventDefault();
@@ -279,7 +279,7 @@ const EveryComment = ({ comment, user }) => {
           </div>
           <div>
             <ThumbDownAltOutlined
-              id={styles.icon}
+              id={like === false ? styles.iconLiked : styles.icon}
               className="hover:bg-gray-900 hover:bg-red-light focus:outline-none active:shadow-none shadow-md no-underline rounded-full"
               onClick={(e) => {
                 e.preventDefault();

@@ -11,11 +11,18 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-around;
+  justify-content: flex-start;
 }
 #icon {
   margin-left: 5px;
   cursor: pointer;
   border-radius: 15px;
   padding: 2px;
+}
+#iconLiked {
+  margin-left: 5px;
+  cursor: pointer;
+  border-radius: 15px;
+  padding: 2px;
+  color: rgb(75, 75, 183);
 }

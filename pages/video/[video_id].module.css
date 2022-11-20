@@ -30,6 +30,14 @@
   background-color: rgba(41, 38, 38, 0.753);
   margin-left: 5px;
 }
+#subscribed {
+  background-color: rgba(41, 38, 38, 0.753);
+  margin-left: 5px;
+}
+#subscribed:hover {
+  background-color: rgba(159, 149, 149, 0.753);
+  margin-left: 5px;
+}
 #likeUnlikeButton {
   display: flex;
   flex-direction: row;
@@ -39,6 +47,14 @@
   width: 50px;
 }
 #like:hover {
+  background-color: rgba(41, 38, 38, 0.753);
+  border-radius: 15px;
+}
+#likeD {
+  width: 50px;
+  color: rgba(31, 24, 24, 0.769);
+}
+#likeD:hover {
   background-color: rgba(41, 38, 38, 0.753);
   border-radius: 15px;
 }
@@ -72,6 +88,14 @@
 }
 
 @media screen and (min-width: 391px) {
+  #subscribed {
+    background-color: rgba(41, 38, 38, 0.753);
+    margin-left: 5px;
+  }
+  #subscribed:hover {
+    background-color: rgba(159, 149, 149, 0.753);
+    margin-left: 5px;
+  }
   #main {
     display: flex;
     flex-direction: row;
@@ -114,6 +138,14 @@
     background-color: rgba(41, 38, 38, 0.753);
     border-radius: 15px;
   }
+  #likeD {
+    width: 50px;
+    color: rgba(31, 24, 24, 0.769);
+  }
+  #likeD:hover {
+    background-color: rgba(41, 38, 38, 0.753);
+    border-radius: 15px;
+  }
   #diwaar {
     height: max-content;
     padding-top: 5px;
@@ -131,7 +163,7 @@
     border-radius: 15px;
     display: flex;
     flex-direction: column;
-    width: 930px!important;
+    width: 930px !important;
     padding: 10px;
   }
   #description:hover {
