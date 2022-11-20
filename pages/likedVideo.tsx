@@ -35,7 +35,9 @@ function library() {
       <div id={styles.main}>
         {data?.getLikedVideosUsingLikedVideos_user_id_fkey?.map((pie) => {
           return pie.liked === true ? (
-            <VideoIcon video={pie.video} where="home" />
+            <div key={pie.id}>
+              <VideoIcon video={pie.video} where="home" />
+            </div>
           ) : (
             <h1>Private</h1>
           );

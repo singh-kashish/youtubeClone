@@ -183,3 +183,10 @@ export const DELETE_SUBSCRIBER = gql`
     }
   }
 `;
+export const DELETE_VIDEO = gql`
+  mutation myMutation($id: ID!){
+    deleteVideo(id: $id){
+      id
+    }
+  }
+`

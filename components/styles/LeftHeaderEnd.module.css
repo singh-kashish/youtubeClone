@@ -1,0 +1,33 @@
+#main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+#signIn {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 200px !important;
+  background-color: rgb(72, 198, 198);
+}
+#addVideo {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 200px !important;
+}
+#signOutButton {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 200px !important;
+  background-color: rgb(185, 84, 84);
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+@media screen and (min-width: 391px) {
+  #main {
+    display: none;
+  }
+}

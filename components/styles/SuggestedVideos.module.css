@@ -1,7 +1,7 @@
 #video {
   display: flex;
   flex-direction: column;
-  margin: 550px 0px 0px 0px;
+  margin: 10px 0px 0px 0px;
 }
 #home {
   display: grid;
@@ -10,7 +10,7 @@
   grid-auto-rows: minmax(100px, auto);
   margin: 0px;
 }
-@media screen and (min-width: 376px) {
+@media screen and (min-width: 391px) {
   #home {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -21,7 +21,7 @@
   #video {
     display: flex;
     flex-direction: column;
-    margin-left: 15px;
+    margin-left: 5px;
     margin-top: 0px;
   }
 }

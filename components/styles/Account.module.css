@@ -20,7 +20,7 @@
 #signOutButton:hover {
   background-color: rgb(255, 138, 87);
 }
-@media screen and (min-width: 376px) {
+@media screen and (min-width: 391px) {
   #main {
     display: flex;
     flex-direction: column;

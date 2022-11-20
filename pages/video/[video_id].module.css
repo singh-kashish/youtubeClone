@@ -1,11 +1,12 @@
 #main {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   background-image: linear-gradient(
     to bottom,
     rgba(255, 0, 0, 1),
     rgba(255, 0, 0, 0)
   );
+  justify-content: flex-start;
 }
 #belowVideo {
   display: flex;
@@ -18,14 +19,16 @@
 }
 #row_icons {
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 #subscribe {
   background-color: rgba(159, 149, 149, 0.753);
+  margin-left: 5px;
 }
 #subscribe:hover {
   background-color: rgba(41, 38, 38, 0.753);
+  margin-left: 5px;
 }
 #likeUnlikeButton {
   display: flex;
@@ -47,6 +50,7 @@
   display: flex;
   flex-direction: row;
   justify-content: center;
+  display: none;
 }
 #left {
   display: flex;
@@ -62,7 +66,80 @@
   background-color: rgb(69, 69, 69);
 }
 #video {
-  width: 940px !important;
-  height: 530px !important;
+  width: 100% !important;
+  height: 25% !important;
   background-color: black;
+}
+
+@media screen and (min-width: 391px) {
+  #main {
+    display: flex;
+    flex-direction: row;
+    background-image: linear-gradient(
+      to bottom,
+      rgba(255, 0, 0, 1),
+      rgba(255, 0, 0, 0)
+    );
+  }
+  #belowVideo {
+    display: flex;
+    flex-direction: column;
+  }
+  #title {
+    font-size: 1.5rem;
+    line-height: 2.3rem;
+    color: #f1f1f1;
+  }
+  #row_icons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 930px;
+  }
+  #subscribe {
+    background-color: rgba(159, 149, 149, 0.753);
+  }
+  #subscribe:hover {
+    background-color: rgba(41, 38, 38, 0.753);
+  }
+  #likeUnlikeButton {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  #like {
+    width: 50px;
+  }
+  #like:hover {
+    background-color: rgba(41, 38, 38, 0.753);
+    border-radius: 15px;
+  }
+  #diwaar {
+    height: max-content;
+    padding-top: 5px;
+  }
+  #share {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
+  #left {
+    display: flex;
+    flex-direction: row;
+  }
+  #description {
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    width: 930px!important;
+    padding: 10px;
+  }
+  #description:hover {
+    background-color: rgb(69, 69, 69);
+  }
+  #video {
+    width: 940px !important;
+    height: 530px !important;
+    background-color: black;
+  }
 }

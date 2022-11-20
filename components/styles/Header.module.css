@@ -59,7 +59,7 @@
 #headerEnd {
   display: none;
 }
-@media screen and (min-width: 376px) {
+@media screen and (min-width: 391px) {
   #headerEnd {
     display: flex;
     flex-direction: row;

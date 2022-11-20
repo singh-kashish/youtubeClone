@@ -120,6 +120,36 @@ function VideoIcon({ video, where }) {
         </div>
       </Link>
     );
+  } else if (video.videoStatus && where === "profile") {
+    return (
+      <Link href={linkUrl}>
+        <div id={styles.home}>
+          <img
+            src={video.thumbnailUrl}
+            width="250px"
+            height="150px"
+            id={styles.image}
+          />
+          <div className="mt-2">
+            <div id={styles.row}>
+              <Avatar
+                uid={video?.user_id}
+                url={video?.profiles.avatar_url}
+                size={35}
+                where="video"
+              />
+              <h6 className={roboto.className}>{video.title}</h6>
+            </div>
+            <h1 className={r.className} id={styles.text}>
+              {video.profiles.username}
+            </h1>
+            <h1 className={r.className} id={styles.text}>
+              {video.viewCount} views
+            </h1>
+          </div>
+        </div>
+      </Link>
+    );
   }
 }
 

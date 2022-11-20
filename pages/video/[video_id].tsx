@@ -227,18 +227,18 @@ function Video() {
         toast.error("Whoops something went wrong while updating view count!", {
           id: notification,
         });
-        console.error(error);
       }
     }
   };
   const player = () => {
+    let pidth = window.screen.availWidth > 390 ? 940 : window.screen.availWidth;
     if (video.videoUrl.includes("supabase")) {
       let toUseUrl = video.videoUrl;
       let lastDotIndx = toUseUrl.lastIndexOf(".") + 1;
       let toUseType = toUseUrl.substr(lastDotIndx);
       return (
         <div>
-          <video controls width="940" height="530" id={styles.video}>
+          <video controls width={pidth} height="530" id={styles.video}>
             <source src={video.videoUrl} type={`video/${toUseType}`} />
           </video>
         </div>
@@ -250,7 +250,7 @@ function Video() {
           playing={true}
           controls={true}
           loop={true}
-          width="940px"
+          width={pidth}
           height="530px"
         />
       );
@@ -271,9 +271,7 @@ function Video() {
       subs?.find((sub) => sub.user_id === user?.id) != undefined ? true : false;
     const subbedId = subs?.find((sub) => sub.user_id === user?.id)?.id;
     setSubscribed(subbed);
-    console.log("subscribed->", subscribed);
     setSubscribedId(subbedId);
-    console.log("subscribedid->", subscribedId);
   });
 
   const [updateVideo] = useMutation(UPDATE_VIDEO);
@@ -286,8 +284,8 @@ function Video() {
   } else if (video && video?.videoStatus === true) {
     const accountUrl: string = `/account/${video.user_id}`;
     return (
-      <div className="px-5 z-50 pt-7" id={styles.main}>
-        <div className="w-[100px] md:w-[940px] ml-7">
+      <div className="md:px-5 z-50 pt-7" id={styles.main}>
+        <div className="md:ml-7">
           {/* <ReactPlayer
              url={video.videoUrl}
             playing={true}
@@ -351,7 +349,7 @@ function Video() {
                   />
                 </div>
               </div>
-              <div className="hidden ml-2 md:inline-block">
+              <div className="ml-2">
                 <button
                   id={styles.likeUnlikeButton}
                   className="mr-2 shadow-md no-underline rounded-full text-white font-sans font-semibold text-sm border-red hover:bg-gray-900 hover:bg-red-light focus:outline-none active:shadow-none"

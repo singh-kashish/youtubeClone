@@ -4,6 +4,7 @@ import React from "react";
 import { GET_PROFILE } from "../graphql/queries";
 import styles from "./styles/library.module.css";
 import VideoIcon from "../components/VideoIcon";
+import Link from "next/link";
 
 function library() {
   const user = useUser();
@@ -34,7 +35,21 @@ function library() {
       </h6>
       <div id={styles.main}>
         {data?.getProfiles?.video?.map((pie) => (
-          <VideoIcon video={pie} where="library" />
+          <div id={styles.col} key={pie.id}>
+            <div id={styles.row}>
+              <Link href={`/video/edit/${pie.id}`}>
+                <button className="mb-2 mr-2 py-2 px-4 shadow-md no-underline rounded-full bg-primary text-white font-sans font-semibold text-sm border-red btn-primary hover:text-white hover:bg-red-light focus:outline-none active:shadow-none">
+                  Edit
+                </button>
+              </Link>
+              <Link href={`/video/delete/${pie.id}`}>
+                <button className="mb-2 py-2 px-4 shadow-md no-underline rounded-full bg-red text-white font-sans font-semibold text-sm border-red btn-primary hover:text-white hover:bg-red-light focus:outline-none active:shadow-none">
+                  Delete
+                </button>
+              </Link>
+            </div>
+            <VideoIcon video={pie} where="library" />
+          </div>
         ))}
         {videosFound()}
       </div>
