@@ -37,6 +37,7 @@ const Header = () => {
                 objectFit="contain"
                 src="https://www.youtube.com/s/desktop/4965577f/img/favicon_144x144.png"
                 layout="fill"
+                alt="1083486789"
               />
             </div>
             <div
