@@ -4,6 +4,7 @@ import React from "react";
 import { GET_SUBSCRIBERS_USING_USER_ID } from "../graphql/queries";
 import styles from "./styles/subscriptions.module.css";
 import VideoIcon from "../components/VideoIcon";
+import { LineWobble } from "@uiball/loaders";
 
 function subscriptions() {
   const user = useUser();
@@ -37,12 +38,25 @@ function subscriptions() {
       );
     }
   };
+  const returnVideos = () => {
+    if (!data) {
+      return (
+        <div className="flex w-full items-center justify-center p-10 text-xxl m-5">
+          <LineWobble size={250} color="red" />
+        </div>
+      );
+    } else {
+      return (
+          videosFound()
+      );
+    }
+  };
   return (
     <div>
       <h6 className="font-sans font-bold text-xl border-b-2 border-gray-400 w-full text-center text-gray-300 mb-1 pb-1">
         Videos from your Subscriptions
       </h6>
-      {videosFound()}
+      {returnVideos()}
     </div>
   );
 }

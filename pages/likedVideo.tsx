@@ -4,6 +4,7 @@ import React from "react";
 import { GET_LIKED_VIDEOS_BY_USER_ID } from "../graphql/queries";
 import styles from "./styles/likedVideo.module.css";
 import VideoIcon from "../components/VideoIcon";
+import { LineWobble } from "@uiball/loaders";
 
 function library() {
   const user = useUser();
@@ -27,23 +28,38 @@ function library() {
       );
     }
   };
+  const returnVideos = () =>{
+    if(!data){
+      return (
+        <div className="flex w-full items-center justify-center p-10 text-xxl m-5">
+          <LineWobble size={250} color="red" />
+        </div>
+      );
+    } else {
+      return (
+        <div id={styles.main}>
+          {data?.getLikedVideosUsingLikedVideos_user_id_fkey?.map(
+            (pie: any) => {
+              return pie.liked === true ? (
+                <div key={pie.id}>
+                  <VideoIcon video={pie.video} where="home" />
+                </div>
+              ) : (
+                <h1>Private</h1>
+              );
+            }
+          )}
+          {videosFound()}
+        </div>
+      );
+    }
+  }
   return (
     <div>
       <h6 className="font-sans font-bold text-xl border-b-2 border-gray-400 w-full text-center text-gray-300 mb-1 pb-1">
         Your Liked Videos
       </h6>
-      <div id={styles.main}>
-        {data?.getLikedVideosUsingLikedVideos_user_id_fkey?.map((pie:any) => {
-          return pie.liked === true ? (
-            <div key={pie.id}>
-              <VideoIcon video={pie.video} where="home" />
-            </div>
-          ) : (
-            <h1>Private</h1>
-          );
-        })}
-        {videosFound()}
-      </div>
+      {returnVideos()}
     </div>
   );
 }

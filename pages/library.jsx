@@ -5,6 +5,7 @@ import { GET_PROFILE } from "../graphql/queries";
 import styles from "./styles/library.module.css";
 import VideoIcon from "../components/VideoIcon";
 import Link from "next/link";
+import { LineWobble } from "@uiball/loaders";
 
 function library() {
   const user = useUser();
@@ -28,12 +29,14 @@ function library() {
       );
     }
   };
-  return (
-    <div>
-      <h6 className="font-sans font-bold text-xl border-b-2 border-gray-400 w-full text-center text-gray-300 mb-1 pb-1">
-        Your Library
-      </h6>
-      <div id={styles.main}>
+  const dataLoader = () => {
+        if(!data){
+          return(<div className="flex w-full items-center justify-center p-10 text-xxl m-5">
+          <LineWobble size={250} color="red" />
+        </div>);
+        } else {
+          return(
+            <div id={styles.main}>
         {data?.getProfiles?.video?.map((pie) => (
           <div id={styles.col} key={pie.id}>
             <div id={styles.row}>
@@ -52,7 +55,17 @@ function library() {
           </div>
         ))}
         {videosFound()}
-      </div>
+      </div>);
+  }};
+  return (
+    <div>
+      <h6 className="font-sans font-bold text-xl border-b-2 border-gray-400 w-full text-center text-gray-300 mb-1 pb-1">
+        Your Library
+      </h6>
+      {
+        dataLoader()
+        }
+      
     </div>
   );
 }
