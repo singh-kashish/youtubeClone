@@ -27,8 +27,8 @@ function uploadVideo() {
     watch,
     formState: { errors },
   } = useForm<FormData>();
-  function isValidHttpUrl(string:String) {
-    let url;
+  function isValidHttpUrl(string:any) {
+    let url:any;
     try {
       url = new URL(string);
     } catch (_) {

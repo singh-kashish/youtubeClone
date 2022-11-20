@@ -27,7 +27,7 @@ const HeaderEnd = () => {
       let { data, error, status } = await supabase
         .from("profiles")
         .select(`username, full_name, avatar_url`)
-        .eq("id", user.id)
+        .eq("id", user?.id)
         .single();
 
       if (error && status !== 406) {
@@ -66,7 +66,7 @@ const HeaderEnd = () => {
               className={styles.addVideo}
             />
           </Link>
-          <Avatar uid={user.id} url={avatar_url} size={30} where="header" />
+          <Avatar uid={user?.id} url={avatar_url} size={30} where="header" onUpload={()=>{console.log("so many errors")}} />
           <Link href="/">
             <button
               className="py-2 px-4 shadow-md no-underline rounded-full bg-red text-white font-sans font-semibold text-sm border-red btn-primary hover:text-white hover:bg-red-light focus:outline-none active:shadow-none"

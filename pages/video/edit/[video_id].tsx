@@ -1,6 +1,6 @@
 import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
 import { useRouter } from "next/router";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, DragEvent } from "react";
 import { useMutation, useQuery } from "@apollo/client";
 import { GET_VIDEO_BY_ID } from "../../../graphql/queries";
 import { UPDATE_VIDEO } from "../../../graphql/mutations";
@@ -22,14 +22,13 @@ type FormData = {
 function EditVideo() {
   const Router = useRouter();
   const user = useUser();
-  const supabase = useSupabaseClient<Database>();
+  const supabase = useSupabaseClient<any>();
   const { loading, error, data } = useQuery(GET_VIDEO_BY_ID, {
     variables: {
       id: Router.query.video_id,
     },
   });
   const video: any = data?.getVideo;
-  console.warn(video);
   const {
     register,
     setValue,
@@ -44,8 +43,8 @@ function EditVideo() {
     setValue("videoUrl", video?.videoUrl);
     setValue("videoStatus", video?.videoStatus);
   }, [video]);
-  function isValidHttpUrl(string: String) {
-    let url;
+  function isValidHttpUrl(string: any) {
+    let url: any;
     try {
       url = new URL(string);
     } catch (_) {
@@ -84,8 +83,6 @@ function EditVideo() {
           viewCount: 0,
         },
       });
-      console.warn(video);
-      console.log(video.id);
       toast.success("Changes were saved!", {
         id: notification,
       });
@@ -99,7 +96,7 @@ function EditVideo() {
     }
   });
   const videoUpload: React.ChangeEventHandler<HTMLInputElement> = async (
-    event
+    event: any
   ) => {
     try {
       setVideoUploading(true);
@@ -109,9 +106,9 @@ function EditVideo() {
         throw new Error("You must select a video to upload.");
       }
 
-      const file = event.target.files[0];
-      const fileExt = file.name.split(".").pop();
-      const allowedfileTypes = [
+      const file: any = event.target.files[0];
+      const fileExt: any = file.name.split(".").pop();
+      const allowedfileTypes: any = [
         "mkv",
         "mp4",
         "webm",
@@ -132,7 +129,11 @@ function EditVideo() {
         "m4v",
         "mov",
       ];
-      if (allowedfileTypes.includes(fileExt?.toLowerCase())) {
+      if (
+        allowedfileTypes?.includes(
+          fileExt?.toLowerCase() !== undefined ? fileExt.toLowerCase() : ""
+        )
+      ) {
         const uid = video.id;
         const fileName = `${uid}.${fileExt}`;
         const filePath = `${fileName}`;
@@ -158,9 +159,7 @@ function EditVideo() {
       setVideoUploading(false);
     }
   };
-  const uploadThumbnail: React.ChangeEventHandler<HTMLInputElement> = async (
-    event
-  ) => {
+  const uploadThumbnail: any = async (event: any) => {
     try {
       setThumbnailUploading(true);
 
@@ -171,7 +170,11 @@ function EditVideo() {
       const file = event.target.files[0];
       const fileExt = file.name.split(".").pop();
       const allowedfileTypes = ["jpeg", "jpg", "png", "hevc"];
-      if (allowedfileTypes.includes(fileExt?.toLowerCase())) {
+      if (
+        allowedfileTypes.includes(
+          fileExt?.toLowerCase() !== undefined ? fileExt.toLowerCase() : ""
+        )
+      ) {
         const fileName = `${uid}.${fileExt}`;
         const filePath = `${fileName}`;
         let { error: uploadError } = await supabase.storage
@@ -195,6 +198,7 @@ function EditVideo() {
       setThumbnailUploading(false);
     }
   };
+
   const returnSpinnerVideo = () => {
     if (videoUploading) {
       return (
@@ -278,10 +282,6 @@ function EditVideo() {
               </div>
               {!watch("videoUrl") && (
                 <div
-                  onDrop={(e) => {
-                    console.log(e);
-                    videoUpload(e);
-                  }}
                   className="flex-col my-2 h-[120px] px-4 border-dashed border-2 border-sky-500 rounded-3xl bg-gray-800"
                   id={styles.uploadDiv}
                 >
@@ -289,7 +289,7 @@ function EditVideo() {
                     {returnSpinnerVideo()}
                   </div>
                   <div id={styles.upload}>
-                    <div>Click Choose File below or drop it here.</div>
+                    <div>Click Choose File below.</div>
                     <UploadFileIcon fontSize="medium" />
                   </div>
                   <div className={styles.inputRow}>
@@ -327,10 +327,6 @@ function EditVideo() {
               </div>
               {!watch("thumbnailUrl") && (
                 <div
-                  onDrop={(e) => {
-                    console.log(e);
-                    uploadThumbnail(e);
-                  }}
                   className="flex-col my-2 h-[120px] px-4 border-dashed border-2 border-sky-500 rounded-3xl bg-gray-800"
                   id={styles.uploadDiv}
                 >
@@ -338,7 +334,7 @@ function EditVideo() {
                     {returnSpinnerThumb()}
                   </div>
                   <div id={styles.upload}>
-                    <div>Click Choose File below or drop it here.</div>
+                    <div>Click Choose File below.</div>
                     <UploadFileIcon fontSize="medium" />
                   </div>
                   <div className={styles.inputRow}>

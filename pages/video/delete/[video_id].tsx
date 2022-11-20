@@ -20,7 +20,7 @@ type FormData = {
 function DeleteVideo() {
   const Router = useRouter();
   const user = useUser();
-  const supabase = useSupabaseClient<Database>();
+  const supabase = useSupabaseClient<any>();
   const { loading, error, data } = useQuery(GET_VIDEO_BY_ID, {
     variables: {
       id: Router.query.video_id,

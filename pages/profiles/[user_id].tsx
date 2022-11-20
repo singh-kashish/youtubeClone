@@ -33,6 +33,10 @@ function Profile() {
             url={profile?.avatar_url}
             size={75}
             where="video"
+            onUpload={(e:any) => {
+              console.log("ek aur dukh");
+              return;
+            }}
           />
           <div id={styles.col} className={roboto.className}>
             <h1>{profile?.full_name}</h1>
@@ -46,7 +50,7 @@ function Profile() {
           Videos
         </h1>
         <div id={styles.grid}>
-          {profile?.video?.map((pie) => (
+          {profile?.video?.map((pie:any) => (
             <VideoIcon video={pie} where="profile" />
           ))}
         </div>

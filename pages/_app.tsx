@@ -10,7 +10,7 @@ import { Toaster } from "react-hot-toast";
 
 export default function App({
   Component,
-  pageProps: { session, ...pageProps },
+  pageProps: { ...pageProps },
 }: AppProps<{
   initialSession: Session;
 }>) {

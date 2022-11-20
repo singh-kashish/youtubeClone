@@ -91,10 +91,6 @@ export default function Avatar({ uid, url, size, onUpload, where }) {
           />
         </div>
         <div
-          onDrop={(e) => {
-            console.log(e);
-            uploadAvatar(e);
-          }}
           className="flex-col my-2 h-[120px] px-4 border-dashed border-2 border-sky-500 rounded-3xl bg-gray-800"
           id={styles.uploadDiv}
         >
@@ -152,6 +148,12 @@ export default function Avatar({ uid, url, size, onUpload, where }) {
             style={{ height: size, width: size }}
           />
         </Link>
+      </div>
+    );
+  } else {
+    return (
+      <div className="hidden">
+        <h1>I had to be written cause returning empty is invalid.</h1>
       </div>
     );
   }

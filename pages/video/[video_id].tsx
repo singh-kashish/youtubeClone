@@ -82,7 +82,7 @@ function Video() {
   const [deleteSubscribers] = useMutation(DELETE_SUBSCRIBER, {
     refetchQueries: [GET_VIDEO_BY_ID, "getVideo"],
   });
-  const upVote = async (typeOfLike) => {
+  const upVote = async (typeOfLike: Boolean) => {
     if (!user) {
       toast("Hey, You need to sign in to be able to vote!");
       return;
@@ -181,20 +181,20 @@ function Video() {
       setSubscribedId(data.id);
     }
   };
-  const displayLikes = (data) => {
+  const displayLikes = (data: any) => {
     const likes = data?.getLikedVideosUsingLikedVideos_video_id_fkey;
     const displayNumber = likes?.reduce(
-      (total, vote) => (vote.liked ? (total += 1) : total),
+      (total: any, vote: any) => (vote.liked ? (total += 1) : total),
       0
     );
 
     if (likes?.length === 0) return 0;
     return displayNumber;
   };
-  const displayUnlikes = (data) => {
+  const displayUnlikes = (data: any) => {
     const likes = data?.getLikedVideosUsingLikedVideos_video_id_fkey;
     const displayNumber = likes?.reduce(
-      (total, vote) => (vote.liked === false ? (total += 1) : total),
+      (total: any, vote: any) => (vote.liked === false ? (total += 1) : total),
       0
     );
 
@@ -238,7 +238,13 @@ function Video() {
       let toUseType = toUseUrl.substr(lastDotIndx);
       return (
         <div>
-          <video controls width={pidth} height="530" id={styles.video} src={video.videoUrl}>
+          <video
+            controls
+            width={pidth}
+            height="530"
+            id={styles.video}
+            src={video.videoUrl}
+          >
             {/* // <source src={video.videoUrl} type={`video/${toUseType}`} /> */}
           </video>
         </div>
@@ -258,8 +264,8 @@ function Video() {
   };
   useEffect(() => {
     const likes = likeData?.getLikedVideosUsingLikedVideos_video_id_fkey;
-    const liked = likes?.find((vote) => vote.user_id === user?.id)?.liked;
-    const likeId = likes?.find((vote) => vote.user_id === user?.id)?.id;
+    const liked = likes?.find((vote: any) => vote.user_id === user?.id)?.liked;
+    const likeId = likes?.find((vote: any) => vote.user_id === user?.id)?.id;
     setLiked(liked);
     setLikedId(likeId);
   }, [likeData]);
@@ -268,8 +274,10 @@ function Video() {
     const subs =
       video?.profiles?.subscribersUsingSubscribers_subscribed_to_id_fkey;
     const subbed =
-      subs?.find((sub) => sub.user_id === user?.id) != undefined ? true : false;
-    const subbedId = subs?.find((sub) => sub.user_id === user?.id)?.id;
+      subs?.find((sub: any) => sub.user_id === user?.id) != undefined
+        ? true
+        : false;
+    const subbedId = subs?.find((sub: any) => sub.user_id === user?.id)?.id;
     setSubscribed(subbed);
     setSubscribedId(subbedId);
   });
@@ -317,6 +325,10 @@ function Video() {
                     url={video.profiles.avatar_url}
                     size={55}
                     where="video"
+                    onUpload={(e:any) => {
+                      console.log("ek aur dukh");
+                      return 0;
+                    }}
                   />
                 </Link>
                 <div>
@@ -333,7 +345,7 @@ function Video() {
                 </div>
                 <div>
                   <button
-                    id={subscribed?styles.subscribed:styles.subscribe}
+                    id={subscribed ? styles.subscribed : styles.subscribe}
                     className="py-2 px-4 mr-2 shadow-md no-underline rounded-full text-white font-sans font-semibold text-sm border-red hover:bg-gray-900 hover:bg-red-light focus:outline-none active:shadow-none"
                     onClick={(e) => {
                       e.preventDefault;
@@ -409,7 +421,7 @@ function Video() {
             </div>
           </div>
           <div className="w-full" id={styles.description}>
-            <div classname={roboto.className}>
+            <div className={roboto.className}>
               <h1 className="text-lg">{video.viewCount} views</h1>
             </div>
             <div>{video.description}</div>
