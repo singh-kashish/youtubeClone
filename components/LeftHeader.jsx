@@ -168,7 +168,7 @@ function LeftHeader({ densityClicked }) {
         <LeftHeaderEnd />
       </div>
     );
-  } else if (densityClicked && Router.pathname==="/video/[video_id]") {
+  } else if (densityClicked && Router.pathname === "/video/[video_id]") {
     return (
       <div
         id={styles.leftHeader_atVideo_d}
@@ -290,7 +290,12 @@ function LeftHeader({ densityClicked }) {
       </div>
     );
   } else {
-    return;
+    return (
+      <div className="hidden">
+        I had to added since , it's not allowed to return empty from a jsx
+        element
+      </div>
+    );
   }
 }
 
