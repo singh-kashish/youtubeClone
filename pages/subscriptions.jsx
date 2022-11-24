@@ -14,17 +14,23 @@ function subscriptions() {
     },
   });
   const videosFound = () => {
-    if (data?.getSubscribersUsingSubscribers_user_id_fkey?.length == 0) {
+    if (!user) {
+      return (
+        <h6 className="font-sans font-bold text-xl text-center text-red-300 mb-1 pb-1 ml-[10%] mt-4">
+          Login First!
+        </h6>
+      );
+    } else if (data?.getSubscribersUsingSubscribers_user_id_fkey?.length == 0) {
       return (
         <h6 className="font-sans font-bold text-xl text-center text-red-400 mb-1 pb-1 ml-[15%]">
           You haven't subscribed to any creator yet
         </h6>
       );
-    } else if (!user) {
+    } else if (!data) {
       return (
-        <h6 className="font-sans font-bold text-xl text-center text-red-300 mb-1 pb-1 ml-[15%]">
-          Login First!
-        </h6>
+        <div className="flex w-full items-center justify-center p-10 text-xxl m-5">
+          <LineWobble size={250} color="red" />
+        </div>
       );
     } else {
       return (
@@ -39,17 +45,7 @@ function subscriptions() {
     }
   };
   const returnVideos = () => {
-    if (!data) {
-      return (
-        <div className="flex w-full items-center justify-center p-10 text-xxl m-5">
-          <LineWobble size={250} color="red" />
-        </div>
-      );
-    } else {
-      return (
-          videosFound()
-      );
-    }
+    return videosFound();
   };
   return (
     <div>

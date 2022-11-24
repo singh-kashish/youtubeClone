@@ -8,6 +8,7 @@ const roboto = Roboto({ weight: "700" });
 const r = Roboto({ weight: "500" });
 function VideoIcon({ video, where }) {
   let linkUrl = `/video/${video.id}`;
+  console.log(video);
   if (video.videoStatus == true && where === "video") {
     return (
       <Link href={linkUrl}>
@@ -137,7 +138,10 @@ function VideoIcon({ video, where }) {
                 url={video?.profiles.avatar_url}
                 size={35}
                 where="video"
-                onUpload={(e)=>{console.log('ek aur dukh');return 0;}}
+                onUpload={(e) => {
+                  console.log("ek aur dukh");
+                  return 0;
+                }}
               />
               <h6 className={roboto.className}>{video.title}</h6>
             </div>
@@ -151,10 +155,14 @@ function VideoIcon({ video, where }) {
         </div>
       </Link>
     );
-  } else{
-    return(
+  } else {
+    return (
       <div className="hidden">
-        <h1>I had to created because jsx was saying you can't return empty, although it's the same shit... bas pakad dusre taraf se rakha hai resolution ke liye</h1>
+        <h1>
+          I had to created because jsx was saying you can't return empty,
+          although it's the same shit... bas pakad dusre taraf se rakha hai
+          resolution ke liye
+        </h1>
       </div>
     );
   }

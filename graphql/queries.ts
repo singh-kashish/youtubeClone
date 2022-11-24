@@ -110,6 +110,7 @@ export const GET_SUBSCRIBERS_USING_USER_ID = gql`
           videoUrl
           viewCount
           thumbnailUrl
+          id
           profiles {
             avatar_url
             full_name

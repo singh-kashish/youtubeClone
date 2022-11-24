@@ -14,8 +14,10 @@ function Subscriptions() {
     },
   });
   const videosFound = () => {
-    if (data?.getSubscribersUsingSubscribers_user_id_fkey?.length == 0) {
-      return;
+    if (!user) {
+      return <h1>Login to see your subscriptions</h1>;
+    } else if (data?.getSubscribersUsingSubscribers_user_id_fkey?.length == 0) {
+      return <h1>No subscriptions found</h1>;
     } else {
       return (
         <div>

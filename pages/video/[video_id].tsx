@@ -290,7 +290,7 @@ function Video() {
       </div>
     );
   } else if (video && video?.videoStatus === true) {
-    const accountUrl: string = `/account/${video.user_id}`;
+    const accountUrl: string = `/profiles/${video.user_id}`;
     return (
       <div className="md:px-5 z-50 pt-7" id={styles.main}>
         <div className="md:ml-7">
@@ -325,7 +325,7 @@ function Video() {
                     url={video.profiles.avatar_url}
                     size={55}
                     where="video"
-                    onUpload={(e:any) => {
+                    onUpload={(e: any) => {
                       console.log("ek aur dukh");
                       return 0;
                     }}
@@ -383,7 +383,7 @@ function Video() {
                     |
                   </p>
                   <div
-                    id={!liked ? styles.likeD : styles.like}
+                    id={liked===false ? styles.likeD : styles.like}
                     className="px-2 py-1"
                   >
                     <ThumbDownOffAltIcon

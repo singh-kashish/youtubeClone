@@ -385,7 +385,9 @@ type Query {
     @dbquery(
       type: "postgresql"
       schema: "public"
-      table: "video"
+      query: """
+      SELECT "created_at", "description", "dislikes", "id", "likes", "thumbnailUrl", "title", "user_id", "videoStatus", "videoUrl", "viewCount" FROM "video" ORDER BY "viewCount" DESC
+      """
       configuration: "postgresql_config"
     )
   getVideoPaginatedList(first: Int, after: Int): [Video]
