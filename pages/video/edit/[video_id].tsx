@@ -10,6 +10,8 @@ import styles from "./[video_id].module.css";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 import { DotSpinner, LineWobble } from "@uiball/loaders";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import CustomizedSteppers from "../../../components/CustomizedStepper";
+import MouseOverPopover from "../../../components/MouseOverPopover";
 
 type FormData = {
   videoTitle: string;
@@ -78,9 +80,6 @@ function EditVideo() {
           title: formData.videoTitle,
           videoStatus: formData.videoStatus,
           description: formData.videoDescription,
-          likes: 0,
-          dislikes: 0,
-          viewCount: 0,
         },
       });
       toast.success("Changes were saved!", {
@@ -257,6 +256,7 @@ function EditVideo() {
                 type="text"
                 placeholder="Type the title of the video (required)"
               />
+              <MouseOverPopover message="Can't create a video with an empty title,put a name to show the rest of the form" />
             </div>
           </div>
           {!!watch("videoTitle") && (
@@ -270,15 +270,19 @@ function EditVideo() {
                   placeholder="Text (optional)"
                   style={{ color: "white" }}
                 />
+                <MouseOverPopover message="Put the description for your video, it could be emtpy if you want" />
               </div>
               {/* Upload video start */}
               <div>
-                <label>Video Link:</label>
-                <input
-                  {...register("videoUrl")}
-                  placeholder="Leave this empty if you want to upload the video to our servers else paste link of video here."
-                  className="m-2 flex-1 p-2 outline-none md:min-w-[600px]"
-                />
+                <div className="flex items-center px-2">
+                  <label>Video Link:</label>
+                  <input
+                    {...register("videoUrl")}
+                    placeholder="Leave this empty if you want to upload the video to our servers else paste link of video here."
+                    className="m-2 flex-1 p-2 outline-none md:min-w-[600px]"
+                  />
+                  <MouseOverPopover message="If your video is uploaded on some cloud provider like iCloud,put it's url over this input box else leave it empty for the upload button to appear" />
+                </div>
               </div>
               {!watch("videoUrl") && (
                 <div
@@ -318,12 +322,15 @@ function EditVideo() {
               {/*Upload video ends*/}
               {/* upload thumbnail starts */}
               <div>
-                <label>Thumbnail Link:</label>
-                <input
-                  {...register("thumbnailUrl")}
-                  placeholder="Leave this empty if you want to upload the thumbnail to our servers, else paste link of thumbnail here."
-                  className="m-2 flex-1 p-2 outline-none md:min-w-[600px]"
-                />
+                <div className="flex items-center px-2">
+                  <label>Thumbnail Link:</label>
+                  <input
+                    {...register("thumbnailUrl")}
+                    placeholder="Leave this empty if you want to upload the thumbnail to our servers, else paste link of thumbnail here."
+                    className="m-2 flex-1 p-2 outline-none md:min-w-[600px]"
+                  />
+                  <MouseOverPopover message="If the thumbnail for this video is uploaded on some cloud provider like iCloud,put it's url over this input box else leave it empty for the upload button to appear." />
+                </div>
               </div>
               {!watch("thumbnailUrl") && (
                 <div
@@ -370,6 +377,7 @@ function EditVideo() {
                   <option value="true">PUBLIC</option>
                   <option value="false">PRIVATE</option>
                 </select>
+                <MouseOverPopover message="If you want to save this video as a private video and not show it to other users then select PRIVATE,else select PUBLIC" />
               </div>
               {/*Error Handling with react-hook-form */}
               {Object.keys(errors).length > 0 && (
@@ -390,6 +398,7 @@ function EditVideo() {
             </div>
           )}
         </form>
+        <CustomizedSteppers stepNumber="2" />
       </div>
     );
   } else {

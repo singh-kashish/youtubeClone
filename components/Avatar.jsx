@@ -88,6 +88,7 @@ export default function Avatar({ uid, url, size, onUpload, where }) {
             alt="Avatar"
             className="rounded-full ml-1"
             style={{ height: size, width: size }}
+            id={styles.img}
           />
         </div>
         <div
@@ -130,6 +131,7 @@ export default function Avatar({ uid, url, size, onUpload, where }) {
               alt="Avatar"
               className="rounded-full mr-1"
               style={{ height: size, width: size }}
+              id={styles.img}
             />
             Edit Profile
           </button>
@@ -146,6 +148,7 @@ export default function Avatar({ uid, url, size, onUpload, where }) {
             alt="Avatar"
             className="rounded-full mr-1"
             style={{ height: size, width: size }}
+            id={styles.img}
           />
         </Link>
       </div>

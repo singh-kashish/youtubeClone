@@ -5,8 +5,8 @@
 }
 #home {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 5px;
   grid-auto-rows: minmax(100px, auto);
   margin: 0px;
 }

@@ -18,3 +18,9 @@
   flex-direction: column;
   align-items: space-around;
 }
+@media screen and (max-width: 768px) {
+  #img {
+    height: 20px !important;
+    width: 20px !important;
+  }
+}

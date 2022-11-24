@@ -48,7 +48,7 @@
     z-index: 50 !important;
     background-color: #181818;
     width: auto;
-    min-height: 900px !important;
+    min-height: 100vh !important;
   }
   #leftHeader_atVideo {
     display: none;
@@ -73,7 +73,7 @@
     top: 60px;
     display: flex;
     width: 100px !important;
-    height: 100% !important;
+    height: 100vh !important;
     flex-flow: column;
     margin-right: 10px !important;
     z-index: 50 !important;

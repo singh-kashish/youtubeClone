@@ -7,6 +7,8 @@ import client from "../apollo-client";
 import { toast } from "react-hot-toast";
 import { ADD_VIDEO } from "../graphql/mutations";
 import { Router, useRouter } from "next/router";
+import CustomizedStepper from "../components/CustomizedStepper";
+import MouseOverPopover from "../components/MouseOverPopover";
 
 type FormData = {
   videoTitle: string;
@@ -27,8 +29,8 @@ function uploadVideo() {
     watch,
     formState: { errors },
   } = useForm<FormData>();
-  function isValidHttpUrl(string:any) {
-    let url:any;
+  function isValidHttpUrl(string: any) {
+    let url: any;
     try {
       url = new URL(string);
     } catch (_) {
@@ -39,8 +41,12 @@ function uploadVideo() {
   const onSubmit = handleSubmit(async (formData) => {
     const notification = toast.loading("Creating new video...");
     try {
-      formData.thumbnailUrl=isValidHttpUrl(formData.thumbnailUrl)===false?"":formData.thumbnailUrl;
-      formData.videoUrl=isValidHttpUrl(formData.videoUrl)===false?"":formData.videoUrl;
+      formData.thumbnailUrl =
+        isValidHttpUrl(formData.thumbnailUrl) === false
+          ? ""
+          : formData.thumbnailUrl;
+      formData.videoUrl =
+        isValidHttpUrl(formData.videoUrl) === false ? "" : formData.videoUrl;
       const {
         data: { insertVideo: newVideo },
       } = await insertVideo({
@@ -91,6 +97,7 @@ function uploadVideo() {
                 type="text"
                 placeholder="Type the title of the video (required)"
               />
+              <MouseOverPopover message="Can't create a video with an empty title,put a name to show the rest of the form" />
             </div>
           </div>
           {!!watch("videoTitle") && (
@@ -104,25 +111,32 @@ function uploadVideo() {
                   placeholder="Text (optional)"
                   style={{ color: "white" }}
                 />
+                <MouseOverPopover message="Put the description for your video, it could be emtpy if you want" />
               </div>
               {/* Upload video start */}
               <div>
-                <label>Video Link:</label>
-                <input
-                  {...register("videoUrl")}
-                  placeholder="Leave this empty if you want to upload the video to our servers else paste link of video here."
-                  className="m-2 flex-1 p-2 outline-none md:min-w-[600px]"
-                />
+                <div className="flex items-center px-2">
+                  <label>Video Link:</label>
+                  <input
+                    {...register("videoUrl")}
+                    placeholder="Leave this empty if you want to upload the video to our servers else paste link of video here."
+                    className="m-2 flex-1 p-2 outline-none md:min-w-[600px]"
+                  />
+                  <MouseOverPopover message="If your video is uploaded on some cloud provider like iCloud,put it's url over this input box else, upload your video at the next step" />
+                </div>
               </div>
               {/*Upload video ends*/}
               {/* upload thumbnail starts */}
               <div>
-                <label>Thumbnail Link:</label>
-                <input
-                  {...register("thumbnailUrl")}
-                  placeholder="Leave this empty if you want to upload the thumbnail to our servers, else paste link of thumbnail here."
-                  className="m-2 flex-1 p-2 outline-none md:min-w-[600px]"
-                />
+                <div className="flex items-center px-2">
+                  <label>Thumbnail Link:</label>
+                  <input
+                    {...register("thumbnailUrl")}
+                    placeholder="Leave this empty if you want to upload the thumbnail to our servers, else paste link of thumbnail here."
+                    className="m-2 flex-1 p-2 outline-none md:min-w-[600px]"
+                  />
+                  <MouseOverPopover message="If the thumbnail for the video is uploaded on some cloud provider like iCloud,put it's url over this input box else, upload it at the next step" />
+                </div>
               </div>
               {/* upload thumbnail ends */}
               <div className="flex items-center px-4 ml-2 mb-2">
@@ -134,6 +148,7 @@ function uploadVideo() {
                   <option value="true">PUBLIC</option>
                   <option value="false">PRIVATE</option>
                 </select>
+                <MouseOverPopover message="If you want to save this video as a private video and not show it to other users then select PRIVATE,else select PUBLIC" />
               </div>
               {/*Error Handling with react-hook-form */}
               {Object.keys(errors).length > 0 && (
@@ -146,7 +161,7 @@ function uploadVideo() {
               {!!watch("videoTitle") && (
                 <button
                   type="submit"
-                  className="w-full rounded-full p-2 bg-blue-600 text-white"
+                  className="md:w-full rounded-full p-2 bg-blue-600 text-white"
                 >
                   Create Video
                 </button>
@@ -154,6 +169,7 @@ function uploadVideo() {
             </div>
           )}
         </form>
+        <CustomizedStepper stepNumber="1" />
       </div>
     );
   } else {
