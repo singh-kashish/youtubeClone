@@ -250,6 +250,15 @@ type Query {
       table: "profiles"
       configuration: "postgresql_config"
     )
+  getProfilesUsingSearchText(text: String!): [Profiles]
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      query: """
+      SELECT "username", "full_name", "id", "avatar_url" FROM "profiles" WHERE to_tsvector(username || ' ' || full_name) @@ to_tsquery($1)
+      """
+      configuration: "postgresql_config"
+    )
   getProfilesList: [Profiles]
     @dbquery(
       type: "postgresql"
@@ -414,6 +423,15 @@ type Query {
       schema: "public"
       query: """
       SELECT "created_at", "description", "dislikes", "id", "likes", "thumbnailUrl", "title", "user_id", "videoStatus", "videoUrl", "viewCount" FROM "video" WHERE "id" = $1
+      """
+      configuration: "postgresql_config"
+    )
+  getVideosUsingSearchText(text: String!): [Video]
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      query: """
+      SELECT "created_at", "description", "dislikes", "id", "likes", "thumbnailUrl", "title", "user_id", "videoStatus", "videoUrl", "viewCount" FROM "video" WHERE to_tsvector(title || ' ' || description) @@ to_tsquery($1)
       """
       configuration: "postgresql_config"
     )
