@@ -18,7 +18,7 @@ const Header = () => {
   const router = useRouter();
   const [densityClicked, setDensityClicked] = useState<boolean>(false);
   const [searchText,setSearchText] = useState<string>('');
-  const handleSubmit = (e) =>{
+  const handleSubmit = (e:any) =>{
     e.preventDefault();
     router.push(`/search/${searchText}`);
   }
@@ -30,7 +30,7 @@ const Header = () => {
             marginRight: "-10px",
             marginLeft: "10px",
           }}
-          onClick={(e) => {
+          onClick={(e:any) => {
             e.preventDefault();
             setDensityClicked(!densityClicked);
           }}
@@ -57,14 +57,14 @@ const Header = () => {
         </Link>
       </div>
       <div id={styles.headerMiddle} className="invisible md:visible">
-        <form className="flex flex-1 items-center jutify-between space-x-2 rounded-full border border-[#3d3d3d] px-1 py-1" onSubmit={(e)=>{handleSubmit(e)}}>
+        <form className="flex flex-1 items-center jutify-between space-x-2 rounded-full border border-[#3d3d3d] px-1 py-1" onSubmit={(e:any)=>{handleSubmit(e)}}>
           <div>
             <input
               type="text"
               placeholder="Search Youtube clone"
               className={styles.input}
               value={searchText}
-              onChange={(e)=>{setSearchText(e.target.value)}}
+              onChange={(e:any)=>{setSearchText(e.target.value)}}
             />
             <button type="submit" hidden />
           </div>
@@ -72,7 +72,7 @@ const Header = () => {
             <SearchRoundedIcon
               id={styles.search}
               className="py-2 px-4 shadow-md no-underline rounded-full"
-              onClick={(e)=>{handleSubmit(e);}}
+              onClick={(e:any)=>{handleSubmit(e);}}
             />
           </div>
         </form>

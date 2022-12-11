@@ -34,6 +34,7 @@ import toast from "react-hot-toast";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import CloseIcon from "@mui/icons-material/Close";
+import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 
 const roboto = Roboto({ weight: "700" });
 const r = Roboto({ weight: "500" });
@@ -429,8 +430,18 @@ function Video() {
                 >
                   <Box sx={{ ...style, width: 600 }}>
                     <div id={styles.modal}>
-                      <div>
-                        <CloseIcon onClick={(e)=>{handleClose();}} id={styles.closeIcon}/>
+                      <div id={styles.modalFirstLine}>
+                        <div id={styles.shareText} className={r.className}>
+                          Share
+                        </div>
+                        <div>
+                          <CloseIcon
+                            onClick={(e) => {
+                              handleClose();
+                            }}
+                            id={styles.closeIcon}
+                          />
+                        </div>
                       </div>
                       <div>
                         <input
@@ -450,6 +461,20 @@ function Video() {
                         >
                           Copy
                         </button>
+                      </div>
+                      <div
+                        onClick={() => {
+                          handleClose();
+                        }}
+                      >
+                        <a
+                          href={`https://api.whatsapp.com/send?text=https://youtube-clone-singh-kashish.vercel.app${Router.asPath}`}
+                          data-action="share/whatsapp/share"
+                          target="to_blank"
+                        >
+                          <WhatsAppIcon />
+                          Share via Whatsapp web
+                        </a>
                       </div>
                     </div>
                   </Box>

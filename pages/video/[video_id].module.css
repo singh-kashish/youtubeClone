@@ -8,6 +8,11 @@
   );
   justify-content: flex-start;
 }
+#modalFirstLine {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
 #belowVideo {
   display: flex;
   flex-direction: column;
@@ -100,7 +105,7 @@
 #modal {
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
+  align-items: center;
   justify-content: flex-start;
 }
 #closeIcon {
@@ -120,13 +125,18 @@
   #modal {
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
+    align-items: center;
     justify-content: flex-start;
   }
+  #modalFirstLine {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+  #shareText {
+    font-size: large;
+  }
   #closeIcon {
-    position: relative;
-    top: -10px;
-    right: -10px;
   }
   #closeIcon:hover {
     cursor: pointer;
