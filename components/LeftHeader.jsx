@@ -14,28 +14,28 @@ function LeftHeader({ densityClicked }) {
   const [selected, setSelected] = useState(1);
   const Router = useRouter();
   const selectedStyle = {
-    backgroundColor: "#3d3d3d",
-    borderRadius: "5px",
+    backgroundColor: "#2d2d2d",
+    borderRadius: "10px",
     height: "45px",
     width: "200px",
     cursor: "pointer",
   };
   const notSelectedStyle = {
-    borderRadius: "5px",
+    borderRadius: "10px",
     height: "45px",
     width: "200px",
     cursor: "pointer",
   };
   const selectedStyle_icon = {
-    backgroundColor: "#3d3d3d",
-    borderRadius: "5px",
+    backgroundColor: "#2d2d2d",
+    borderRadius: "10px",
     height: "45px",
     width: "100px",
     cursor: "pointer",
   };
   const notSelectedStyle_icon = {
     backgroundColor: "#181818",
-    borderRadius: "5px",
+    borderRadius: "10px",
     height: "45px",
     width: "100px",
     cursor: "pointer",
@@ -46,7 +46,8 @@ function LeftHeader({ densityClicked }) {
     Router.asPath == "/library" ||
     Router.asPath == "/yourVideos" ||
     Router.asPath == "/likedVideo" ||
-    Router.pathname == "/profiles/[user_id]";
+    Router.pathname == "/profiles/[user_id]" ||
+    Router.pathname == "/search/[text]";
   if (densityClicked && RoutePathValue) {
     return (
       <div

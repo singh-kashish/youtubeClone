@@ -37,6 +37,19 @@
 #leftHeader_atVideo_d {
   display: none;
 }
+  #row:hover {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-color: #3d3d3d !important;
+  }
+  #row_icon:hover {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #3d3d3d !important;
+  }
 @media screen and (min-width: 391px) {
   #leftHeader {
     position: absolute;
@@ -47,7 +60,7 @@
     margin-right: 10px !important;
     z-index: 50 !important;
     background-color: #181818;
-    width: auto;
+    width: 215px;
     min-height: 100vh !important;
   }
   #leftHeader_atVideo {
@@ -66,6 +79,19 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+  }
+  #row:hover {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-color: #3d3d3d !important;
+  }
+  #row_icon:hover {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #3d3d3d !important;
   }
   #leftHeader_icon {
     position: absolute;

@@ -9,12 +9,19 @@ import { TextField } from "@mui/material";
 import Link from "next/link";
 import HeaderEnd from "./HeaderEnd";
 import LeftHeader from "./LeftHeader";
+import {useRouter} from "next/router";
 
 const roboto = Roboto({
   weight: "700",
 });
 const Header = () => {
+  const router = useRouter();
   const [densityClicked, setDensityClicked] = useState<boolean>(false);
+  const [searchText,setSearchText] = useState<string>('');
+  const handleSubmit = (e) =>{
+    e.preventDefault();
+    router.push(`/search/${searchText}`);
+  }
   return (
     <div className={styles.main}>
       <div className={styles.headerStart}>
@@ -50,12 +57,14 @@ const Header = () => {
         </Link>
       </div>
       <div id={styles.headerMiddle} className="invisible md:visible">
-        <form className="flex flex-1 items-center jutify-between space-x-2 rounded-full border border-[#3d3d3d] px-1 py-1">
+        <form className="flex flex-1 items-center jutify-between space-x-2 rounded-full border border-[#3d3d3d] px-1 py-1" onSubmit={(e)=>{handleSubmit(e)}}>
           <div>
             <input
               type="text"
               placeholder="Search Youtube clone"
               className={styles.input}
+              value={searchText}
+              onChange={(e)=>{setSearchText(e.target.value)}}
             />
             <button type="submit" hidden />
           </div>
@@ -63,6 +72,7 @@ const Header = () => {
             <SearchRoundedIcon
               id={styles.search}
               className="py-2 px-4 shadow-md no-underline rounded-full"
+              onClick={(e)=>{handleSubmit(e);}}
             />
           </div>
         </form>

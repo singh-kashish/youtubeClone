@@ -180,3 +180,38 @@ export const GET_LIKED_VIDEOS_BY_USER_ID = gql`
     }
   }
 `;
+export const GET_PROFILES_BY_SEARCH_TEXT = gql`
+  query q($text: String!) {
+    getProfilesUsingSearchText(text: $text) {
+      subscribersUsingSubscribers_subscribed_to_id_fkey {
+        id
+        subscribed_to_id
+        user_id
+      }
+      avatar_url
+      full_name
+      id
+      username
+    }
+  }
+`;
+export const GET_VIDEOS_BY_SEARCH_TEXT = gql`
+  query q($text: String!) {
+    getVideosUsingSearchText(text: $text) {
+      id
+      title
+      viewCount
+      profiles {
+        avatar_url
+        full_name
+        id
+        username
+      }
+      created_at
+      description
+      thumbnailUrl
+      videoStatus
+      videoUrl
+    }
+  }
+`;

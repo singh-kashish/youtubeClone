@@ -6,9 +6,10 @@ import Avatar from "./Avatar";
 
 const roboto = Roboto({ weight: "700" });
 const r = Roboto({ weight: "500" });
+const rb = Roboto({ weight: "300" });
+const rt = Roboto({ weight: "100" });
 function VideoIcon({ video, where }) {
   let linkUrl = `/video/${video.id}`;
-  console.log(video);
   if (video.videoStatus == true && where === "video") {
     return (
       <Link href={linkUrl}>
@@ -154,6 +155,49 @@ function VideoIcon({ video, where }) {
           </div>
         </div>
       </Link>
+    );
+  } else if (video.videoStatus && where === "search") {
+    return (
+      <div id={styles.searchHome} className="mt-1">
+        <Link href={linkUrl}>
+          <img
+            src={video.thumbnailUrl}
+            width="450px"
+            height="350px"
+            id={styles.searchImage}
+          />
+        </Link>
+        <div className="mt-2 ml-2">
+          <Link href={linkUrl}>
+            <h6 className={r.className} id={styles.searchVideoTitle}>
+              {video.title}
+            </h6>
+          </Link>
+          <h1 className={rb.className} id={styles.text}>
+            {video.viewCount} views
+          </h1>
+          <Link href={`/profiles/${video.profiles.id}`}>
+            <div id={styles.row}>
+              <Avatar
+                uid={video?.user_id}
+                url={video?.profiles.avatar_url}
+                size={35}
+                where="video"
+                onUpload={(e) => {
+                  console.log("ek aur dukh");
+                  return 0;
+                }}
+              />
+              <h1 className={rb.className} id={styles.text}>
+                {video.profiles.username}
+              </h1>
+            </div>
+          </Link>
+          <h1 id={styles.text} className={rt.className}>
+            {video.description}
+          </h1>
+        </div>
+      </div>
     );
   } else {
     return (

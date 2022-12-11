@@ -86,7 +86,7 @@ function EditVideo() {
         id: notification,
       });
       toast.dismiss();
-      Router.push("/");
+      Router.push(`/video/${Router.query.video_id}`);
     } catch (error) {
       toast.error("Whoops something went wrong!", {
         id: notification,
