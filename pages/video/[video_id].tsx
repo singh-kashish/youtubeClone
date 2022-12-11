@@ -31,9 +31,22 @@ import {
   DELETE_SUBSCRIBER,
 } from "../../graphql/mutations";
 import toast from "react-hot-toast";
+import Modal from "@mui/material/Modal";
+import Box from "@mui/material/Box";
+import CloseIcon from "@mui/icons-material/Close";
 
 const roboto = Roboto({ weight: "700" });
 const r = Roboto({ weight: "500" });
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "#3d3d3d",
+  boxShadow: 24,
+  p: 2,
+};
 function Video() {
   const Router = useRouter();
   const user = useUser();
@@ -281,7 +294,9 @@ function Video() {
     setSubscribed(subbed);
     setSubscribedId(subbedId);
   });
-
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
   const [updateVideo] = useMutation(UPDATE_VIDEO);
   if (!video) {
     return (
@@ -383,7 +398,7 @@ function Video() {
                     |
                   </p>
                   <div
-                    id={liked===false ? styles.likeD : styles.like}
+                    id={liked === false ? styles.likeD : styles.like}
                     className="px-2 py-1"
                   >
                     <ThumbDownOffAltIcon
@@ -400,11 +415,45 @@ function Video() {
               <div className="hidden ml-2 md:inline-block">
                 <button
                   id={styles.share}
+                  onClick={handleOpen}
                   className="py-2 px-4 mr-2 shadow-md no-underline rounded-full text-white font-sans font-semibold text-sm border-red hover:bg-gray-900 hover:bg-red-light focus:outline-none active:shadow-none"
                 >
                   <ReplySharpIcon />
                   Share
                 </button>
+                <Modal
+                  open={open}
+                  onClose={handleClose}
+                  aria-labelledby="parent-modal-title"
+                  aria-describedby="parent-modal-description"
+                >
+                  <Box sx={{ ...style, width: 600 }}>
+                    <div id={styles.modal}>
+                      <div>
+                        <CloseIcon onClick={(e)=>{handleClose();}} id={styles.closeIcon}/>
+                      </div>
+                      <div>
+                        <input
+                          value={`https://youtube-clone-singh-kashish.vercel.app${Router.asPath}`}
+                          id={styles.showInput}
+                        />
+                        <button
+                          onClick={() => {
+                            navigator.clipboard.writeText(
+                              `https://youtube-clone-singh-kashish.vercel.app${Router.asPath}`
+                            );
+                            toast.success("Link copied to clipboard");
+                            handleClose();
+                          }}
+                          className="py-2 px-4 shadow-md no-underline rounded-full bg-blue text-white font-sans font-semibold text-sm border-blue btn-primary hover:text-white hover:bg-blue-light focus:outline-none active:shadow-none mr-2"
+                          id={styles.copyButton}
+                        >
+                          Copy
+                        </button>
+                      </div>
+                    </div>
+                  </Box>
+                </Modal>
               </div>
               <div>
                 <button

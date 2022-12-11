@@ -86,8 +86,61 @@
   height: 25% !important;
   background-color: black;
 }
-
+#copyButton {
+  background-color: rgb(14, 90, 255) !important;
+  margin-left: 10px;
+}
+#copyButton:hover {
+  background-color: rgb(79, 134, 255) !important;
+  margin-left: 10px;
+}
+#showInput {
+  width: 450px !important;
+}
+#modal {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-start;
+}
+#closeIcon {
+  position: relative;
+  top: -10px;
+  right: -10px;
+}
+#closeIcon:hover {
+  cursor: pointer;
+  background-color: #2d2d2d;
+  border-radius: 10px;
+}
 @media screen and (min-width: 391px) {
+  #showInput {
+    width: 450px !important;
+  }
+  #modal {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: flex-start;
+  }
+  #closeIcon {
+    position: relative;
+    top: -10px;
+    right: -10px;
+  }
+  #closeIcon:hover {
+    cursor: pointer;
+    background-color: #2d2d2d;
+    border-radius: 10px;
+  }
+  #copyButton {
+    background-color: rgb(14, 90, 255) !important;
+    margin-left: 10px;
+  }
+  #copyButton:hover {
+    background-color: rgb(79, 134, 255) !important;
+    margin-left: 10px;
+  }
   #subscribed {
     background-color: rgba(41, 38, 38, 0.753);
     margin-left: 5px;
