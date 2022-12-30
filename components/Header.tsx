@@ -61,7 +61,7 @@ const Header = () => {
           <div>
             <input
               type="text"
-              placeholder="Search Youtube clone"
+              placeholder="Search by hitting enter or the searchIcon on right"
               className={styles.input}
               value={searchText}
               onChange={(e:any)=>{setSearchText(e.target.value)}}

@@ -7,6 +7,7 @@ import styles from "./styles/ProfileSearch.module.css";
 import { Roboto } from "@next/font/google";
 import { useQuery } from "@apollo/client";
 import { GET_PROFILES_BY_SEARCH_TEXT } from "../graphql/queries";
+import Link from "next/link";
 
 const roboto = Roboto({ weight: "700" });
 const r = Roboto({ weight: "500" });
@@ -20,9 +21,9 @@ function ProfileSearch({ text }) {
       text: searchText,
     },
   });
-  console.log("loading->", loading);
-  console.log("data->", data);
-  console.log("error->", error);
+  // console.log("loading->", loading);
+  // console.log("data->", data);
+  // console.log("error->", error);
   const videosFound = () => {
     if (loading) {
       return (
@@ -43,32 +44,34 @@ function ProfileSearch({ text }) {
       return (
         <div id={styles.main}>
           {data?.getProfilesUsingSearchText?.map((pie) => (
-            <div id={styles.user}>
-              <Avatar
-                uid={pie?.id}
-                url={pie?.avatar_url}
-                size={150}
-                where="video"
-                onUpload={(e) => {
-                  console.log("ek aur dukh");
-                  return;
-                }}
-              />
-              <div id={styles.col} className={roboto.className}>
-                <h1 className={r.className}>{pie?.full_name}</h1>
-                <h1 className={rt.className} id={styles.text}>
-                  {`@${pie?.username}`} <span>•</span>
-                  <span className="ml-1">
-                    {
-                      pie?.subscribersUsingSubscribers_subscribed_to_id_fkey
-                        ?.length
-                    }
-                    Subscribers
-                  </span>
-                </h1>
-                {/* <h1>{`${profile?.subscribersUsingSubscribers_subscribed_to_id_fkey?.length} Subscribers`}</h1> */}
+            <Link href={`/profiles/${pie?.id}`}>
+              <div id={styles.user}>
+                <Avatar
+                  uid={pie?.id}
+                  url={pie?.avatar_url}
+                  size={150}
+                  where="video"
+                  onUpload={(e) => {
+                    console.log("ek aur dukh");
+                    return;
+                  }}
+                />
+                <div id={styles.col} className={roboto.className}>
+                  <h1 className={r.className}>{pie?.full_name}</h1>
+                  <h1 className={rt.className} id={styles.text}>
+                    {`@${pie?.username}`} <span>•</span>
+                    <span className="ml-1">
+                      {
+                        pie?.subscribersUsingSubscribers_subscribed_to_id_fkey
+                          ?.length
+                      }
+                      Subscribers
+                    </span>
+                  </h1>
+                  {/* <h1>{`${profile?.subscribersUsingSubscribers_subscribed_to_id_fkey?.length} Subscribers`}</h1> */}
+                </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       );

@@ -32,7 +32,7 @@ function Profile() {
           <div id={styles.col}>
             <div
               id={styles.row}
-              className="bg-[#272626] md:w-[500px] lg:w-[700px] xl:w-[950px] px-6 py-2"
+              className="bg-[#272626] md:w-[500px] lg:w-[800px] xl:w-[100%] px-6 py-2"
             >
               <Avatar
                 uid={profile?.id}

@@ -139,7 +139,7 @@ export default function Avatar({ uid, url, size, onUpload, where }) {
       </div>
     );
   } else if (where === "video") {
-    const link = `profile/${uid}`;
+    const link = `/profiles/${uid}`;
     return (
       <div className="font-sans font-semibold text-md">
         <Link href={link}>
