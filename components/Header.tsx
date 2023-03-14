@@ -34,7 +34,7 @@ const Header = () => {
             e.preventDefault();
             setDensityClicked(!densityClicked);
           }}
-          className="hover:bg-[#3d3d3d] hover:cursor-pointer focus:outline-none  shadow-md active:shadow-none no-underline rounded-full"
+          className="w-[30px] h-[30px] hover:bg-[rgba(11,11,65,0.75)] hover:text-[rgba(11,11,65,1)] hover:cursor-pointer focus:outline-none  shadow-lg active:shadow-none no-underline rounded-full"
         />
         <LeftHeader densityClicked={densityClicked} />
         <Link href="/">
@@ -51,14 +51,14 @@ const Header = () => {
               className="text-xl flex-shrink-0 cursor-pointer"
               id={styles.text}
             >
-              <span className={roboto.className}>YouTube Clone</span>
+              <span className={roboto.className}>!:|:!YouTube Clone)</span>
             </div>
           </div>
         </Link>
       </div>
       <div id={styles.headerMiddle} className="invisible md:visible">
-        <form className="flex flex-1 items-center jutify-between space-x-2 rounded-full border border-[#3d3d3d] px-1 py-1" onSubmit={(e:any)=>{handleSubmit(e)}}>
-          <div>
+        <form className="flex flex-1 items-center jutify-between space-x-2 rounded-full border border-[#141414] px-0 py-0" onSubmit={(e:any)=>{handleSubmit(e)}}>
+          <div className="">
             <input
               type="text"
               placeholder="Search by hitting enter or the searchIcon on right"
@@ -68,10 +68,10 @@ const Header = () => {
             />
             <button type="submit" hidden />
           </div>
-          <div className="">
+          <div onClick={(e:any)=>{handleSubmit(e);}} id={styles.searchDiv} className="shadow-md hover:cursor-pointer px-0 py-[7px] mt-0  shadow-md no-underline rounded-r-full">
             <SearchRoundedIcon
               id={styles.search}
-              className="py-2 px-4 shadow-md no-underline rounded-full"
+              className="py-1 w-[30px] h-[35px] mr-0 px-4 no-underline rounded-full"
               onClick={(e:any)=>{handleSubmit(e);}}
             />
           </div>

@@ -52,6 +52,9 @@
   #text {
     color: #b4b4b4;
   }
+  #videoTitle{
+    color:#b4b4b4;
+  }
   #home {
     display: flex;
     flex-direction: column;
