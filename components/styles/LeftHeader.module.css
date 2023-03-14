@@ -54,12 +54,12 @@
   #leftHeader {
     position: absolute;
     left: 0;
-    top: 60px;
+    top: 66px;
     display: flex;
     flex-direction: column;
     margin-right: 10px !important;
     z-index: 50 !important;
-    background-color: #181818;
+    background: linear-gradient(0deg, rgba(255, 45, 45,0.7), rgba(11, 11, 65,1));
     width: 215px;
     min-height: 100vh !important;
   }
@@ -96,13 +96,13 @@
   #leftHeader_icon {
     position: absolute;
     left: 0;
-    top: 60px;
+    top: 66px;
     display: flex;
     width: 100px !important;
     height: 100vh !important;
     flex-flow: column;
     margin-right: 10px !important;
     z-index: 50 !important;
-    background-color: #181818;
-  }
+    background: linear-gradient(0deg, rgba(255, 45, 45,0.7), rgba(11, 11, 65,1));
+    }
 }
