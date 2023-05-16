@@ -9,7 +9,7 @@ function Comment({ comments, video }) {
   return (
     <div id={styles.main}>
       <h1 className="font-sans font-bold text-lg border-b-2 border-gray-400 w-full text-white mb-1 pb-1">
-        Comments
+        {comments.length} Comments
       </h1>
       <CommentBox video={video} user={user} />
       <CommentList comments={comments} user={user}/>

@@ -25,22 +25,25 @@ function library() {
       );
     } else if (!user) {
       return (
-        <h6 className="font-sans font-bold text-xl w-full text-center text-red-300 mb-1 pb-1">
+        <Link href="/login">
+        <h6 className="font-sans font-bold text-xl w-full text-center text-blue-800 mb-1 pb-1">
           Login First!
         </h6>
+        </Link>
       );
     }
   };
   const dataLoader = () => {
     if (!user) {
       return (
-        <h6 className="font-sans font-bold text-xl w-full text-center text-red-300 mb-1 pb-1">
+        <Link href="/login">
+        <h6 className="h-full w-full font-sans font-bold text-xl text-center text-blue-800 mb-1 pb-1">
           Login First!
-        </h6>
+        </h6></Link>
       );
     } else if (!data) {
       return (
-        <div className="flex w-full items-center justify-center p-10 text-xxl m-5">
+        <div className="flex w-full h-full items-center justify-center p-10 text-xxl m-5">
           <LineWobble size={250} color="red" />
         </div>
       );
@@ -72,7 +75,7 @@ function library() {
     }
   };
   return (
-    <div>
+    <div className="min-h-screen w-full">
       <h6 className="font-sans font-bold text-xl border-b-2 border-gray-400 w-full text-center text-gray-300 mb-1 pb-1">
         Your Library
       </h6>

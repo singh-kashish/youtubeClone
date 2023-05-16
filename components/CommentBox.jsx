@@ -49,9 +49,9 @@ function CommentBox({ video, user }) {
       />
       <input
         type="text"
-        placeholder="Make your comment"
-        style={{ height: "40px", paddingLeft: "5px" }}
-        className="w-[200px] md:w-[700px]"
+        placeholder="Post your comment"
+        style={{ height: "40px", marginLeft: "5px" }}
+        className="grow rounded-full pl-[5px]"
         value={comment}
         onChange={(e) => {
           e.preventDefault();
@@ -62,7 +62,7 @@ function CommentBox({ video, user }) {
         className="ml-2 bg-primary shadow-md no-underline rounded-full text-white font-sans font-semibold text-sm border-red hover:bg-gray-900 hover:bg-red-light focus:outline-none active:shadow-none px-4 py-2"
         onClick={onSubmit}
       >
-        Save
+        Post Comment
       </button>
     </div>
   );

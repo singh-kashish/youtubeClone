@@ -3,10 +3,12 @@
   flex-direction: column;
   background-image: linear-gradient(
     to bottom,
-    rgba(255, 0, 0, 1),
+    rgba(255, 72, 72, 0.879),
     rgba(255, 0, 0, 0)
   );
   justify-content: flex-start;
+  align-items: center;
+  width: 100%;
 }
 #modalFirstLine {
   display: flex;
@@ -15,7 +17,9 @@
 }
 #belowVideo {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
 }
 #title {
   font-size: 1.5rem;
@@ -26,6 +30,7 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  align-items: center;
 }
 #subscribe {
   background-color: rgba(159, 149, 149, 0.753);
@@ -76,6 +81,7 @@
 #left {
   display: flex;
   flex-direction: row;
+  align-items: center;
 }
 #description {
   border-radius: 15px;
@@ -87,9 +93,8 @@
   background-color: rgb(69, 69, 69);
 }
 #video {
-  width: 100% !important;
-  height: 25% !important;
-  background-color: black;
+  width: 100vw !important;
+  height: 60% !important;
 }
 #copyButton {
   background-color: rgb(14, 90, 255) !important;
@@ -118,7 +123,7 @@
   background-color: #2d2d2d;
   border-radius: 10px;
 }
-@media screen and (min-width: 391px) {
+@media screen and (min-width: 392px) {
   #showInput {
     width: 450px !important;
   }
@@ -164,13 +169,17 @@
     flex-direction: row;
     background-image: linear-gradient(
       to bottom,
-      rgba(255, 0, 0, 1),
+      rgba(255, 0, 0, 0.8),
       rgba(255, 0, 0, 0)
     );
+    align-items: flex-start;
+  width: auto;
   }
   #belowVideo {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
   }
   #title {
     font-size: 1.5rem;
@@ -181,7 +190,7 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    width: 930px;
+    align-items: center;
   }
   #subscribe {
     background-color: rgba(159, 149, 149, 0.753);
@@ -221,20 +230,19 @@
   #left {
     display: flex;
     flex-direction: row;
+    align-items: center;
   }
   #description {
     border-radius: 15px;
     display: flex;
     flex-direction: column;
-    width: 930px !important;
     padding: 10px;
   }
   #description:hover {
     background-color: rgb(69, 69, 69);
   }
   #video {
-    width: 940px !important;
-    height: 530px !important;
-    background-color: black;
+    height: 70vh !important;
+    width:100% !important;
   }
 }

@@ -109,7 +109,7 @@ function uploadVideo() {
                   {...register("videoDescription")}
                   type="text"
                   placeholder="Text (optional)"
-                  style={{ color: "white" }}
+                  style={{ color: "black" }}
                 />
                 <MouseOverPopover message="Put the description for your video, it could be emtpy if you want" />
               </div>

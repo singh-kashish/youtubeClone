@@ -221,7 +221,7 @@ function Video() {
   const onOpen = async () => {
     if (prevViewCount != undefined && viewsChanged === false) {
       const notification = toast.loading(
-        "Updating view Count for this video..."
+        "Updating view count for this video..."
       );
       try {
         const {
@@ -245,19 +245,16 @@ function Video() {
     }
   };
   const player = () => {
-    let pidth = window.screen.availWidth > 390 ? 940 : window.screen.availWidth;
     if (video.videoUrl.includes("supabase")) {
       let toUseUrl = video.videoUrl;
       let lastDotIndx = toUseUrl.lastIndexOf(".") + 1;
       let toUseType = toUseUrl.substr(lastDotIndx);
       return (
-        <div>
+        <div id={styles.video}>
           <video
             controls
-            width={pidth}
-            height="530"
-            id={styles.video}
             src={video.videoUrl}
+            style={{minWidth:'100%',height:'70vh'}}
           >
             {/* // <source src={video.videoUrl} type={`video/${toUseType}`} /> */}
           </video>
@@ -265,14 +262,16 @@ function Video() {
       );
     } else {
       return (
+        <div id={styles.video}>
         <ReactPlayer
           url={video.videoUrl}
           playing={true}
           controls={true}
           loop={true}
-          width={pidth}
-          height="530px"
+          width='100%'
+          height='100%'
         />
+        </div>
       );
     }
   };
@@ -301,38 +300,24 @@ function Video() {
   const [updateVideo] = useMutation(UPDATE_VIDEO);
   if (!video) {
     return (
-      <div className="flex w-full items-center justify-center p-10 text-xxl m-5">
+      <div className="flex w-screen items-center justify-center pt-10 text-xxl mt-5">
         <LineWobble size={250} color="red" />
       </div>
     );
   } else if (video && video?.videoStatus === true) {
     const accountUrl: string = `/profiles/${video.user_id}`;
     return (
-      <div className="md:px-5 z-50 pt-7" id={styles.main}>
-        <div className="md:ml-7">
-          {/* <ReactPlayer
-             url={video.videoUrl}
-            playing={true}
-            controls={true}
-            loop={true}
-            width="940px"
-            height="530px"
-          /> */}
+      <div className="min-h-screen md:pl-5 pt-5 w-full" id={styles.main}>
+        <div className="w-[100vw]">
           <div>
-            {/* <video controls width="940" height="530">
-              <source
-                src="https://jsoabxvsywdylbhbxecn.supabase.co/storage/v1/object/public/video/d7fe6234-4957-470a-8cc9-27abf18ad5f7.MP4"
-                type="video/mp4"
-              />
-            </video> */}
             {player()}
           </div>
-          <div id={styles.belowVideo}>
-            <div>
+          <div className="mb-1">
               <h1 id={styles.title} className={roboto.className}>
                 {video.title}
               </h1>
             </div>
+          <div id={styles.belowVideo}>
             <div id={styles.row_icons}>
               <div id={styles.left}>
                 <Link href={accountUrl}>
@@ -376,15 +361,14 @@ function Video() {
                     className="hidden ml-2 md:inline-block"
                   />
                 </div>
-              </div>
-              <div className="ml-2">
+                <div className="md:ml-2">
                 <button
                   id={styles.likeUnlikeButton}
-                  className="mr-2 shadow-md no-underline rounded-full text-white font-sans font-semibold text-sm border-red hover:bg-gray-900 hover:bg-red-light focus:outline-none active:shadow-none"
+                  className="md:mr-2 shadow-md no-underline rounded-full text-white font-sans font-semibold text-sm border-red hover:bg-gray-900 hover:bg-red-light focus:outline-none active:shadow-none"
                 >
                   <div
                     id={liked ? styles.likeD : styles.like}
-                    className="px-2 py-1"
+                    className="md:px-2 md:py-1"
                   >
                     <ThumbUpIcon
                       className="pr-2"
@@ -489,12 +473,14 @@ function Video() {
                   Download
                 </button>
               </div>
-              <div className="hidden ml-2 md:inline-block p-4 mr-2 cursor-pointer shadow-md no-underline rounded-full text-white font-sans font-semibold text-sm hover:bg-gray-900  focus:outline-none active:shadow-none">
+              <div className="hidden md:inline-block p-2 cursor-pointer shadow-md no-underline rounded-full text-white font-sans font-semibold text-sm hover:bg-gray-900  focus:outline-none active:shadow-none">
                 <MoreHorizIcon />
               </div>
+              </div>
+              
             </div>
           </div>
-          <div className="w-full" id={styles.description}>
+          <div className="" id={styles.description}>
             <div className={roboto.className}>
               <h1 className="text-lg">{video.viewCount} views</h1>
             </div>
@@ -503,7 +489,7 @@ function Video() {
           <Comment comments={video.comment} video={video} />
         </div>
         {/* suggestedVideo */}
-        <SuggestedVideo where="Video" />
+        <SuggestedVideo where="Video" className="mr-1"/>
       </div>
     );
   } else {

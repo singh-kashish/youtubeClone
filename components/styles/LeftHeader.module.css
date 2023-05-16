@@ -8,6 +8,7 @@
   min-height: auto !important;
   z-index: 50;
   background-color: #181818;
+
 }
 #row {
   display: flex;

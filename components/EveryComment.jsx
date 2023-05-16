@@ -238,6 +238,7 @@ const EveryComment = ({ comment, user }) => {
               e.preventDefault();
               setTextForEdit(e.target.value);
             }}
+            className="rounded-full"
           />
           <button
             className="py-2 px-4 mr-2 ml-2 shadow-md no-underline rounded-full text-white font-sans font-semibold text-sm border-red hover:bg-gray-900 hover:bg-red-light focus:outline-none active:shadow-none"
@@ -259,10 +260,10 @@ const EveryComment = ({ comment, user }) => {
       <Avatar
         uid={comment?.user_id}
         url={comment?.profiles.avatar_url}
-        size={45}
+        size={35}
         where="video"
       />
-      <div id="column">
+      <div id="column" className="ml-1">
         <h1 className={roboto.className}>{comment?.profiles?.full_name}</h1>
         {editSection()}
         <div id={styles.iconLine}>
