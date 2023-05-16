@@ -41,7 +41,8 @@
     z-index: 50;
     margin: 50px;
     padding: 25px;
-    margin-left: 200px !important;
+    margin-left: 15px !important;
+    margin-top:15px;
   }
   #col {
     display: flex;

@@ -22,17 +22,17 @@ function Profile() {
   const returnVideos = () => {
     if (!profile) {
       return (
-        <div className="flex w-full items-center justify-center p-10 text-xxl m-5">
+        <div className="flex w-full min-h-screen items-center justify-center p-10 text-xxl m-5">
           <LineWobble size={250} color="red" />
         </div>
       );
     } else {
       return (
-        <div>
+        <div className="min-h-screen">
           <div id={styles.col}>
             <div
               id={styles.row}
-              className="bg-[#272626] md:w-[500px] lg:w-[800px] xl:w-[100%] px-6 py-2"
+              className="bg-zinc-900 min-w-full px-6 py-2"
             >
               <Avatar
                 uid={profile?.id}
@@ -45,19 +45,19 @@ function Profile() {
                 }}
               />
               <div id={styles.col} className={roboto.className}>
-                <h1>{profile?.full_name}</h1>
-                <h1>{`@${profile?.username}`}</h1>
-                <h1>{`${profile?.subscribersUsingSubscribers_subscribed_to_id_fkey?.length} Subscribers`}</h1>
+                <h1 className="text-white">{profile?.full_name}</h1>
+                <h1 className="text-gray-500">{`@${profile?.username}`}</h1>
+                <h1 className="text-gray-400">{`${profile?.subscribersUsingSubscribers_subscribed_to_id_fkey?.length} Subscribers`}</h1>
               </div>
             </div>
           </div>
           <div>
-            <h1 className="font-sans font-bold text-xl border-b-2 border-gray-400 w-full text-center text-white mb-1 pb-1">
-              Videos
+            <h1 className="font-sans font-bold text-xl border-b-2 border-gray-400 w-full text-center text-teal-300 mb-1 pb-1">
+              Videos by {`@${profile?.full_name}`}
             </h1>
-            <div id={styles.grid}>
+            <div id={styles.grid} className="p-1">
               {profile?.video?.map((pie: any) => (
-                <VideoIcon video={pie} where="profile" />
+                <VideoIcon video={pie} where="profile" /> 
               ))}
             </div>
           </div>
@@ -67,9 +67,6 @@ function Profile() {
   };
   return (
     <div className="mx-5 z-50" id={styles.main}>
-      <h1 className="font-sans font-bold text-xl border-b-2 border-gray-400 w-full text-center text-white mb-1 pb-1">
-        Profile
-      </h1>
       {returnVideos()}
     </div>
   );

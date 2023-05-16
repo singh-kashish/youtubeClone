@@ -2,7 +2,7 @@ import React from 'react'
 
 function yourVideos() {
   return (
-    <div>
+    <div className='min-h-screen'>
       <h6 className="font-sans font-bold text-xl border-b-2 border-gray-400 w-full text-center text-gray-300 mb-1 pb-1">
         Your Videos
       </h6>

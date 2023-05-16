@@ -5,6 +5,7 @@ import { GET_SUBSCRIBERS_USING_USER_ID } from "../graphql/queries";
 import styles from "./styles/subscriptions.module.css";
 import VideoIcon from "../components/VideoIcon";
 import { LineWobble } from "@uiball/loaders";
+import Link from "next/link";
 
 function subscriptions() {
   const user = useUser();
@@ -16,9 +17,10 @@ function subscriptions() {
   const videosFound = () => {
     if (!user) {
       return (
-        <h6 className="font-sans font-bold text-xl text-center text-red-300 mb-1 pb-1 ml-[10%] mt-4">
+        <Link href="/login">
+        <h6 className="font-sans font-bold text-xl text-center text-blue-700 mb-1 pb-1 ml-[10%] mt-4">
           Login First!
-        </h6>
+        </h6></Link>
       );
     } else if (data?.getSubscribersUsingSubscribers_user_id_fkey?.length == 0) {
       return (
@@ -48,7 +50,7 @@ function subscriptions() {
     return videosFound();
   };
   return (
-    <div>
+    <div className="min-h-screen">
       <h6 className="font-sans font-bold text-xl border-b-2 border-gray-400 w-full text-center text-gray-300 mb-1 pb-1">
         Videos from your Subscriptions
       </h6>

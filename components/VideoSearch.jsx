@@ -45,8 +45,8 @@ function VideoSearch({ text }) {
     return videosFound();
   };
   return (
-    <div>
-      <h6 className="font-sans font-bold text-xl  w-full text-left text-gray-300 mb-1 pb-1">
+    <div className="">
+      <h6 className="font-sans font-bold text-xl text-center text-gray-300">
         Videos
       </h6>
       {returnVideos()}

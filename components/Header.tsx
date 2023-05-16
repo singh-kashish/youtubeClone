@@ -10,6 +10,7 @@ import Link from "next/link";
 import HeaderEnd from "./HeaderEnd";
 import LeftHeader from "./LeftHeader";
 import {useRouter} from "next/router";
+import { toast } from "react-hot-toast";
 
 const roboto = Roboto({
   weight: "700",
@@ -20,7 +21,11 @@ const Header = () => {
   const [searchText,setSearchText] = useState<string>('');
   const handleSubmit = (e:any) =>{
     e.preventDefault();
-    router.push(`/search/${searchText}`);
+    if(searchText.length>0){
+      router.push(`/search/${searchText}`);
+    } else{
+      toast.error('Please enter some text to search!');
+    }
   }
   return (
     <div className={styles.main}>
@@ -56,7 +61,7 @@ const Header = () => {
           </div>
         </Link>
       </div>
-      <div id={styles.headerMiddle} className="invisible md:visible">
+      <div id={styles.headerMiddle} className="invisible lg:visible">
         <form className="flex flex-1 items-center jutify-between space-x-2 rounded-full border border-[#141414] px-0 py-0" onSubmit={(e:any)=>{handleSubmit(e)}}>
           <div className="">
             <input

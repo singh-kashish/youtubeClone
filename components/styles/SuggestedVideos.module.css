@@ -12,12 +12,18 @@
   margin-top: 10px;
 }
 @media screen and (min-width: 391px) {
+  #wobble{
+    min-height: 100vh;
+    width: 100vw;
+    margin: 0px 0px 200px 50px;
+  }
   #home {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 10px;
     grid-auto-rows: minmax(100px, auto);
     margin: 65px 0px 0px 250px !important;
+    min-height: 100vh;
   }
   #video {
     display: flex;

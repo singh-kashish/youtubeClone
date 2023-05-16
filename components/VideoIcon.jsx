@@ -4,6 +4,7 @@ import { Roboto } from "@next/font/google";
 import Link from "next/link";
 import Avatar from "./Avatar";
 import ReactPlayer from "react-player";
+import Image from "next/image";
 
 const roboto = Roboto({ weight: "700" });
 const r = Roboto({ weight: "500" });
@@ -82,6 +83,7 @@ function VideoIcon({ video, where }) {
             controls={true}
             width="100%"
             height="240px"
+            light={false}
           />
         </div>
       );
@@ -98,18 +100,18 @@ function VideoIcon({ video, where }) {
         >
           {isHovering ? (
             playerAtVideo()
-          ) : (
+          ) : ( 
             <img
               src={video.thumbnailUrl}
-              width="250px"
               height="150px"
+              width="150px"
               id={styles.imageAtVideo}
             />
           )}
-          <div className="ml-2">
-            <h6 className={roboto.className}>{video.title}</h6>
-            <h1 className={r.className} id={styles.text}>
-              {video.profiles.username}
+          <div className="ml-1">
+            <h6 className={roboto.className} style={{ color:"#f9f6ee" }}>{video.title}</h6>
+            <h1 className={r.className} id={styles.text} style={{display:'flex',flexDirection:'row',alignItems:'center'}}>
+            <span style={{fontSize:"10px",fontWeight:'900'}}>@</span> {video.profiles.username}
             </h1>
             <h1 className={r.className} id={styles.text}>
               {video.viewCount} Views
@@ -143,10 +145,10 @@ function VideoIcon({ video, where }) {
               size={45}
               where="video"
             />
-            <div>
-              <h6 className={roboto.className}>{video.title}</h6>
-              <h1 className={r.className} id={styles.text}>
-                {video.profiles.username}
+            <div style={{marginLeft:'5px'}}>
+              <h6 className={roboto.className} style={{color:"#f9f6ee"}}>{video.title}</h6>
+              <h1 className={r.className} id={styles.text} style={{display:'flex',flexDirection:'row',alignItems:'center'}}>
+                <span style={{fontSize:"10px",fontWeight:'900'}}>@</span>{video.profiles.username}
               </h1>
               <h1 className={r.className} id={styles.text}>
                 {video.viewCount} views

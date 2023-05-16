@@ -5,6 +5,7 @@ import { GET_LIKED_VIDEOS_BY_USER_ID } from "../graphql/queries";
 import styles from "./styles/likedVideo.module.css";
 import VideoIcon from "../components/VideoIcon";
 import { LineWobble } from "@uiball/loaders";
+import Link from "next/link";
 
 function library() {
   const user = useUser();
@@ -22,22 +23,26 @@ function library() {
       );
     } else if (!user) {
       return (
-        <h6 className="font-sans font-bold text-xl w-full text-center text-red-300 mb-1 pb-1">
+        <Link href="/login">
+        <h6 className="font-sans font-bold text-xl w-full text-center text-blue-700 mb-1 pb-1">
           Login First!
         </h6>
+        </Link>
       );
     }
   };
   const returnVideos = () =>{
     if (!user) {
       return (
-        <h6 className="font-sans font-bold text-xl w-full text-center text-red-300 mb-1 pb-1">
+        <Link href="/login">
+        <h6 className="font-sans font-bold text-xl w-full text-center text-blue-700 mb-1 pb-1">
           Login First!
         </h6>
+        </Link>
       );
     }else if(!data){
       return (
-        <div className="flex w-full items-center justify-center p-10 text-xxl m-5">
+        <div className="flex w-full min-h-screen items-center justify-center p-10 text-xxl m-5">
           <LineWobble size={250} color="red" />
         </div>
       );
@@ -61,7 +66,7 @@ function library() {
     }
   }
   return (
-    <div>
+    <div className="min-h-screen">
       <h6 className="font-sans font-bold text-xl border-b-2 border-gray-400 w-full text-center text-gray-300 mb-1 pb-1">
         Your Liked Videos
       </h6>

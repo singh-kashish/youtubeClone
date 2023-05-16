@@ -248,7 +248,7 @@ function EditVideo() {
         >
           <div className="flex flex-col items-start space-x-8">
             <div className="flex items-center px-2">
-              <p className="md:min-w-[90px]">Video Title:</p>
+              <p className="md:min-w-[90px] text-gray-400">Video Title:</p>
               <input
                 className="m-2 flex-1 rounded-md p-2 outline-none md:min-w-[600px]"
                 {...register("videoTitle", { required: true })}
@@ -262,20 +262,20 @@ function EditVideo() {
           {!!watch("videoTitle") && (
             <div className="flex flex-col py-2">
               <div className="flex items-center px-2">
-                <p className="md:min-w-[90px]">Description:</p>
+                <p className="md:min-w-[90px] text-gray-400">Description:</p>
                 <input
                   className="m-2 flex-1 p-2 outline-none md:min-w-[600px]"
                   {...register("videoDescription")}
                   type="text"
                   placeholder="Text (optional)"
-                  style={{ color: "white" }}
+                  style={{ color: "black" }}
                 />
                 <MouseOverPopover message="Put the description for your video, it could be emtpy if you want" />
               </div>
               {/* Upload video start */}
               <div>
                 <div className="flex items-center px-2">
-                  <label>Video Link:</label>
+                  <label className="text-gray-400">Video Link:</label>
                   <input
                     {...register("videoUrl")}
                     placeholder="Leave this empty if you want to upload the video to our servers else paste link of video here."
@@ -323,7 +323,7 @@ function EditVideo() {
               {/* upload thumbnail starts */}
               <div>
                 <div className="flex items-center px-2">
-                  <label>Thumbnail Link:</label>
+                  <label className="text-gray-400">Thumbnail Link:</label>
                   <input
                     {...register("thumbnailUrl")}
                     placeholder="Leave this empty if you want to upload the thumbnail to our servers, else paste link of thumbnail here."
@@ -369,7 +369,7 @@ function EditVideo() {
               )}
               {/* upload thumbnail ends */}
               <div className="flex items-center px-4 ml-2 mb-2">
-                <p className="pr-4">Video Visibility:</p>
+                <p className="pr-4 text-gray-400">Video Visibility:</p>
                 <select
                   {...register("videoStatus", { required: true })}
                   className="w-40 md:w-160 "

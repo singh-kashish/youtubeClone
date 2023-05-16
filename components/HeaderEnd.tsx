@@ -45,6 +45,12 @@ const HeaderEnd = () => {
     <div>
       {!session ? (
         <div id={styles.headerEnd}>
+          <Link href="/uploadVideo">
+            <VideoCallOutlinedIcon
+              fontSize="large"
+              className={styles.addVideo}
+            />
+          </Link>
           <div>
             <MoreVertRoundedIcon />
           </div>

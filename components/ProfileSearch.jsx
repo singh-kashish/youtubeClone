@@ -82,7 +82,7 @@ function ProfileSearch({ text }) {
   };
   return (
     <div>
-      <h6 className="font-sans font-bold text-xl  w-full text-left text-gray-300 mb-1 pb-1">
+      <h6 className="font-sans font-bold text-xl  w-full text-center text-gray-300 mb-[0.5] pb-1">
         Profiles
       </h6>
       {returnProfiles()}

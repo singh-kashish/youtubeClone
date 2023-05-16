@@ -63,6 +63,7 @@ const LeftHeaderEnd = () => {
             <VideoCallOutlinedIcon
               fontSize="large"
               className={styles.addVideo}
+              style={{color:'#527DBA'}}
             />
           </Link>
           <Avatar uid={user.id} url={avatar_url} size={30} where="header" />

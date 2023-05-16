@@ -10,6 +10,7 @@
   margin: 0px;
   padding: 25px;
   margin-left: 0px;
+  min-height: 100vh;
 }
 #col {
   display: flex;
@@ -38,7 +39,8 @@
     z-index: 50;
     margin: 50px;
     padding: 25px;
-    margin-left: 200px !important;
+    margin-left: 260px !important;
+    min-width: 100vh;
   }
   #col {
     display: flex;

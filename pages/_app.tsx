@@ -22,7 +22,7 @@ export default function App({
         initialSession={pageProps.initialSession}
       >
         <Toaster />
-        <div className="bg-[#181818]">
+        <div className="bg-[#181818] min-h-screen">
           <Header />
           <Component {...pageProps} />
         </div>
