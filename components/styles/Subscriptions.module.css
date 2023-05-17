@@ -1,6 +1,8 @@
 #main {
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
 }
 #row {
   display: flex;
@@ -9,4 +11,21 @@
   justify-content: flex-start;
   margin-top: 5px;
   margin-left: 5px;
+}
+@media screen and (min-width: 391px) {
+  #main {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+  #row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    margin-top: 5px;
+    margin-left: 5px;
+  }
+
 }
