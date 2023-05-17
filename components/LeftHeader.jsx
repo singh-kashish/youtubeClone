@@ -47,7 +47,8 @@ function LeftHeader({ densityClicked }) {
     Router.asPath == "/yourVideos" ||
     Router.asPath == "/likedVideo" ||
     Router.pathname == "/profiles/[user_id]" ||
-    Router.pathname == "/search/[text]";
+    Router.pathname == "/search/[text]" ||
+    Router.asPath=="/login";
   if (densityClicked && RoutePathValue) {
     return (
       <div

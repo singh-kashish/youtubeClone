@@ -1,6 +1,8 @@
 #main {
   display: flex;
   flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
 }
 #text {
   color: #b4b4b4;
@@ -8,7 +10,8 @@
 #home {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  justify-content: flex-start;
+  align-items: flex-start;
 }
 #row {
   display: flex;
