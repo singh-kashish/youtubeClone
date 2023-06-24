@@ -6,10 +6,10 @@ import Avatar from "./Avatar";
 import ReactPlayer from "react-player";
 import Image from "next/image";
 
-const roboto = Roboto({ weight: "700" });
-const r = Roboto({ weight: "500" });
-const rb = Roboto({ weight: "300" });
-const rt = Roboto({ weight: "100" });
+const roboto = Roboto({ weight: "700", subsets: ["latin"] });
+const r = Roboto({ weight: "500", subsets: ["latin"] });
+const rb = Roboto({ weight: "300", subsets: ["latin"] });
+const rt = Roboto({ weight: "100", subsets: ["latin"] });
 function VideoIcon({ video, where }) {
   let linkUrl = `/video/${video.id}`;
   const [isHovering, setIsHovering] = useState(false);

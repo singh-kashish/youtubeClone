@@ -19,8 +19,8 @@ import {
 } from "../graphql/mutations";
 import toast from "react-hot-toast";
 
-const roboto = Roboto({ weight: "700" });
-const r = Roboto({ weight: "500" });
+const roboto = Roboto({ weight: "700", subsets: ["latin"] });
+const r = Roboto({ weight: "500", subsets: ["latin"] });
 const EveryComment = ({ comment, user }) => {
   const [editCall, setEditCall] = useState(false);
   const [textForEdit, setTextForEdit] = useState(comment.text);

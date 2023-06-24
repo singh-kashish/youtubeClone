@@ -36,8 +36,8 @@ import Box from "@mui/material/Box";
 import CloseIcon from "@mui/icons-material/Close";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 
-const roboto = Roboto({ weight: "700" });
-const r = Roboto({ weight: "500" });
+const roboto = Roboto({ weight: "700", subsets: ["latin"] });
+const r = Roboto({ weight: "500", subsets: ["latin"] });
 const style = {
   position: "absolute",
   top: "50%",
@@ -254,7 +254,7 @@ function Video() {
           <video
             controls
             src={video.videoUrl}
-            style={{minWidth:'100%',height:'70vh'}}
+            style={{ minWidth: "100%", height: "70vh" }}
           >
             {/* // <source src={video.videoUrl} type={`video/${toUseType}`} /> */}
           </video>
@@ -263,14 +263,14 @@ function Video() {
     } else {
       return (
         <div id={styles.video}>
-        <ReactPlayer
-          url={video.videoUrl}
-          playing={true}
-          controls={true}
-          loop={true}
-          width='100%'
-          height='100%'
-        />
+          <ReactPlayer
+            url={video.videoUrl}
+            playing={true}
+            controls={true}
+            loop={true}
+            width="100%"
+            height="100%"
+          />
         </div>
       );
     }
@@ -298,6 +298,9 @@ function Video() {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const [updateVideo] = useMutation(UPDATE_VIDEO);
+  const suggestProps = {
+    where: "Video",
+  };
   if (!video) {
     return (
       <div className="flex w-screen items-center justify-center pt-10 text-xxl mt-5">
@@ -309,14 +312,12 @@ function Video() {
     return (
       <div className="min-h-screen md:pl-5 pt-5 w-full" id={styles.main}>
         <div className="w-[100vw]">
-          <div>
-            {player()}
-          </div>
+          <div>{player()}</div>
           <div className="mb-1">
-              <h1 id={styles.title} className={roboto.className}>
-                {video.title}
-              </h1>
-            </div>
+            <h1 id={styles.title} className={roboto.className}>
+              {video.title}
+            </h1>
+          </div>
           <div id={styles.belowVideo}>
             <div id={styles.row_icons}>
               <div id={styles.left}>
@@ -362,122 +363,121 @@ function Video() {
                   />
                 </div>
                 <div className="md:ml-2">
-                <button
-                  id={styles.likeUnlikeButton}
-                  className="md:mr-2 shadow-md no-underline rounded-full text-white font-sans font-semibold text-sm border-red hover:bg-gray-900 hover:bg-red-light focus:outline-none active:shadow-none"
-                >
-                  <div
-                    id={liked ? styles.likeD : styles.like}
-                    className="md:px-2 md:py-1"
+                  <button
+                    id={styles.likeUnlikeButton}
+                    className="md:mr-2 shadow-md no-underline rounded-full text-white font-sans font-semibold text-sm border-red hover:bg-gray-900 hover:bg-red-light focus:outline-none active:shadow-none"
                   >
-                    <ThumbUpIcon
-                      className="pr-2"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        upVote(true);
-                      }}
-                    />
-                    {displayLikes(likeData)}
-                  </div>
-                  <p className="text-gray-800" id={styles.diwaar}>
-                    |
-                  </p>
-                  <div
-                    id={liked === false ? styles.likeD : styles.like}
-                    className="px-2 py-1"
+                    <div
+                      id={liked ? styles.likeD : styles.like}
+                      className="md:px-2 md:py-1"
+                    >
+                      <ThumbUpIcon
+                        className="pr-2"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          upVote(true);
+                        }}
+                      />
+                      {displayLikes(likeData)}
+                    </div>
+                    <p className="text-gray-800" id={styles.diwaar}>
+                      |
+                    </p>
+                    <div
+                      id={liked === false ? styles.likeD : styles.like}
+                      className="px-2 py-1"
+                    >
+                      <ThumbDownOffAltIcon
+                        className="pr-2"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          upVote(false);
+                        }}
+                      />
+                      {displayUnlikes(likeData)}
+                    </div>
+                  </button>
+                </div>
+                <div className="hidden ml-2 md:inline-block">
+                  <button
+                    id={styles.share}
+                    onClick={handleOpen}
+                    className="py-2 px-4 mr-2 shadow-md no-underline rounded-full text-white font-sans font-semibold text-sm border-red hover:bg-gray-900 hover:bg-red-light focus:outline-none active:shadow-none"
                   >
-                    <ThumbDownOffAltIcon
-                      className="pr-2"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        upVote(false);
-                      }}
-                    />
-                    {displayUnlikes(likeData)}
-                  </div>
-                </button>
-              </div>
-              <div className="hidden ml-2 md:inline-block">
-                <button
-                  id={styles.share}
-                  onClick={handleOpen}
-                  className="py-2 px-4 mr-2 shadow-md no-underline rounded-full text-white font-sans font-semibold text-sm border-red hover:bg-gray-900 hover:bg-red-light focus:outline-none active:shadow-none"
-                >
-                  <ReplySharpIcon />
-                  Share
-                </button>
-                <Modal
-                  open={open}
-                  onClose={handleClose}
-                  aria-labelledby="parent-modal-title"
-                  aria-describedby="parent-modal-description"
-                >
-                  <Box sx={{ ...style, width: 600 }}>
-                    <div id={styles.modal}>
-                      <div id={styles.modalFirstLine}>
-                        <div id={styles.shareText} className={r.className}>
-                          Share
+                    <ReplySharpIcon />
+                    Share
+                  </button>
+                  <Modal
+                    open={open}
+                    onClose={handleClose}
+                    aria-labelledby="parent-modal-title"
+                    aria-describedby="parent-modal-description"
+                  >
+                    <Box sx={{ ...style, width: 600 }}>
+                      <div id={styles.modal}>
+                        <div id={styles.modalFirstLine}>
+                          <div id={styles.shareText} className={r.className}>
+                            Share
+                          </div>
+                          <div>
+                            <CloseIcon
+                              onClick={(e) => {
+                                handleClose();
+                              }}
+                              id={styles.closeIcon}
+                            />
+                          </div>
                         </div>
                         <div>
-                          <CloseIcon
-                            onClick={(e) => {
+                          <input
+                            value={`https://youtube-clone-singh-kashish.vercel.app${Router.asPath}`}
+                            id={styles.showInput}
+                          />
+                          <button
+                            onClick={() => {
+                              navigator.clipboard.writeText(
+                                `https://youtube-clone-singh-kashish.vercel.app${Router.asPath}`
+                              );
+                              toast.success("Link copied to clipboard");
                               handleClose();
                             }}
-                            id={styles.closeIcon}
-                          />
+                            className="py-2 px-4 shadow-md no-underline rounded-full bg-blue text-white font-sans font-semibold text-sm border-blue btn-primary hover:text-white hover:bg-blue-light focus:outline-none active:shadow-none mr-2"
+                            id={styles.copyButton}
+                          >
+                            Copy
+                          </button>
                         </div>
-                      </div>
-                      <div>
-                        <input
-                          value={`https://youtube-clone-singh-kashish.vercel.app${Router.asPath}`}
-                          id={styles.showInput}
-                        />
-                        <button
+                        <div
                           onClick={() => {
-                            navigator.clipboard.writeText(
-                              `https://youtube-clone-singh-kashish.vercel.app${Router.asPath}`
-                            );
-                            toast.success("Link copied to clipboard");
                             handleClose();
                           }}
-                          className="py-2 px-4 shadow-md no-underline rounded-full bg-blue text-white font-sans font-semibold text-sm border-blue btn-primary hover:text-white hover:bg-blue-light focus:outline-none active:shadow-none mr-2"
-                          id={styles.copyButton}
                         >
-                          Copy
-                        </button>
+                          <a
+                            href={`https://api.whatsapp.com/send?text=https://youtube-clone-singh-kashish.vercel.app${Router.asPath}`}
+                            data-action="share/whatsapp/share"
+                            target="to_blank"
+                          >
+                            <WhatsAppIcon />
+                            Share via Whatsapp web
+                          </a>
+                        </div>
                       </div>
-                      <div
-                        onClick={() => {
-                          handleClose();
-                        }}
-                      >
-                        <a
-                          href={`https://api.whatsapp.com/send?text=https://youtube-clone-singh-kashish.vercel.app${Router.asPath}`}
-                          data-action="share/whatsapp/share"
-                          target="to_blank"
-                        >
-                          <WhatsAppIcon />
-                          Share via Whatsapp web
-                        </a>
-                      </div>
-                    </div>
-                  </Box>
-                </Modal>
+                    </Box>
+                  </Modal>
+                </div>
+                <div>
+                  <button
+                    id={styles.download}
+                    className="hidden ml-2 md:inline-block py-2 px-4 mr-2 shadow-md no-underline rounded-full text-white font-sans font-semibold text-sm border-red hover:bg-gray-900 hover:bg-red-light focus:outline-none active:shadow-none"
+                  >
+                    <DownloadIcon />
+                    Download
+                  </button>
+                </div>
+                <div className="hidden md:inline-block p-2 cursor-pointer shadow-md no-underline rounded-full text-white font-sans font-semibold text-sm hover:bg-gray-900  focus:outline-none active:shadow-none">
+                  <MoreHorizIcon />
+                </div>
               </div>
-              <div>
-                <button
-                  id={styles.download}
-                  className="hidden ml-2 md:inline-block py-2 px-4 mr-2 shadow-md no-underline rounded-full text-white font-sans font-semibold text-sm border-red hover:bg-gray-900 hover:bg-red-light focus:outline-none active:shadow-none"
-                >
-                  <DownloadIcon />
-                  Download
-                </button>
-              </div>
-              <div className="hidden md:inline-block p-2 cursor-pointer shadow-md no-underline rounded-full text-white font-sans font-semibold text-sm hover:bg-gray-900  focus:outline-none active:shadow-none">
-                <MoreHorizIcon />
-              </div>
-              </div>
-              
             </div>
           </div>
           <div className="" id={styles.description}>
@@ -489,7 +489,7 @@ function Video() {
           <Comment comments={video.comment} video={video} />
         </div>
         {/* suggestedVideo */}
-        <SuggestedVideo where="Video" className="mr-1"/>
+        <SuggestedVideo {...suggestProps} />
       </div>
     );
   } else {

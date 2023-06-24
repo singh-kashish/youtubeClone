@@ -10,6 +10,7 @@ import { LineWobble } from "@uiball/loaders";
 
 const roboto = Roboto({
   weight: "700",
+  subsets: ["latin"],
 });
 function Profile() {
   const Router = useRouter();

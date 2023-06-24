@@ -47,9 +47,9 @@ function LeftHeader({ densityClicked }) {
     Router.asPath == "/yourVideos" ||
     Router.asPath == "/likedVideo" ||
     Router.pathname == "/profiles/[user_id]" ||
-    Router.pathname == "/search/[text]" ||
-    Router.asPath=="/login";
-  if (densityClicked && RoutePathValue) {
+    Router.pathname == "/search/[text]";
+  // upcoming section is for routes satisfying these values up for RoutePathValue, and not default option for leftHeader style: only icons()
+  if ((densityClicked && RoutePathValue) || Router.asPath === "/login") {
     return (
       <div
         id={styles.leftHeader_icon}
@@ -294,8 +294,7 @@ function LeftHeader({ densityClicked }) {
   } else {
     return (
       <div className="hidden">
-        I had to added since , it's not allowed to return empty from a jsx
-        element
+        I had to add since , empty JSX return was prohibited for some cases.
       </div>
     );
   }

@@ -1,9 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect,useRef } from "react";
 import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react";
 import styles from "./styles/Account.module.css";
 import EditIcon from "@mui/icons-material/Edit";
 import EditOffIcon from "@mui/icons-material/EditOff";
-import Avatar from './Avatar';
+import Avatar from "./Avatar";
 import Link from "next/link";
 
 export default function Account({ session }) {
@@ -13,7 +13,18 @@ export default function Account({ session }) {
   const [username, setUsername] = useState(null);
   const [full_name, setFull_name] = useState(null);
   const [avatar_url, setAvatarUrl] = useState(null);
-
+  const [updateUserNameEnabled, setUpdateUserNameEnabled] = useState(false);
+  const [updateFullNameEnabled, setUpdateFullNameEnabled] = useState(false);
+  const [primaryButtonState, setPrimaryButtonState] = useState(null);
+  let buttonText = () => {
+    if (loading) {
+      return "Loading";
+    } else if (updateUserNameEnabled || updateFullNameEnabled) {
+      return "Update User";
+    } else {
+      return "Click on Pen Icons Above to enable update for your UserName or FullName";
+    }
+  };
   useEffect(() => {
     getProfile();
   }, [session]);
@@ -27,7 +38,7 @@ export default function Account({ session }) {
         .select(`username, full_name, avatar_url`)
         .eq("id", user.id)
         .single();
-
+      const originalAvatarOnInitialRender = useRef(avatar_url);
       if (error && status !== 406) {
         throw error;
       }
@@ -39,7 +50,7 @@ export default function Account({ session }) {
       }
     } catch (error) {
       alert("Error loading user data!");
-      console.log(error);
+      console.warn("I'm watchin bish",error);
     } finally {
       setLoading(false);
     }
@@ -48,7 +59,6 @@ export default function Account({ session }) {
   async function updateProfile({ username, full_name, avatar_url }) {
     try {
       setLoading(true);
-
       const updates = {
         id: user.id,
         username,
@@ -59,11 +69,13 @@ export default function Account({ session }) {
 
       let { error } = await supabase.from("profiles").upsert(updates);
       if (error) throw error;
-      alert("Profile updated!");
+      alert("Sorry,we found an exceptional erro while uploading!, you could try again BUT if the picture changes on your profile.");
     } catch (error) {
-      alert("Error updating the data!");
+      alert("Error updating the user data!");
       console.log(error);
     } finally {
+      console.warn('orig->',originalAvatarOnInitialRender);
+      console.log('now->',avatar_url);
       setLoading(false);
     }
   }
@@ -99,8 +111,16 @@ export default function Account({ session }) {
           type="text"
           value={username || ""}
           onChange={(e) => setUsername(e.target.value)}
+          disabled={!updateUserNameEnabled}
         />
-        <EditIcon fontSize="small" color="primary" />
+        <EditIcon
+          fontSize="small"
+          color="primary"
+          onClick={(e) => {
+            setUpdateUserNameEnabled(!updateUserNameEnabled);
+          }}
+          className="cursor-pointer hover:text-white hover:bg-blue-light focus:outline-none active:shadow-none"
+        />
       </div>
       <div className="my-2">
         <label htmlFor="full_name" className="mr-2">
@@ -111,8 +131,16 @@ export default function Account({ session }) {
           type="full_name"
           value={full_name || ""}
           onChange={(e) => setFull_name(e.target.value)}
+          disabled={!updateFullNameEnabled}
         />
-        <EditIcon fontSize="small" color="primary" />
+        <EditIcon
+          fontSize="small"
+          color="primary"
+          onClick={(e) => {
+            setUpdateFullNameEnabled(!updateFullNameEnabled);
+          }}
+          className="cursor-pointer hover:text-white hover:bg-blue-light focus:outline-none active:shadow-none"
+        />
       </div>
 
       <div className="my-2">
@@ -123,7 +151,7 @@ export default function Account({ session }) {
             onClick={() => updateProfile({ username, full_name, avatar_url })}
             disabled={loading}
           >
-            {loading ? "Loading ..." : "Update"}
+            {buttonText()}
           </button>
         </Link>
       </div>
