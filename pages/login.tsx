@@ -12,6 +12,7 @@ const Login = () => {
       id={styles.main}
       className="mx-36 my-12 rounded-3xl p-4"
     >
+      {/* If not logged in, gives component to log in else edit/update/review Account component */}
       {!session ? (
         <Auth
           supabaseClient={supabase}

@@ -9,10 +9,10 @@ import { useQuery } from "@apollo/client";
 import { GET_PROFILES_BY_SEARCH_TEXT } from "../graphql/queries";
 import Link from "next/link";
 
-const roboto = Roboto({ weight: "700" });
-const r = Roboto({ weight: "500" });
-const rb = Roboto({ weight: "300" });
-const rt = Roboto({ weight: "100" });
+const roboto = Roboto({ weight: "700", subsets: ["latin"] });
+const r = Roboto({ weight: "500", subsets: ["latin"] });
+const rb = Roboto({ weight: "300", subsets: ["latin"] });
+const rt = Roboto({ weight: "100", subsets: ["latin"] });
 function ProfileSearch({ text }) {
   const user = useUser();
   let searchText = `${text}:*`;
@@ -21,9 +21,6 @@ function ProfileSearch({ text }) {
       text: searchText,
     },
   });
-  // console.log("loading->", loading);
-  // console.log("data->", data);
-  // console.log("error->", error);
   const videosFound = () => {
     if (loading) {
       return (

@@ -14,6 +14,7 @@ import { toast } from "react-hot-toast";
 
 const roboto = Roboto({
   weight: "700",
+  subsets: ["latin"],
 });
 const Header = () => {
   const router = useRouter();
