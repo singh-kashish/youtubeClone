@@ -15,6 +15,14 @@ function VideoSearch({ text }) {
       text: searchText,
     },
   });
+  // viewcount filter desc
+  // function filterDescend(arr, impKey) {
+  //   console.warn(arr);
+  //   arr.sort((a, b) => {
+  //     a.impKey > b.impKey;
+  //   });
+  //   console.warn(arr);
+  // }
   const videosFound = () => {
     if (loading) {
       return (
@@ -32,6 +40,12 @@ function VideoSearch({ text }) {
         </div>
       );
     } else {
+      console.log(data?.getVideosUsingSearchText);
+      filterDescend(
+        data?.getVideosUsingSearchText,
+        data?.getVideosUsingSearchText.viewCount
+      );
+      console.log(data?.getVideosUsingSearchText);
       return (
         <div id={styles.main}>
           {data?.getVideosUsingSearchText?.map((pie) => (
