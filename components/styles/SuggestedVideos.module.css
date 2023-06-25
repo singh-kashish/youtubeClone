@@ -12,10 +12,10 @@
   margin-top: 10px;
 }
 @media screen and (min-width: 391px) {
-  #wobble{
+  #wobble {
     min-height: 100vh;
-    width: 100vw;
-    margin: 0px 0px 200px 50px;
+    margin-left: 5px;
+    margin-top: 0px;
   }
   #home {
     display: grid;
@@ -30,5 +30,10 @@
     flex-direction: column;
     margin-left: 5px;
     margin-top: 0px;
+    background-image: linear-gradient(
+      to bottom,
+   rgb(0, 0, 0),
+      rgba(255, 0, 0, 0.224)
+    );
   }
 }
