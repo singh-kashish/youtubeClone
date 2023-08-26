@@ -5,20 +5,32 @@ import Link from "next/link";
 import Avatar from "./Avatar";
 import ReactPlayer from "react-player";
 import Image from "next/image";
+import MoreVertRoundedIcon from "@mui/icons-material/MoreVertRounded";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  addToPlaylist,
+  deleteFromPlaylist,
+} from "../reduxReducers/playlistSlice";
 
 const roboto = Roboto({ weight: "700", subsets: ["latin"] });
 const r = Roboto({ weight: "500", subsets: ["latin"] });
 const rb = Roboto({ weight: "300", subsets: ["latin"] });
 const rt = Roboto({ weight: "100", subsets: ["latin"] });
-function VideoIcon({ video, where }) {
+
+function VideoIcon({ video, where,allowHover }) {
   let linkUrl = `/video/${video.id}`;
   const [isHovering, setIsHovering] = useState(false);
-  const handleMouseOver = () => {
+  const handleMouseOver = (e) => {
+    e.preventDefault();
     setIsHovering(true);
   };
-  const handleMouseOut = () => {
+  const handleMouseOut = (e) => {
+    e.preventDefault();
     setIsHovering(false);
   };
+  const playlist = useSelector((state) => state.playlist.value);
+  const dispatch = useDispatch();
+  const [moreClicked, setMoreClicked] = useState(false);
   const player = () => {
     let pidth = window.screen.availWidth > 390 ? 940 : window.screen.availWidth;
     if (video.videoUrl.includes("supabase")) {
@@ -29,8 +41,8 @@ function VideoIcon({ video, where }) {
         <div>
           <video
             controls
-            autoplay="autoplay"
-            width="100%"
+            autoStart="0"
+            width="415px"
             height="240px"
             id={styles.video}
             src={video.videoUrl}
@@ -44,16 +56,16 @@ function VideoIcon({ video, where }) {
         <div id={styles.reactPlayer}>
           <ReactPlayer
             url={video.videoUrl}
-            playing={true}
             loop={false}
-            controls={true}
-            width="100%"
             height="240px"
+            width="415px"
+            light={true}
           />
         </div>
       );
     }
-  };  const playerAtVideo = () => {
+  };
+  const playerAtVideo = () => {
     let pidth = window.screen.availWidth > 390 ? 940 : window.screen.availWidth;
     if (video.videoUrl.includes("supabase")) {
       let toUseUrl = video.videoUrl;
@@ -63,9 +75,9 @@ function VideoIcon({ video, where }) {
         <div>
           <video
             controls
-            autoplay="autoplay"
-            width="100%"
-            height="240px"
+            autoStart="0"
+            width="150px"
+            height="150px"
             id={styles.videoAtVideo}
             src={video.videoUrl}
           >
@@ -78,12 +90,12 @@ function VideoIcon({ video, where }) {
         <div id={styles.reactPlayerAtVideo}>
           <ReactPlayer
             url={video.videoUrl}
-            playing={true}
+            playing={false}
             loop={false}
             controls={true}
-            width="100%"
-            height="240px"
-            light={false}
+            width="150px"
+            height="150px"
+            light={true}
           />
         </div>
       );
@@ -100,7 +112,7 @@ function VideoIcon({ video, where }) {
         >
           {isHovering ? (
             playerAtVideo()
-          ) : ( 
+          ) : (
             <img
               src={video.thumbnailUrl}
               height="150px"
@@ -109,18 +121,54 @@ function VideoIcon({ video, where }) {
             />
           )}
           <div className="ml-1">
-            <h6 className={roboto.className} style={{ color:"#f9f6ee" }}>{video.title}</h6>
-            <h1 className={r.className} id={styles.text} style={{display:'flex',flexDirection:'row',alignItems:'center'}}>
-            <span style={{fontSize:"10px",fontWeight:'900'}}>@</span> {video.profiles.username}
+            <h6 className={roboto.className} style={{ color: "#f9f6ee" }}>
+              {video.title}
+            </h6>
+            <h1
+              className={r.className}
+              id={styles.text}
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
+              <span style={{ fontSize: "10px", fontWeight: "900" }}>@</span>{" "}
+              {video.profiles.username}
             </h1>
             <h1 className={r.className} id={styles.text}>
               {video.viewCount} Views
             </h1>
           </div>
+          <div id={styles.moreAtVideoIcon}>
+            <MoreVertRoundedIcon
+              onClick={(e) => {
+                e.preventDefault();
+                setMoreClicked(!moreClicked);
+                setTimeout(() => {
+                  setMoreClicked(false);
+                }, 8000);
+              }}
+              id={styles.moreButtonForIconVideoPage}
+            />
+            <div hidden={!moreClicked}>
+              <h1
+                onClick={(e) => {
+                  e.preventDefault();
+                  dispatch(addToPlaylist(video));
+                  setMoreClicked(!moreClicked);
+                }}
+                id={styles.addToPlaylist}
+              >
+                Add to Queue
+              </h1>
+            </div>
+          </div>
         </div>
       </Link>
     );
   } else if (video.videoStatus == true && where === "home") {
+    console.log("s", video);
     return (
       <Link href={linkUrl}>
         <div
@@ -145,14 +193,46 @@ function VideoIcon({ video, where }) {
               size={45}
               where="video"
             />
-            <div style={{marginLeft:'5px'}}>
-              <h6 className={roboto.className} style={{color:"#f9f6ee"}}>{video.title}</h6>
-              <h1 className={r.className} id={styles.text} style={{display:'flex',flexDirection:'row',alignItems:'center'}}>
-                <span style={{fontSize:"10px",fontWeight:'900'}}>@</span>{video.profiles.username}
+            <div style={{ marginLeft: "5px" }}>
+              <h6 className={roboto.className} style={{ color: "#f9f6ee" }}>
+                {video.title}
+              </h6>
+              <h1
+                className={r.className}
+                id={styles.text}
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                }}
+              >
+                <span style={{ fontSize: "10px", fontWeight: "900" }}>@</span>
+                {video.profiles.username}
               </h1>
               <h1 className={r.className} id={styles.text}>
                 {video.viewCount} views
               </h1>
+            </div>
+            <div id={styles.moreAtVideoIcon}>
+              <MoreVertRoundedIcon
+                onClick={(e) => {
+                  e.preventDefault();
+                  setMoreClicked(!moreClicked);
+                }}
+                id={styles.moreButtonAtVideoIcon}
+              />
+              <div hidden={!moreClicked}>
+                <h1
+                  onClick={(e) => {
+                    e.preventDefault();
+                    dispatch(addToPlaylist(video));
+                    setMoreClicked(!moreClicked);
+                  }}
+                  id={styles.addToPlaylist}
+                >
+                  Add to queue
+                </h1>
+              </div>
             </div>
           </div>
         </div>
@@ -314,6 +394,92 @@ function VideoIcon({ video, where }) {
           </h1>
         </div>
       </div>
+    );
+  } else if (video.videoStatus == true && where === "playlist") {
+    return (
+      <Link href={linkUrl}>
+        <div
+          id={styles.home_play}
+          onMouseOver={handleMouseOver}
+          onMouseOut={handleMouseOut}
+        >
+          {(isHovering && allowHover) ? (
+            player()
+          ) : (
+            <img
+              src={video.thumbnailUrl}
+              width="250px"
+              height="150px"
+              id={styles.image_play}
+            />
+          )}
+          <div className="mt-2 ml-0.5" id={styles.row_play}>
+            <div style={{ marginLeft: "5px" }}>
+              <h6
+                className={roboto.className}
+                style={{ color: "#f9f6ee", marginBottom: "10px" }}
+              >
+                {video.title}
+              </h6>
+              <h1
+                className={r.className}
+                id={styles.text}
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                }}
+              >
+                <Avatar
+                  uid={video?.user_id}
+                  url={video?.profiles.avatar_url}
+                  size={45}
+                  where="video"
+                />
+                <span style={{ fontSize: "10px", fontWeight: "900" }}>@</span>
+                {video.profiles.username}
+              </h1>
+              <h1 className={r.className} id={styles.text}>
+                {video.viewCount} views
+              </h1>
+            </div>
+          </div>
+          <div id={styles.moreAtVideoIcon}>
+            <MoreVertRoundedIcon
+              onClick={(e) => {
+                e.preventDefault();
+                setMoreClicked(!moreClicked);
+                setTimeout(() => {
+                  setMoreClicked(false);
+                }, 8000);
+              }}
+              id={styles.moreButtonAtVideoIcon}
+            />
+            <div hidden={!moreClicked}>
+              <h1
+                onClick={(e) => {
+                  e.preventDefault();
+                  dispatch(addToPlaylist(video));
+                  setMoreClicked(!moreClicked);
+                }}
+                id={styles.addToPlaylist}
+              >
+                Add to Queue
+              </h1>
+              <h1
+                onClick={(e) => {
+                  e.preventDefault();
+                  dispatch(deleteFromPlaylist(video));
+                  setMoreClicked(!moreClicked);
+                }}
+                id={styles.addToPlaylist}
+              >
+                Remove from Queue
+              </h1>
+            </div>
+          </div>
+        </div>
+      </Link>
     );
   } else {
     return (

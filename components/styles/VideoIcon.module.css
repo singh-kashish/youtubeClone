@@ -56,19 +56,23 @@
   #text {
     color: #b4b4b4;
   }
-  #videoTitle{
-    color:#b4b4b4;
+  #videoTitle {
+    color: #b4b4b4;
   }
   #home {
     display: flex;
     flex-direction: column;
   }
   #home:hover {
-    background-color: #181818;
-    transform: scale3d(1.15, 1.15, 1);
+    background-image: linear-gradient(
+      to bottom,
+      rgb(0, 0, 0) 0,
+      rgb(14, 13, 13)
+    );
+    transform: scale3d(1.05, 1.05, 1);
     z-index: 80 !important;
     transition-timing-function: ease-in;
-    transition: 0.3s;
+    transition: 0.1s;
     border-radius: 15px !important;
     align-items: space-around !important;
   }
@@ -128,5 +132,38 @@
     height: 240px !important;
   }
   #reactPlayerAtVideo {
+  }
+  #addToPlaylist {
+    z-index: 102;
+    border-radius: 15px;
+    background-color: #252424;
+    padding: 4px 8px;
+  }
+  #addToPlaylist:hover {
+    background-color: #010101;
+  }
+  #moreButtonAtVideoIcon {
+    background-color: #252424;
+    border-radius: 20px;
+    margin-top: 5px;
+    margin-left: 5px;
+  }
+  #moreButtonForIconVideoPage {
+    border-radius: 20px;
+    margin-top: 5px;
+    margin-left: 5px;
+  }
+  #moreAtVideoIcon {
+    position: relative;
+    overflow: hidden;
+    left: 3px;
+  }
+  #moreButtonAtVideoIcon:hover {
+    background-color: #010101;
+    border-radius: 20px;
+  }
+  #home_play {
+    display: flex;
+    flex-direction: row;
   }
 }

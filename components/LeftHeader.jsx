@@ -9,6 +9,7 @@ import SmartDisplayIcon from "@mui/icons-material/SmartDisplay";
 import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
 import Link from "next/link";
 import LeftHeaderEnd from "./LeftHeaderEnd";
+import QueueMusicIcon from "@mui/icons-material/QueueMusic";
 
 function LeftHeader({ densityClicked }) {
   const [selected, setSelected] = useState(1);
@@ -47,7 +48,8 @@ function LeftHeader({ densityClicked }) {
     Router.asPath == "/yourVideos" ||
     Router.asPath == "/likedVideo" ||
     Router.pathname == "/profiles/[user_id]" ||
-    Router.pathname == "/search/[text]";
+    Router.pathname == "/search/[text]" ||
+    Router.asPath == "/playlists";
   // upcoming section is for routes satisfying these values up for RoutePathValue, and not default option for leftHeader style: only icons()
   if ((densityClicked && RoutePathValue) || Router.asPath === "/login") {
     return (
@@ -92,6 +94,19 @@ function LeftHeader({ densityClicked }) {
           >
             <VideoLibraryIcon className="mr-2" />
             <h1 className="text-xs font-sans font-light">Library</h1>
+          </div>
+        </Link>
+        <Link href="/playlists">
+          <div
+            id={styles.row_icon}
+            style={selected === 4 ? selectedStyle_icon : notSelectedStyle_icon}
+            onClick={(e) => {
+              setSelected(4);
+            }}
+            className="py-2 px-4 shadow-md no-underline rounded-full bg-red text-white font-sans font-semibold text-sm border-red btn-primary hover:text-white hover:bg-red-light focus:outline-none active:shadow-none"
+          >
+            <QueueMusicIcon />
+            <h1 className="text-xs font-sans font-light">Playlists</h1>
           </div>
         </Link>
       </div>
@@ -164,6 +179,19 @@ function LeftHeader({ densityClicked }) {
           >
             <ThumbUpOffAltIcon className="mr-2" />
             Liked Videos
+          </div>
+        </Link>
+        <Link href="/playlists">
+          <div
+            id={styles.row}
+            style={selected === 6 ? selectedStyle : notSelectedStyle}
+            onClick={(e) => {
+              setSelected(6);
+            }}
+            className="py-2 px-4 shadow-md no-underline rounded-full bg-red text-white font-sans font-semibold text-sm border-red btn-primary hover:text-white hover:bg-red-light focus:outline-none active:shadow-none"
+          >
+            <QueueMusicIcon />
+            Playlists
           </div>
         </Link>
         <Subscriptions className="mt-2 border-t-2 border-t-slate-700" />

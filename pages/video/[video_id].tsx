@@ -35,6 +35,9 @@ import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import CloseIcon from "@mui/icons-material/Close";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
+import CurrentQueue from "../../components/CurrentQueue";
+import { addToPlaylist } from "../../reduxReducers/playlistSlice";
+import { useSelector, useDispatch } from "react-redux";
 
 const roboto = Roboto({ weight: "700", subsets: ["latin"] });
 const r = Roboto({ weight: "500", subsets: ["latin"] });
@@ -61,6 +64,7 @@ function Video() {
   const [subscribed, setSubscribed] = useState<boolean>(false);
   const [subscribedId, setSubscribedId] = useState<any>();
   const [viewsChanged, setViewsChanged] = useState<boolean>(false);
+  const [position,setPosition]=useState<number>(0);
   const {
     data: likeData,
     loading: likeLoading,
@@ -267,7 +271,11 @@ function Video() {
             url={video.videoUrl}
             playing={true}
             controls={true}
-            loop={true}
+            loop={false}
+            onEnded={() => {
+              onVideoEnd();
+              console.log("videoend");
+            }}
             width="100%"
             height="100%"
           />
@@ -275,6 +283,31 @@ function Video() {
       );
     }
   };
+  function checker(element) {
+    for (let itr = 0; itr < playlist.length ; itr++) {
+      console.log("k", playlist[itr]);
+      console.log("p", element);
+      if (String(element) === String(playlist[itr])) {
+        return itr;
+      }
+    }
+    return -1;
+  }
+  const onVideoEnd = () => {
+    console.log(playlist);
+    console.warn("wth", video);
+    let currVidPosition = checker(video);
+
+    console.warn("wtf", currVidPosition);
+    if (currVidPosition === playlist.length - 1) {
+      console.warn("end");
+      Router.push(`/video/${playlist[0].id}`);
+    } else {
+      console.warn("taking");
+    }
+  };
+  const playlist = useSelector((state) => state.playlist.value);
+  const dispatch = useDispatch();
   useEffect(() => {
     const likes = likeData?.getLikedVideosUsingLikedVideos_video_id_fkey;
     const liked = likes?.find((vote: any) => vote.user_id === user?.id)?.liked;
@@ -293,6 +326,12 @@ function Video() {
     const subbedId = subs?.find((sub: any) => sub.user_id === user?.id)?.id;
     setSubscribed(subbed);
     setSubscribedId(subbedId);
+    console.warn("vide->", video);
+    if (video) {
+      dispatch(addToPlaylist(video));
+    }
+    setPosition(checker(video));
+    console.log('ppppp',position);
   });
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
@@ -301,6 +340,7 @@ function Video() {
   const suggestProps = {
     where: "Video",
   };
+
   if (!video) {
     return (
       <div className="flex w-screen items-center justify-center pt-10 text-xxl mt-5">
@@ -488,8 +528,11 @@ function Video() {
           </div>
           <Comment comments={video.comment} video={video} />
         </div>
-        {/* suggestedVideo */}
-        <SuggestedVideo {...suggestProps} />
+        <div>
+          <CurrentQueue />
+          {/* suggestedVideo */}
+          <SuggestedVideo {...suggestProps} />
+        </div>
       </div>
     );
   } else {
