@@ -259,6 +259,7 @@ function Video() {
             controls
             src={video.videoUrl}
             style={{ minWidth: "100%", height: "70vh" }}
+            onEnded={(event)=>{onVideoEnd();}}
           >
             {/* // <source src={video.videoUrl} type={`video/${toUseType}`} /> */}
           </video>
@@ -287,7 +288,9 @@ function Video() {
     for (let itr = 0; itr < playlist.length ; itr++) {
       console.log("k", playlist[itr]);
       console.log("p", element);
-      if (String(element) === String(playlist[itr])) {
+      if (String(element?.id) === String(playlist[itr]?.id)) {
+        console.log('it',itr);
+        setPosition(itr);
         return itr;
       }
     }
@@ -295,15 +298,18 @@ function Video() {
   }
   const onVideoEnd = () => {
     console.log(playlist);
-    console.warn("wth", video);
-    let currVidPosition = checker(video);
-
-    console.warn("wtf", currVidPosition);
-    if (currVidPosition === playlist.length - 1) {
+    console.warn("fn start", video);
+    console.warn("itr", position);
+    if (position === playlist.length-1 ) {
       console.warn("end");
       Router.push(`/video/${playlist[0].id}`);
     } else {
+      let toGo = position + 1;
       console.warn("taking");
+      let pushUrl = `/video/${playlist[toGo].id}`;
+      console.log(toGo);
+      console.log('y',pushUrl);
+      Router.push(pushUrl);
     }
   };
   const playlist = useSelector((state) => state.playlist.value);
@@ -327,12 +333,23 @@ function Video() {
     setSubscribed(subbed);
     setSubscribedId(subbedId);
     console.warn("vide->", video);
+    
+  });
+  useEffect(()=>{
+    let abc = -1;
+    if(playlist){
+      console.log("here");
+       abc = checker(video)
+    }
+    console.log('curr abc',abc);
+    setPosition(abc);
+    console.log('curr vid pos',position);
+  },[playlist,video]);
+  useEffect(()=>{
     if (video) {
       dispatch(addToPlaylist(video));
     }
-    setPosition(checker(video));
-    console.log('ppppp',position);
-  });
+  },[video])
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -380,10 +397,9 @@ function Video() {
                       <MusicNote fontSize="small" />
                     </h1>
                   </Link>
-                  <p className="text-gray-500 font-extralight">
-                    {`${video.profiles.subscribersUsingSubscribers_subscribed_to_id_fkey.length}
-                   subscribers`}
-                  </p>
+                  <div className="text-gray-300 font-extralight">
+                    {`${video.profiles.subscribersUsingSubscribers_subscribed_to_id_fkey.length} subscribers`}
+                  </div>
                 </div>
                 <div>
                   <button
