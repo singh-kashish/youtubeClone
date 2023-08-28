@@ -335,7 +335,7 @@ function Video() {
                 </Link>
                 <div>
                   <Link href={accountUrl}>
-                    <h1 className={roboto.className}>
+                    <h1 className={roboto.className} style={{color:"white"}}>
                       {video.profiles.username}
                       <MusicNote fontSize="small" />
                     </h1>
