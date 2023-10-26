@@ -300,10 +300,10 @@ function Video() {
     console.log(playlist);
     console.warn("fn start", video);
     console.warn("itr", position);
-    if (position === playlist.length-1 ) {
+    if (playlist.length>0 && position === playlist.length-1 ) {
       console.warn("end");
       Router.push(`/video/${playlist[0].id}`);
-    } else {
+    } else if(playlist.length>0) {
       let toGo = position + 1;
       console.warn("taking");
       let pushUrl = `/video/${playlist[toGo].id}`;
