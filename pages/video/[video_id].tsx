@@ -284,7 +284,7 @@ function Video() {
       );
     }
   };
-  function checker(element) {
+  function checker(element:any) {
     for (let itr = 0; itr < playlist.length ; itr++) {
       console.log("k", playlist[itr]);
       console.log("p", element);
@@ -312,7 +312,7 @@ function Video() {
       Router.push(pushUrl);
     }
   };
-  const playlist = useSelector((state) => state.playlist.value);
+  const playlist = useSelector((state:any) => state.playlist.value);
   const dispatch = useDispatch();
   useEffect(() => {
     const likes = likeData?.getLikedVideosUsingLikedVideos_video_id_fkey;
