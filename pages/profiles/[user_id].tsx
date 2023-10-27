@@ -58,7 +58,7 @@ function Profile() {
             </h1>
             <div id={styles.grid} className="p-1">
               {profile?.video?.map((pie: any) => (
-                <VideoIcon video={pie} where="profile" /> 
+                <VideoIcon video={pie} where="profile" allowHover={true} /> 
               ))}
             </div>
           </div>
