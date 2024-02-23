@@ -1,6 +1,3 @@
-"""
-Table 'comment' aliased as GQLName: 'Comment'
-"""
 type Comment {
   created_at: DateTime
   dislikeCount: Int
@@ -16,9 +13,6 @@ type Comment {
   video_id: ID
 }
 
-"""
-Table 'likedComments' aliased as GQLName: 'LikedComments'
-"""
 type LikedComments {
   comment: Comment
     @materializer(query: "getCommentUsingLikedComments_comment_id_fkey")
@@ -31,9 +25,6 @@ type LikedComments {
   user_id: ID
 }
 
-"""
-Table 'likedVideos' aliased as GQLName: 'LikedVideos'
-"""
 type LikedVideos {
   created_at: DateTime
   id: ID!
@@ -45,9 +36,6 @@ type LikedVideos {
   video_id: ID
 }
 
-"""
-Table 'profiles' aliased as GQLName: 'Profiles'
-"""
 type Profiles {
   avatar_url: String
   comment: [Comment] @materializer(query: "getCommentUsingComment_user_id_fkey")
@@ -66,9 +54,6 @@ type Profiles {
   video: [Video] @materializer(query: "getVideoUsingVideo_user_id_fkey")
 }
 
-"""
-Table 'subscribers' aliased as GQLName: 'Subscribers'
-"""
 type Subscribers {
   created_at: DateTime
   id: ID!
@@ -80,9 +65,6 @@ type Subscribers {
   user_id: ID
 }
 
-"""
-Table 'video' aliased as GQLName: 'Video'
-"""
 type Video {
   comment: [Comment]
     @materializer(query: "getCommentUsingComment_video_id_fkey")
@@ -238,7 +220,7 @@ type Query {
       type: "postgresql"
       schema: "public"
       query: """
-      SELECT "id", "liked", "user_id", "video_id" FROM "likedVideos" WHERE "video_id" = $1
+      SELECT "created_at", "id", "liked", "user_id", "video_id" FROM "likedVideos" WHERE "video_id" = $1
       """
       configuration: "postgresql_config"
     )
@@ -248,15 +230,6 @@ type Query {
       type: "postgresql"
       schema: "public"
       table: "profiles"
-      configuration: "postgresql_config"
-    )
-  getProfilesUsingSearchText(text: String!): [Profiles]
-    @dbquery(
-      type: "postgresql"
-      schema: "public"
-      query: """
-      SELECT "username", "full_name", "id", "avatar_url" FROM "profiles" WHERE to_tsvector(username || ' ' || full_name) @@ to_tsquery($1)
-      """
       configuration: "postgresql_config"
     )
   getProfilesList: [Profiles]
@@ -394,9 +367,7 @@ type Query {
     @dbquery(
       type: "postgresql"
       schema: "public"
-      query: """
-      SELECT "created_at", "description", "dislikes", "id", "likes", "thumbnailUrl", "title", "user_id", "videoStatus", "videoUrl", "viewCount" FROM "video" ORDER BY "viewCount" DESC
-      """
+      table: "video"
       configuration: "postgresql_config"
     )
   getVideoPaginatedList(first: Int, after: Int): [Video]
@@ -423,15 +394,6 @@ type Query {
       schema: "public"
       query: """
       SELECT "created_at", "description", "dislikes", "id", "likes", "thumbnailUrl", "title", "user_id", "videoStatus", "videoUrl", "viewCount" FROM "video" WHERE "id" = $1
-      """
-      configuration: "postgresql_config"
-    )
-  getVideosUsingSearchText(text: String!): [Video]
-    @dbquery(
-      type: "postgresql"
-      schema: "public"
-      query: """
-      SELECT "created_at", "description", "dislikes", "id", "likes", "thumbnailUrl", "title", "user_id", "videoStatus", "videoUrl", "viewCount" FROM "video" WHERE to_tsvector(title || ' ' || description) @@ to_tsquery($1)
       """
       configuration: "postgresql_config"
     )
@@ -464,6 +426,7 @@ type Mutation {
     video_id: ID
     text: String
     user_id: ID
+    id: ID!
     created_at: DateTime
     dislikeCount: Int
     likeCount: Int
@@ -511,6 +474,7 @@ type Mutation {
       configuration: "postgresql_config"
     )
   insertLikedComments(
+    id: ID!
     created_at: DateTime
     like: Boolean
     comment_id: ID
@@ -557,6 +521,7 @@ type Mutation {
   insertLikedVideos(
     video_id: ID
     user_id: ID
+    id: ID!
     liked: Boolean
     created_at: DateTime
   ): LikedVideos
@@ -599,6 +564,7 @@ type Mutation {
       configuration: "postgresql_config"
     )
   insertProfiles(
+    id: ID!
     updated_at: DateTime
     avatar_url: String
     username: String
@@ -646,6 +612,7 @@ type Mutation {
     subscribed_to_id: ID
     user_id: ID
     created_at: DateTime
+    id: ID!
   ): Subscribers
     @dbquery(
       type: "postgresql"
@@ -689,6 +656,7 @@ type Mutation {
     description: String
     user_id: ID
     likes: Int
+    id: ID!
     dislikes: Int
     title: String
     thumbnailUrl: String
