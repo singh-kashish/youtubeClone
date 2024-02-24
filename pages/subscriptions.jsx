@@ -39,7 +39,7 @@ function subscriptions() {
         <div id={styles.main}>
           {data?.getSubscribersUsingSubscribers_user_id_fkey.map((pie) =>
             pie.profilesUsingSubscribers_subscribed_to_id_fkey?.video.map(
-              (e) => <VideoIcon video={e} where="subs" />
+              (e) => <VideoIcon video={e} where="subs" key={e?.id} />
             )
           )}
         </div>

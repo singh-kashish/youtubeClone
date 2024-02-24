@@ -11,7 +11,7 @@ let playListData = (playlist) => {
         <h1 id={styles.currentQueue}>Current Queue</h1>
         {playlist.map((vid) => {
           return (
-            <div id={styles.icon}>
+            <div id={styles.icon} key={[vid.id]}>
               <VideoIcon
                 key={vid.id}
                 video={vid}

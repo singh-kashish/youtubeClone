@@ -9,6 +9,7 @@
   justify-content: flex-start;
   align-items: center;
   width: 100%;
+  color: rgb(233, 224, 224);
 }
 #modalFirstLine {
   display: flex;
@@ -57,12 +58,12 @@
   width: 50px;
 }
 #like:hover {
-  background-color: rgba(41, 38, 38, 0.753);
+  background-color: rgba(118, 112, 112, 0.753);
   border-radius: 15px;
 }
 #likeD {
   width: 50px;
-  color: rgba(31, 24, 24, 0.769);
+  color: rgba(149, 148, 148, 0.769) !important;
 }
 #likeD:hover {
   background-color: rgba(41, 38, 38, 0.753);

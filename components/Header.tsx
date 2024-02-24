@@ -1,7 +1,7 @@
 import Image from "next/image";
 import React, { useState } from "react";
 import styles from "./styles/Header.module.css";
-import { Roboto } from "@next/font/google";
+import { Roboto } from "next/font/google";
 import DensityMediumRoundedIcon from "@mui/icons-material/DensityMediumRounded";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import MicRoundedIcon from "@mui/icons-material/MicRounded";

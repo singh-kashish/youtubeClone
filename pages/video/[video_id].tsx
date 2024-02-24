@@ -9,7 +9,7 @@ import {
 } from "../../graphql/queries";
 import styles from "./[video_id].module.css";
 import ReactPlayer from "react-player/lazy";
-import { Roboto } from "@next/font/google";
+import { Roboto } from "next/font/google";
 import Avatar from "../../components/Avatar";
 import MusicNoteIcon from "@mui/icons-material/MusicNote";
 import MusicNote from "@mui/icons-material/MusicNote";
@@ -38,6 +38,7 @@ import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import CurrentQueue from "../../components/CurrentQueue";
 import { addToPlaylist } from "../../reduxReducers/playlistSlice";
 import { useSelector, useDispatch } from "react-redux";
+import VideoShimmer from "../../components/VideoShimmer.jsx";
 
 const roboto = Roboto({ weight: "700", subsets: ["latin"] });
 const r = Roboto({ weight: "500", subsets: ["latin"] });
@@ -64,7 +65,7 @@ function Video() {
   const [subscribed, setSubscribed] = useState<boolean>(false);
   const [subscribedId, setSubscribedId] = useState<any>();
   const [viewsChanged, setViewsChanged] = useState<boolean>(false);
-  const [position,setPosition]=useState<number>(0);
+  const [position, setPosition] = useState<number>(0);
   const {
     data: likeData,
     loading: likeLoading,
@@ -284,7 +285,7 @@ function Video() {
     }
   };
   function checker(element) {
-    for (let itr = 0; itr < playlist.length ; itr++) {
+    for (let itr = 0; itr < playlist?.length; itr++) {
       console.log("k", playlist[itr]);
       console.log("p", element);
       if (String(element) === String(playlist[itr])) {
@@ -299,14 +300,15 @@ function Video() {
     let currVidPosition = checker(video);
 
     console.warn("wtf", currVidPosition);
-    if (currVidPosition === playlist.length - 1) {
+    if (currVidPosition === playlist?.length - 1) {
       console.warn("end");
       Router.push(`/video/${playlist[0].id}`);
     } else {
       console.warn("taking");
     }
   };
-  const playlist = useSelector((state) => state.playlist.value);
+  const playlist = useSelector((state) => state.playlist);
+  console.log("alpha>", playlist);
   const dispatch = useDispatch();
   useEffect(() => {
     const likes = likeData?.getLikedVideosUsingLikedVideos_video_id_fkey;
@@ -331,7 +333,7 @@ function Video() {
       dispatch(addToPlaylist(video));
     }
     setPosition(checker(video));
-    console.log('ppppp',position);
+    console.log("ppppp", position);
   });
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
@@ -342,13 +344,10 @@ function Video() {
   };
 
   if (!video) {
-    return (
-      <div className="flex w-screen items-center justify-center pt-10 text-xxl mt-5">
-        <LineWobble size={250} color="red" />
-      </div>
-    );
+    return <VideoShimmer />;
   } else if (video && video?.videoStatus === true) {
     const accountUrl: string = `/profiles/${video.user_id}`;
+
     return (
       <div className="min-h-screen md:pl-5 pt-5 w-full" id={styles.main}>
         <div className="w-[100vw]">
@@ -390,7 +389,7 @@ function Video() {
                     id={subscribed ? styles.subscribed : styles.subscribe}
                     className="py-2 px-4 mr-2 shadow-md no-underline rounded-full text-white font-sans font-semibold text-sm border-red hover:bg-gray-900 hover:bg-red-light focus:outline-none active:shadow-none"
                     onClick={(e) => {
-                      e.preventDefault;
+                      e.preventDefault();
                       subscribe();
                     }}
                   >

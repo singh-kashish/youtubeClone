@@ -3,20 +3,20 @@ import type { AppProps } from "next/app";
 import Header from "../components/Header";
 import { ApolloProvider } from "@apollo/client";
 import client from "../apollo-client";
-import { createBrowserSupabaseClient } from "@supabase/auth-helpers-nextjs";
+import { createPagesBrowserClient } from "@supabase/auth-helpers-nextjs";
 import { SessionContextProvider, Session } from "@supabase/auth-helpers-react";
 import { useState } from "react";
 import { Toaster } from "react-hot-toast";
 import {Provider} from 'react-redux';
 import {store} from "../store";
-
+import { supabase } from "../components/utils/supabase";
 export default function App({
   Component,
   pageProps: { ...pageProps },
 }: AppProps<{
   initialSession: Session;
 }>) {
-  const [supabaseClient] = useState(() => createBrowserSupabaseClient());
+  const [supabaseClient] = useState(() => createPagesBrowserClient());
   return (
     <Provider store={store}>
     <ApolloProvider client={client}>
