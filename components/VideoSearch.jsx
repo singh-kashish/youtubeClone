@@ -49,7 +49,7 @@ function VideoSearch({ text }) {
       return (
         <div id={styles.main}>
           {data?.getVideosUsingSearchText?.map((pie) => (
-            <VideoIcon video={pie} where="search" />
+            <VideoIcon video={pie} where="search" key={pie?.id} />
           ))}
         </div>
       );

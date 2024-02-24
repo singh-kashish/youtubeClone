@@ -4,7 +4,7 @@ import { LineWobble } from "@uiball/loaders";
 import { useRouter } from "next/router";
 import Avatar from "./Avatar";
 import styles from "./styles/ProfileSearch.module.css";
-import { Roboto } from "@next/font/google";
+import { Roboto } from "next/font/google";
 import { useQuery } from "@apollo/client";
 import { GET_PROFILES_BY_SEARCH_TEXT } from "../graphql/queries";
 import Link from "next/link";
@@ -41,7 +41,7 @@ function ProfileSearch({ text }) {
       return (
         <div id={styles.main}>
           {data?.getProfilesUsingSearchText?.map((pie) => (
-            <Link href={`/profiles/${pie?.id}`}>
+            <Link href={`/profiles/${pie?.id}`} key={pie?.id}>
               <div id={styles.user}>
                 <Avatar
                   uid={pie?.id}

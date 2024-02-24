@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styles from "./styles/VideoIcon.module.css";
-import { Roboto } from "@next/font/google";
+import { Roboto } from "next/font/google";
 import Link from "next/link";
 import Avatar from "./Avatar";
 import ReactPlayer from "react-player";
@@ -18,6 +18,7 @@ const rb = Roboto({ weight: "300", subsets: ["latin"] });
 const rt = Roboto({ weight: "100", subsets: ["latin"] });
 
 function VideoIcon({ video, where,allowHover }) {
+  console.log(video);
   let linkUrl = `/video/${video.id}`;
   const [isHovering, setIsHovering] = useState(false);
   const handleMouseOver = (e) => {

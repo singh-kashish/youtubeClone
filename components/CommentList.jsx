@@ -6,7 +6,7 @@ const CommentList = ({ user, comments }) => {
   return (
     <div id={styles.main}>
       {comments?.map((comment) => (
-        <EveryComment comment={comment} user={user} />
+        <EveryComment comment={comment} user={user} key={comment.id} />
       ))}
     </div>
   );

@@ -15,7 +15,6 @@
     "@heroicons/react": "^2.0.13",
     "@mui/icons-material": "^5.10.9",
     "@mui/material": "^5.10.12",
-    "@next/font": "^13.0.2",
     "@reduxjs/toolkit": "^1.9.5",
     "@supabase/auth-helpers-nextjs": "^0.7.2",
     "@supabase/auth-helpers-react": "^0.3.1",

@@ -4,7 +4,7 @@ import React from "react";
 import Avatar from "../../components/Avatar";
 import { GET_PROFILE } from "../../graphql/queries";
 import styles from "./[user_id].module.css";
-import { Roboto } from "@next/font/google";
+import { Roboto } from "next/font/google";
 import VideoIcon from "../../components/VideoIcon";
 import { LineWobble } from "@uiball/loaders";
 
@@ -58,7 +58,7 @@ function Profile() {
             </h1>
             <div id={styles.grid} className="p-1">
               {profile?.video?.map((pie: any) => (
-                <VideoIcon video={pie} where="profile" /> 
+                <VideoIcon video={pie} where="profile" key={pie?.id} /> 
               ))}
             </div>
           </div>

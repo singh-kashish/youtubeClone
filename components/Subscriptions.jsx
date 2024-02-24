@@ -22,7 +22,7 @@ function Subscriptions() {
       return (
         <div>
           {data?.getSubscribersUsingSubscribers_user_id_fkey.map((pie) => (
-            <Link href={`/profiles/${pie.subscribed_to_id}`}>
+            <Link href={`/profiles/${pie.subscribed_to_id}`} key={pie.id}>
               <div id={styles.row}>
                 <Avatar
                   uid={pie.profilesUsingSubscribers_subscribed_to_id_fkey.id}
