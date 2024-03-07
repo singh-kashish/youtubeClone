@@ -1,6 +1,6 @@
-import { createSlice,PayloadAction } from "@reduxjs/toolkit";
+import { createSlice} from "@reduxjs/toolkit";
 const initialState = {
-    value:[],
+    videos:[],
 };
 const suggestedVideoSlice = createSlice({
     name: 'suggestedVideo',
@@ -8,8 +8,12 @@ const suggestedVideoSlice = createSlice({
     reducers:{
         descendingViews(state){
             state = state;
+        },
+        loadVideos(state,action){
+            state.videos.push(action.payload);
         }
     }
 });
 
-export const {descendingViews} = suggestedVideoSlice.actions;
+export const {descendingViews,loadVideos} = suggestedVideoSlice.actions;
+export default suggestedVideoSlice.reducer;

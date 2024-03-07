@@ -1,5 +1,5 @@
 import react from "react";
-import Account from "../components/Account";
+import Account from "../src/components/Account";
 import { Auth, ThemeSupa } from "@supabase/auth-ui-react";
 import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import styles from "./styles/Login.module.css";

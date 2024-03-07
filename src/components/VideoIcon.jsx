@@ -10,7 +10,7 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   addToPlaylist,
   deleteFromPlaylist,
-} from "../reduxReducers/playlistSlice";
+} from "../../reduxReducers/playlistSlice";
 
 const roboto = Roboto({ weight: "700", subsets: ["latin"] });
 const r = Roboto({ weight: "500", subsets: ["latin"] });

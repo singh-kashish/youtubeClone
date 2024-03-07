@@ -3,14 +3,14 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   addToPlaylist,
   deleteFromPlaylist, clearPlaylist
-} from "../reduxReducers/playlistSlice";
+} from "../../reduxReducers/playlistSlice";
 import VideoIcon from "../components/VideoIcon";
 import styles from "./styles/CurrentQueue.module.css";
 import { Roboto } from "next/font/google";
 const roboto = Roboto({ weight: "700", subsets: ["latin"] });
 import { useRouter } from "next/router";
 
-let playListData = (playlist) => {
+let PlayListData = (playlist) => {
   const dispatch = useDispatch();
   if (playlist?.length > 0) {
     const Router = useRouter();
@@ -58,13 +58,13 @@ let playListData = (playlist) => {
     return <div className="hidden">Current Queue is Empty</div>;
   }
 };
-function currentQueue() {
+function CurrentQueue() {
   const playlist = useSelector((state) => state.playlist.value);
   return (
     <div className="bg-[#100f0f]" id={styles.mainLine}>
-      {playListData(playlist)}
+      {PlayListData(playlist)}
     </div>
   );
 }
 
-export default currentQueue;
+export default CurrentQueue;

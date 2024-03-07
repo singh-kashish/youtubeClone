@@ -9,14 +9,14 @@ import { useMutation, useQuery } from "@apollo/client";
 import {
   GET_VIDEO_BY_ID,
   GET_LIKES_ON_COMMENT_USING_COMMENT_ID,
-} from "../graphql/queries";
+} from "../../graphql/queries";
 import {
   UPDATE_COMMENT,
   DELETE_COMMENT,
   ADD_LIKE_ON_COMMENT,
   REMOVE_LIKE_ON_COMMENT,
   MODIFY_LIKE_ON_COMMENT,
-} from "../graphql/mutations";
+} from "../../graphql/mutations";
 import toast from "react-hot-toast";
 
 const roboto = Roboto({ weight: "700", subsets: ["latin"] });

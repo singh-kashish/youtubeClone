@@ -2,7 +2,7 @@ import { useQuery } from "@apollo/client";
 import { useUser } from "@supabase/auth-helpers-react";
 import Link from "next/link";
 import React from "react";
-import { GET_SUBSCRIBERS_USING_USER_ID } from "../graphql/queries";
+import { GET_SUBSCRIBERS_USING_USER_ID } from "../../graphql/queries";
 import Avatar from "./Avatar";
 import styles from "./styles/Subscriptions.module.css";
 
