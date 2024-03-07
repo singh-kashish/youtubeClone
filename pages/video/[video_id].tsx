@@ -69,6 +69,7 @@ function Video() {
             controls
             src={video.videoUrl}
             style={{ minWidth: "100%", height: "70vh" }}
+            onEnded={(event)=>{onVideoEnd();}}
           >
             {/* // <source src={video.videoUrl} type={`video/${toUseType}`} /> */}
           </video>
@@ -93,6 +94,83 @@ function Video() {
       );
     }
   };
+<<<<<<< HEAD
+=======
+  function checker(element:any) {
+    for (let itr = 0; itr < playlist.length ; itr++) {
+      console.log("k", playlist[itr]);
+      console.log("p", element);
+      if (String(element?.id) === String(playlist[itr]?.id)) {
+        console.log('it',itr);
+        setPosition(itr);
+        return itr;
+      }
+    }
+    return -1;
+  }
+  const onVideoEnd = () => {
+    console.log(playlist);
+    console.warn("fn start", video);
+    console.warn("itr", position);
+    if (playlist.length>0 && position === playlist.length-1 ) {
+      console.warn("end");
+      Router.push(`/video/${playlist[0].id}`);
+    } else if(playlist.length>0) {
+      let toGo = position + 1;
+      console.warn("taking");
+      let pushUrl = `/video/${playlist[toGo].id}`;
+      console.log(toGo);
+      console.log('y',pushUrl);
+      Router.push(pushUrl);
+    }
+  };
+  const playlist = useSelector((state:any) => state.playlist.value);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    const likes = likeData?.getLikedVideosUsingLikedVideos_video_id_fkey;
+    const liked = likes?.find((vote: any) => vote.user_id === user?.id)?.liked;
+    const likeId = likes?.find((vote: any) => vote.user_id === user?.id)?.id;
+    setLiked(liked);
+    setLikedId(likeId);
+  }, [likeData]);
+  useEffect(() => {
+    onOpen();
+    const subs =
+      video?.profiles?.subscribersUsingSubscribers_subscribed_to_id_fkey;
+    const subbed =
+      subs?.find((sub: any) => sub.user_id === user?.id) != undefined
+        ? true
+        : false;
+    const subbedId = subs?.find((sub: any) => sub.user_id === user?.id)?.id;
+    setSubscribed(subbed);
+    setSubscribedId(subbedId);
+    console.warn("vide->", video);
+    
+  });
+  useEffect(()=>{
+    let abc = -1;
+    if(playlist){
+      console.log("here");
+       abc = checker(video)
+    }
+    console.log('curr abc',abc);
+    setPosition(abc);
+    console.log('curr vid pos',position);
+  },[playlist,video]);
+  useEffect(()=>{
+    if (video) {
+      dispatch(addToPlaylist(video));
+    }
+  },[video])
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  const [updateVideo] = useMutation(UPDATE_VIDEO);
+  const suggestProps = {
+    where: "Video",
+  };
+
+>>>>>>> eb42cc4a041953e03bb2dac83cfbbef5be7febfb
   if (!video) {
     return <VideoShimmer />;
   } else if (video && video?.videoStatus === true) {
@@ -124,15 +202,14 @@ function Video() {
                 </Link>
                 <div>
                   <Link href={accountUrl}>
-                    <h1 className={roboto.className}>
+                    <h1 className={roboto.className} style={{color:"white"}}>
                       {video.profiles.username}
                       <MusicNote fontSize="small" />
                     </h1>
                   </Link>
-                  <p className="text-gray-500 font-extralight">
-                    {`${video.profiles.subscribersUsingSubscribers_subscribed_to_id_fkey.length}
-                   subscribers`}
-                  </p>
+                  <div className="text-gray-300 font-extralight">
+                    {`${video.profiles.subscribersUsingSubscribers_subscribed_to_id_fkey.length} subscribers`}
+                  </div>
                 </div>
                 <div>
                   <button

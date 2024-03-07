@@ -140,7 +140,8 @@
     padding: 4px 8px;
   }
   #addToPlaylist:hover {
-    background-color: #010101;
+    background-color: rgb(227, 206, 206) !important;
+
   }
   #moreButtonAtVideoIcon {
     background-color: #252424;
@@ -152,6 +153,10 @@
     border-radius: 20px;
     margin-top: 5px;
     margin-left: 5px;
+    background-color:#b4b4b4 ;
+  }
+  #moreButtonForIconVideoPage:hover{
+    background-color: rgb(127, 255, 212,0.89);
   }
   #moreAtVideoIcon {
     position: relative;
@@ -159,7 +164,7 @@
     left: 3px;
   }
   #moreButtonAtVideoIcon:hover {
-    background-color: #010101;
+    background-color: #bd9393;
     border-radius: 20px;
   }
   #home_play {

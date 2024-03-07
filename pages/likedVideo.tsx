@@ -53,7 +53,7 @@ function library() {
             (pie: any) => {
               return pie.liked === true ? (
                 <div key={pie.id}>
-                  <VideoIcon video={pie.video} where="home" />
+                  <VideoIcon video={pie.video} where="home" allowHover={true} />
                 </div>
               ) : (
                 <h1>Private</h1>

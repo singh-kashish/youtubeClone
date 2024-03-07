@@ -58,7 +58,11 @@ function Profile() {
             </h1>
             <div id={styles.grid} className="p-1">
               {profile?.video?.map((pie: any) => (
+<<<<<<< HEAD
                 <VideoIcon video={pie} where="profile" key={pie?.id} /> 
+=======
+                <VideoIcon video={pie} where="profile" allowHover={true} /> 
+>>>>>>> eb42cc4a041953e03bb2dac83cfbbef5be7febfb
               ))}
             </div>
           </div>
