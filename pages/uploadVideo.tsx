@@ -7,8 +7,8 @@ import client from "../apollo-client";
 import { toast } from "react-hot-toast";
 import { ADD_VIDEO } from "../graphql/mutations";
 import { Router, useRouter } from "next/router";
-import CustomizedStepper from "../components/CustomizedStepper";
-import MouseOverPopover from "../components/MouseOverPopover";
+import CustomizedStepper from "../src/components/CustomizedStepper";
+import MouseOverPopover from "../src/components/MouseOverPopover";
 
 type FormData = {
   videoTitle: string;

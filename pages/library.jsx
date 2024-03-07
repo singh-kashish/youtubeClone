@@ -3,11 +3,12 @@ import { useUser } from "@supabase/auth-helpers-react";
 import React from "react";
 import { GET_PROFILE } from "../graphql/queries";
 import styles from "./styles/library.module.css";
-import VideoIcon from "../components/VideoIcon";
+import VideoIcon from "../src/components/VideoIcon";
 import Link from "next/link";
 import { LineWobble } from "@uiball/loaders";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import Shimmer from '../src/components/Shimmer';
 
 function library() {
   const user = useUser();
@@ -43,9 +44,7 @@ function library() {
       );
     } else if (!data) {
       return (
-        <div className="flex w-full h-full items-center justify-center p-10 text-xxl m-5">
-          <LineWobble size={250} color="red" />
-        </div>
+        <Shimmer/>
       );
     } else {
       return (

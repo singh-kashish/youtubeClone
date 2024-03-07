@@ -10,8 +10,8 @@ import styles from "./[video_id].module.css";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 import { DotSpinner, LineWobble } from "@uiball/loaders";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import CustomizedSteppers from "../../../components/CustomizedStepper";
-import MouseOverPopover from "../../../components/MouseOverPopover";
+import CustomizedSteppers from "../../../src/components/CustomizedStepper";
+import MouseOverPopover from "../../../src/components/MouseOverPopover";
 
 type FormData = {
   videoTitle: string;

@@ -1,4 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { Video } from "../src/types/Video";
+
 const initialState = {
   value: [],
 };

@@ -1,24 +1,27 @@
 import React from "react";
 import { useQuery } from "@apollo/client";
-import { GET_VIDEOS } from "../graphql/queries";
+import { GET_VIDEOS } from "../../graphql/queries";
 import styles from "./styles/SuggestedVideos.module.css";
 import VideoIcon from "./VideoIcon";
 import { LineWobble } from "@uiball/loaders";
 import Shimmer from "./Shimmer";
+import { useDispatch, useSelector } from "react-redux";
+import { loadVideos } from "../../reduxReducers/suggestedVideoSlice";
 
 const SuggestedVideos = ({ where }) => {
   const { loading, error, data } = useQuery(GET_VIDEOS, {});
-  console.log('loading>',loading);
-  console.log("err>", error);
-  console.log("data>", data);
+  const dispatch = useDispatch();
+  if (!loading && data) {
+    dispatch(loadVideos(data.getVideoList));
+  }
   if (where === "Video") {
     if (!data) {
       return (
         <div
-          className="flex items-center justify-center text-xxl"
+          className="flex flex-col items-center justify-center text-xxl my-2"
           id={styles.wobble}
         >
-          <LineWobble size={442} color="red" />
+          <Shimmer />
         </div>
       );
     } else {
@@ -41,7 +44,12 @@ const SuggestedVideos = ({ where }) => {
       return (
         <div id={styles.home} className="bg-zinc-900">
           {data?.getVideoList?.map((pie) => (
-            <VideoIcon video={pie} where="home" className="mt-1 max-w-fit" key={pie?.id} />
+            <VideoIcon
+              video={pie}
+              where="home"
+              className="mt-1 max-w-fit"
+              key={pie?.id}
+            />
           ))}
         </div>
       );
