@@ -8,17 +8,39 @@
 }
 #headin {
   font-size: 24px;
+  color: rgb(220, 245, 231);
 }
 #currentQueue {
   font-family: "Courier New", Courier, monospace;
   font-weight: 500;
   font-size: large;
 }
+#queueLine{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width:95%;
+}
+#clearButton{
+  border-radius: 25px;
+}
+#clearButton:hover{
+  border-radius: 25px;
+  background-color: #0f2a94;
+  cursor: pointer;
+  transition: 0.3s;
+}
 #mainLine {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
+  background-image: linear-gradient(
+    to bottom,
+    rgb(0, 0, 0, 0.6) 0,
+    rgba(255, 0, 0, 0.124)
+  );
 }
 #pageName {
   font-size: x-large;
