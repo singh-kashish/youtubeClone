@@ -3,9 +3,16 @@
   flex-direction: row;
   justify-content: flex-start;
   align-items: flex-start;
+  z-index: 20;
 }
 #text {
   color: #b4b4b4;
+  text-wrap: pretty;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  text-overflow: ellipsis;
 }
 #home {
   display: flex;
@@ -38,10 +45,59 @@
 #searchVideoTitle {
   font-size: x-large;
 }
-@media screen and (min-width: 391px) {
-  #main {
+#moreButtonAtVideoIcon {
+    background-color: #252424;
+    border-radius: 20px;
+    margin-top: 5px;
+    margin-left: 5px;
+  }
+  #moreButtonForIconVideoPage {
+    border-radius: 20px;
+    margin-top: 5px;
+    margin-right:25px;
+    background-color:#b4b4b4 ;
+  }
+  #moreButtonForIconVideoPage:hover{
+    background-color: rgb(127, 255, 212,0.89);
+    margin-right:25px;
+  }
+  #moreAtVideoIcon {
+    position: relative;
+    overflow: hidden;
+    left: 3px;
+  }
+  #moreButtonAtVideoIcon:hover {
+    background-color: #bd9393;
+    border-radius: 20px;
+  }
+  #addToPlaylist {
+    z-index: 22;
+    border-radius: 15px;
+    background-color: #252424;
+    padding: 4px 8px;
+  }
+  #addToPlaylist:hover {
+    background-color: rgb(227, 206, 206) !important;
+  }
+  #home_play {
     display: flex;
     flex-direction: row;
+    text-wrap: pretty;
+    line-clamp: 3;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+  }
+@media screen and (min-width: 1025px) {
+  #main {
+    display: flex;
+    flex-direction: row; 
+    justify-content: flex-start;
+    align-items: flex-start;
+    z-index: 20;
+    position: relative;
   }
   #main:hover {
     background-image: linear-gradient(
@@ -49,12 +105,20 @@
       rgba(255, 0, 0, 1),
       rgba(255, 0, 0, 0)
     );
-    transform: scale3d(1.1, 1.2, 2);
+    transform: scale3d(1.01, 1.01, 1.01);
     transition-timing-function: ease-in;
     transition: 0.3s;
+    z-index: 20;
   }
   #text {
     color: #b4b4b4;
+    text-wrap: pretty;
+    line-clamp: 3;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
   }
   #videoTitle {
     color: #b4b4b4;
@@ -134,14 +198,13 @@
   #reactPlayerAtVideo {
   }
   #addToPlaylist {
-    z-index: 102;
+    z-index: 22;
     border-radius: 15px;
     background-color: #252424;
     padding: 4px 8px;
   }
   #addToPlaylist:hover {
     background-color: rgb(227, 206, 206) !important;
-
   }
   #moreButtonAtVideoIcon {
     background-color: #252424;
@@ -152,11 +215,12 @@
   #moreButtonForIconVideoPage {
     border-radius: 20px;
     margin-top: 5px;
-    margin-left: 5px;
+    margin-right:25px;
     background-color:#b4b4b4 ;
   }
   #moreButtonForIconVideoPage:hover{
     background-color: rgb(127, 255, 212,0.89);
+    margin-right:25px;
   }
   #moreAtVideoIcon {
     position: relative;
@@ -170,5 +234,12 @@
   #home_play {
     display: flex;
     flex-direction: row;
+    text-wrap: pretty;
+    line-clamp: 3;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
   }
 }

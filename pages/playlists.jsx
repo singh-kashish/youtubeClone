@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { addToPlaylist,deleteFromPlaylist } from "../reduxReducers/playlistSlice";
-import VideoIcon from "../components/VideoIcon";
+import VideoIcon from "../src/components/VideoIcon";
 import styles from "./styles/playlists.module.css";
 
 let playListData = (playlist) => {
@@ -11,7 +11,7 @@ let playListData = (playlist) => {
         <h1 id={styles.currentQueue}>Current Queue</h1>
         {playlist.map((vid) => {
           return (
-            <div id={styles.icon} key={[vid.id]}>
+            <div id={styles.icon} key={vid.id}>
               <VideoIcon
                 key={vid.id}
                 video={vid}
@@ -24,12 +24,11 @@ let playListData = (playlist) => {
       </div>
     );
   } else {
-    return <div>Current Queue is Empty</div>;
+    return <div className="font-serif text-gray-300">Current Queue is Empty</div>;
   }
 };
 function playlists() {
   const playlist = useSelector((state) => state.playlist.value);
-  console.log(playlist);
   return (
     <div className="bg-[#181818]" id={styles.mainLine}>
       <h1 id={styles.pageName}>Playlists</h1>

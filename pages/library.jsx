@@ -44,7 +44,9 @@ function library() {
       );
     } else if (!data) {
       return (
+        <div className="ml-[225px] mt-2 grid grid-cols-3 gap-2 w-dvw min-h-screen  bg-zinc-900">
         <Shimmer/>
+        </div>
       );
     } else {
       return (

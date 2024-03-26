@@ -1,11 +1,11 @@
 import { useQuery } from "@apollo/client";
 import { useRouter } from "next/router";
 import React from "react";
-import Avatar from "../../components/Avatar";
+import Avatar from "../../src/components/Avatar";
 import { GET_PROFILE } from "../../graphql/queries";
 import styles from "./[user_id].module.css";
 import { Roboto } from "next/font/google";
-import VideoIcon from "../../components/VideoIcon";
+import VideoIcon from "../../src/components/VideoIcon";
 import { LineWobble } from "@uiball/loaders";
 
 const roboto = Roboto({
@@ -41,7 +41,6 @@ function Profile() {
                 size={75}
                 where="video"
                 onUpload={(e: any) => {
-                  console.log("ek aur dukh");
                   return;
                 }}
               />
@@ -58,11 +57,7 @@ function Profile() {
             </h1>
             <div id={styles.grid} className="p-1">
               {profile?.video?.map((pie: any) => (
-<<<<<<< HEAD
-                <VideoIcon video={pie} where="profile" key={pie?.id} /> 
-=======
-                <VideoIcon video={pie} where="profile" allowHover={true} /> 
->>>>>>> eb42cc4a041953e03bb2dac83cfbbef5be7febfb
+                <VideoIcon video={pie} where="profile" allowHover={true} key={pie?.id} /> 
               ))}
             </div>
           </div>

@@ -49,8 +49,7 @@ export default function Account({ session }) {
         setAvatarUrl(data.avatar_url);
       }
     } catch (error) {
-      alert("Error loading user data!");
-      console.warn("I'm watchin bish",error);
+      alert("Error loading user data!",error);
     } finally {
       setLoading(false);
     }
@@ -71,11 +70,8 @@ export default function Account({ session }) {
       if (error) throw error;
       alert("Sorry,we found an exceptional erro while uploading!, you could try again BUT if the picture changes on your profile.");
     } catch (error) {
-      alert("Error updating the user data!");
-      console.log(error);
+      alert("Error updating the user data!",error);
     } finally {
-      console.warn('orig->',originalAvatarOnInitialRender);
-      console.log('now->',avatar_url);
       setLoading(false);
     }
   }

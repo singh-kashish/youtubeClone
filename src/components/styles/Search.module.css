@@ -1,0 +1,87 @@
+.input {
+  background: none;  
+  min-width: 100%;
+  color:rgb(112, 218, 183);
+  font-weight: 600;
+  font-size: 16px;
+  margin-left:15px;
+}
+.input:focus {
+  outline: none !important;
+}
+
+#searchDiv {
+  background: linear-gradient(rgb(11, 11, 65),rgb(11, 11, 45));
+  cursor: pointer;
+}
+#searchDiv:hover{
+  background: rgb(10, 33, 100);
+}
+.mic {
+  background-color: #212121;
+  border-radius: 20px;
+  cursor: pointer;
+  padding: 9px;
+  height: 40px;
+  width: 40px;
+  margin-left: 5px;
+  color:aquamarine;
+}
+.mic:hover {
+  background-color: #3d3d3d;
+}
+#search {
+  background: linear-gradient(rgb(11, 11, 65),rgb(11, 11, 45));
+  width: 60px;
+  height: 30px;
+  color:rgb(94, 250, 198);
+  cursor: pointer;
+}
+#search:hover{
+  background: rgb(10, 33, 100);
+  color: whitesmoke;
+}
+@media screen and (min-width:1000px) {
+  .input {
+    background: none;  
+    min-width: 400px;
+    color:rgb(112, 218, 183);
+    font-weight: 600;
+    font-size: 16px;
+    margin-left:15px;
+  }
+  .input:focus {
+    outline: none !important;
+  }
+  #searchDiv {
+    background: linear-gradient(rgb(11, 11, 65),rgb(11, 11, 45));
+    cursor: pointer;
+  }
+  #searchDiv:hover{
+    background: rgb(10, 33, 100);
+  }
+  .mic {
+    background-color: #212121;
+    border-radius: 20px;
+    cursor: pointer;
+    padding: 9px;
+    height: 40px;
+    width: 40px;
+    margin-left: 5px;
+    color:aquamarine;
+  }
+  .mic:hover {
+    background-color: #3d3d3d;
+  }
+  #search {
+    background: linear-gradient(rgb(11, 11, 65),rgb(11, 11, 45));
+    width: 60px;
+    height: 30px;
+    color:rgb(94, 250, 198);
+    cursor: pointer;
+  }
+  #search:hover{
+    background: rgb(10, 33, 100);
+    color: whitesmoke;
+  }  
+}

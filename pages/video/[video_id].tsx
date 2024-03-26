@@ -24,17 +24,17 @@ import useVideoHook from "../../src/hooks/useVideoHook";
 
 const roboto = Roboto({ weight: "700", subsets: ["latin"] });
 const r = Roboto({ weight: "500", subsets: ["latin"] });
-const style = {
+const style:React.CSSProperties = {
   position: "absolute",
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: 400,
-  bgcolor: "#3d3d3d",
-  boxShadow: 24,
-  p: 2,
+  backgroundColor: "#3d3d3d",
+  boxShadow: '24',
+  padding: 2,
 };
-function Video() {
+const Video = () => {
   const suggestProps = {
     where: "Video",
   };
@@ -59,7 +59,7 @@ function Video() {
     setOpen
   } = useVideoHook();
   const player = () => {
-    if (video.videoUrl.includes("supabase")) {
+    if (video && video.videoUrl.includes("supabase")) {
       let toUseUrl = video.videoUrl;
       let lastDotIndx = toUseUrl.lastIndexOf(".") + 1;
       let toUseType = toUseUrl.substr(lastDotIndx);
@@ -79,13 +79,12 @@ function Video() {
       return (
         <div id={styles.video}>
           <ReactPlayer
-            url={video.videoUrl}
+            url={video?.videoUrl}
             playing={true}
             controls={true}
             loop={false}
             onEnded={() => {
               onVideoEnd();
-              console.log("videoend");
             }}
             width="100%"
             height="100%"
@@ -94,90 +93,13 @@ function Video() {
       );
     }
   };
-<<<<<<< HEAD
-=======
-  function checker(element:any) {
-    for (let itr = 0; itr < playlist.length ; itr++) {
-      console.log("k", playlist[itr]);
-      console.log("p", element);
-      if (String(element?.id) === String(playlist[itr]?.id)) {
-        console.log('it',itr);
-        setPosition(itr);
-        return itr;
-      }
-    }
-    return -1;
-  }
-  const onVideoEnd = () => {
-    console.log(playlist);
-    console.warn("fn start", video);
-    console.warn("itr", position);
-    if (playlist.length>0 && position === playlist.length-1 ) {
-      console.warn("end");
-      Router.push(`/video/${playlist[0].id}`);
-    } else if(playlist.length>0) {
-      let toGo = position + 1;
-      console.warn("taking");
-      let pushUrl = `/video/${playlist[toGo].id}`;
-      console.log(toGo);
-      console.log('y',pushUrl);
-      Router.push(pushUrl);
-    }
-  };
-  const playlist = useSelector((state:any) => state.playlist.value);
-  const dispatch = useDispatch();
-  useEffect(() => {
-    const likes = likeData?.getLikedVideosUsingLikedVideos_video_id_fkey;
-    const liked = likes?.find((vote: any) => vote.user_id === user?.id)?.liked;
-    const likeId = likes?.find((vote: any) => vote.user_id === user?.id)?.id;
-    setLiked(liked);
-    setLikedId(likeId);
-  }, [likeData]);
-  useEffect(() => {
-    onOpen();
-    const subs =
-      video?.profiles?.subscribersUsingSubscribers_subscribed_to_id_fkey;
-    const subbed =
-      subs?.find((sub: any) => sub.user_id === user?.id) != undefined
-        ? true
-        : false;
-    const subbedId = subs?.find((sub: any) => sub.user_id === user?.id)?.id;
-    setSubscribed(subbed);
-    setSubscribedId(subbedId);
-    console.warn("vide->", video);
-    
-  });
-  useEffect(()=>{
-    let abc = -1;
-    if(playlist){
-      console.log("here");
-       abc = checker(video)
-    }
-    console.log('curr abc',abc);
-    setPosition(abc);
-    console.log('curr vid pos',position);
-  },[playlist,video]);
-  useEffect(()=>{
-    if (video) {
-      dispatch(addToPlaylist(video));
-    }
-  },[video])
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-  const [updateVideo] = useMutation(UPDATE_VIDEO);
-  const suggestProps = {
-    where: "Video",
-  };
-
->>>>>>> eb42cc4a041953e03bb2dac83cfbbef5be7febfb
   if (!video) {
-    return <VideoShimmer />;
+    return <VideoShimmer/>;
   } else if (video && video?.videoStatus === true) {
     const accountUrl: string = `/profiles/${video.user_id}`;
 
     return (
-      <div className="min-h-screen md:pl-5 pt-5 w-full" id={styles.main}>
+      <div className="min-h-screen md:pl-3 pt-5 lg:dvw" id={styles.main}>
         <div className="w-[100vw]">
           <div>{player()}</div>
           <div className="mb-1">
@@ -195,7 +117,6 @@ function Video() {
                     size={55}
                     where="video"
                     onUpload={(e: any) => {
-                      console.log("ek aur dukh");
                       return 0;
                     }}
                   />
@@ -354,7 +275,7 @@ function Video() {
           </div>
           <Comment comments={video.comment} video={video} />
         </div>
-        <div>
+        <div className="">
           <CurrentQueue />
           {/* suggestedVideo */}
           <SuggestedVideo {...suggestProps} />

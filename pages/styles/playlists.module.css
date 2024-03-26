@@ -7,8 +7,9 @@
 }
 #currentQueue {
   font-family: "Courier New", Courier, monospace;
-  font-weight: 500;
+  font-weight: 700;
   font-size: large;
+  color:aliceblue;
 }
 #mainLine {
   display: flex;
@@ -18,12 +19,13 @@
 }
 #pageName {
   font-size: x-large;
-  font-weight: 600;
+  font-weight: 800;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
+  color: azure;
 }
 #icon {
   margin-top: 10px;
-  border-top: 1px solid #564f4f;
+  border-top: 1px solid #d4caca;
   padding-top: 5px;
 }
 @media screen and (min-width: 391px) {

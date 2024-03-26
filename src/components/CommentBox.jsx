@@ -51,7 +51,7 @@ function CommentBox({ video, user }) {
         type="text"
         placeholder="Post your comment"
         style={{ height: "40px", marginLeft: "5px" }}
-        className="grow rounded-full pl-[5px]"
+        className="grow rounded-full pl-[5px] text-black"
         value={comment}
         onChange={(e) => {
           e.preventDefault();
