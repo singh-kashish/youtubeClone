@@ -19,10 +19,11 @@ import { useSelector, useDispatch } from "react-redux";
 import { addToPlaylist } from "../../reduxReducers/playlistSlice";
 import { Video } from "../types/Video";
 import { rootState } from "../../store";
+type VideoDataType = {getVideo:Video;id:string}
 const useVideoHook = () => {
   const Router = useRouter();
   const user = useUser();
-  const { loading, error, data } = useQuery(GET_VIDEO_BY_ID, {
+  const { loading, error, data } = useQuery<VideoDataType>(GET_VIDEO_BY_ID, {
     variables: {
       id: Router.query.video_id,
     },
@@ -46,9 +47,9 @@ const useVideoHook = () => {
       id: Router.query.video_id,
     },
   });
-  const video: Video = data?.getVideo;
-  const prevViewCount: number = video?.viewCount;
-  const toBeInsertedViewCount: number = prevViewCount + 1;
+  const video = data?.getVideo;
+  const prevViewCount = video?.viewCount;
+  const toBeInsertedViewCount: number = (prevViewCount||0) + 1;
   const onOpen = async () => {
     if (prevViewCount != undefined && viewsChanged === false) {
       const notification = toast.loading(
@@ -75,6 +76,8 @@ const useVideoHook = () => {
       }
     }
   };
+  const {value} = useSelector((state: rootState) => state.playlist);
+  const dispatch = useDispatch();
   useEffect(() => {
     const likes = likeData?.getLikedVideosUsingLikedVideos_video_id_fkey;
     const liked = likes?.find((vote: any) => vote.user_id === user?.id)?.liked;
@@ -93,13 +96,10 @@ const useVideoHook = () => {
     const subbedId = subs?.find((sub: any) => sub.user_id === user?.id)?.id;
     setSubscribed(subbed);
     setSubscribedId(subbedId);
-    console.warn("vide->", video);
     if (video!==undefined) {
       dispatch(addToPlaylist(video));
     }
-    setPosition(checker(video));
-    console.log("ppppp", position);
-  }, [video]);
+    }, [video]);
   const [insertLikedVideos] = useMutation(ADD_LIKE_ON_VIDEO, {
     refetchQueries: [
       GET_LIKES_ON_VIDEO_USING_VIDEO_ID,
@@ -217,12 +217,12 @@ const useVideoHook = () => {
       } = await insertSubscribers({
         variables: {
           user_id: user.id,
-          subscribed_to_id: video.user_id,
+          subscribed_to_id: video?.user_id,
         },
       });
       toast("You are now subscribed to this user!");
       setSubscribed(true);
-      setSubscribedId(data.id);
+      setSubscribedId(data?.id);
     }
   };
   const displayLikes = (data: any) => {
@@ -245,32 +245,26 @@ const useVideoHook = () => {
     if (likes?.length === 0) return 0;
     return displayNumber;
   };
-  function checker(element) {
-    for (let itr = 0; itr < playlist?.length; itr++) {
-      console.log("k", playlist[itr]);
-      console.log("p", element);
-      if (String(element) === String(playlist[itr])) {
+  function checker(element:Video):number {
+    for (let itr = 0; itr < value.length; itr++) {
+      if (element.id === value[itr]?.['id']) {
         return itr;
       }
     }
     return -1;
   }
   const onVideoEnd = () => {
-    console.log(playlist);
-    console.warn("wth", video);
+    if(!video)return;
     let currVidPosition = checker(video);
-
-    console.warn("wtf", currVidPosition);
-    if (currVidPosition === playlist?.length - 1) {
-      console.warn("end");
-      Router.push(`/video/${playlist[0].id}`);
+    if (currVidPosition === value?.length-1) {
+      const toGoToURL=`/video/${value[0]?.['id']}`;
+      Router.push(toGoToURL);
     } else {
-      console.warn("taking");
+      const toGoToURL = `/video/${value[currVidPosition+1]?.['id']}`;
+      Router.push(toGoToURL);  
     }
   };
-  const playlist = useSelector((state: rootState) => state.playlist);
-  console.log("alpha>", playlist);
-  const dispatch = useDispatch();
+  
   return {
     video,
     loading,

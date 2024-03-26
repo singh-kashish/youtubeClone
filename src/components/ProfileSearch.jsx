@@ -6,7 +6,7 @@ import Avatar from "./Avatar";
 import styles from "./styles/ProfileSearch.module.css";
 import { Roboto } from "next/font/google";
 import { useQuery } from "@apollo/client";
-import { GET_PROFILES_BY_SEARCH_TEXT } from "../graphql/queries";
+import { GET_PROFILES_BY_SEARCH_TEXT } from "../../graphql/queries";
 import Link from "next/link";
 
 const roboto = Roboto({ weight: "700", subsets: ["latin"] });
@@ -49,7 +49,6 @@ function ProfileSearch({ text }) {
                   size={150}
                   where="video"
                   onUpload={(e) => {
-                    console.log("ek aur dukh");
                     return;
                   }}
                 />

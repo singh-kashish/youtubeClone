@@ -6,6 +6,7 @@ import styles from "./styles/likedVideo.module.css";
 import VideoIcon from "../src/components/VideoIcon";
 import { LineWobble } from "@uiball/loaders";
 import Link from "next/link";
+import Shimmer from "../src/components/Shimmer";
 
 function library() {
   const user = useUser();
@@ -42,8 +43,8 @@ function library() {
       );
     }else if(!data){
       return (
-        <div className="flex w-full min-h-screen items-center justify-center p-10 text-xxl m-5">
-          <LineWobble size={250} color="red" />
+        <div className="ml-[225px] mt-2 grid grid-cols-3 gap-2 w-fit min-h-screen  bg-zinc-900">
+          <Shimmer/>
         </div>
       );
     } else {

@@ -26,7 +26,9 @@ export default function Avatar({ uid, url, size, onUpload, where }) {
       const url = URL.createObjectURL(data);
       setAvatarUrl(url);
     } catch (error) {
-      console.log("Error downloading image: ", error);
+      const errMsg = new Error(error.message);
+      console.error("Error downloading image: ", error);
+      alert(errMsg);
     }
   }
 
@@ -58,7 +60,9 @@ export default function Avatar({ uid, url, size, onUpload, where }) {
       }
     } catch (error) {
       alert("Error uploading avatar!");
-      console.log(error);
+      const errMsg = new Error(error.message);
+      throw(errMsg);
+      console.error(error);
     } finally {
       setUploading(false);
     }

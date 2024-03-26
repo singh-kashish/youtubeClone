@@ -153,7 +153,6 @@ function EditVideo() {
       }
     } catch (error) {
       toast.error("Error uploading Video!");
-      console.log(error);
     } finally {
       setVideoUploading(false);
     }
@@ -190,9 +189,9 @@ function EditVideo() {
       } else {
         toast.error("This file type is not allowed.");
       }
-    } catch (error) {
+    } catch (error:unknown) {
       toast.error("Error uploading thumbnail!");
-      console.log(error);
+      console.error(error);
     } finally {
       setThumbnailUploading(false);
     }
@@ -238,7 +237,7 @@ function EditVideo() {
     );
   } else if (video && user?.id === video?.user_id) {
     return (
-      <div className="mx-5 z-50">
+      <div className="mx-5 z-50 w-dvw flex flex-col items-center justify-center">
         <h1 className="font-sans font-bold text-xl border-b-2 border-gray-400 w-full text-center text-white mb-1 pb-1">
           Edit the Video
         </h1>

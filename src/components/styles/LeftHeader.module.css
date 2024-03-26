@@ -53,7 +53,7 @@
     justify-content: center;
     background-color: #3d3d3d !important;
   }
-@media screen and (min-width: 391px) {
+@media screen and (min-width: 950px) {
   #leftHeader {
     position: absolute;
     left: 0;

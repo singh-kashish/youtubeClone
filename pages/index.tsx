@@ -15,7 +15,7 @@ export default function Home() {
   const session = useSession();
   const supabase = useSupabaseClient();
   return (
-    <div className={roboto.className} style={{minHeight: "100vh"}}>
+    <div className={roboto.className} style={{minHeight: "100vh",maxWidth:"100wh"}}>
       <Head>
         <title>Youtube Clone</title>
       </Head>

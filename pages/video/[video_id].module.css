@@ -8,14 +8,9 @@
   );
   justify-content: flex-start;
   align-items: center;
-<<<<<<< HEAD
-  width: 100%;
-  color: rgb(233, 224, 224);
-=======
   width: fit-content;
   white-space:pre-wrap;
   color:rgba(255, 255, 255, 0.705);
->>>>>>> eb42cc4a041953e03bb2dac83cfbbef5be7febfb
 }
 #modalFirstLine {
   display: flex;
@@ -132,7 +127,7 @@
   background-color: #2d2d2d;
   border-radius: 10px;
 }
-@media screen and (min-width: 392px) {
+@media screen and (min-width: 900px) {
   #showInput {
     width: 450px !important;
   }

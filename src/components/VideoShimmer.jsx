@@ -1,6 +1,6 @@
 const VideoShimmer = () => {
   return (
-    <div className="flex h-screen w-full text-transparent m-1">
+    <div className="flex h-screen w-dvw text-transparent m-1">
       <div className="flex-col w-3/4">
         <div className=" h-2/3" id="shimmerItem"></div>
         <div

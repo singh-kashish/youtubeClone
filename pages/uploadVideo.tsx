@@ -63,8 +63,6 @@ function uploadVideo() {
           viewCount: 0,
         },
       });
-      console.warn(newVideo);
-      console.log(newVideo.id);
       toast.success("New Post Created!", {
         id: notification,
       });
@@ -74,7 +72,6 @@ function uploadVideo() {
       toast.error("Whoops something went wrong!", {
         id: notification,
       });
-      console.error(error);
     }
   });
   if (user) {

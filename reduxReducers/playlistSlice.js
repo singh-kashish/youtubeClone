@@ -20,16 +20,6 @@ const playlistSlice = createSlice({
       let arr = state.value.filter((item) => item.id !== id);
       state.value = arr;
     },
-<<<<<<< HEAD
-    clearPlaylist: (state, action) => {
-      state.value = [];
-    },
-  },
-});
-
-export const { addToPlaylist, deleteFromPlaylist, clearPlaylist } =
-  playlistSlice.actions;
-=======
     clearPlaylist:(state,action)=>{
       state.value=[];
     }
@@ -37,6 +27,5 @@ export const { addToPlaylist, deleteFromPlaylist, clearPlaylist } =
 });
 
 export const { addToPlaylist, deleteFromPlaylist,clearPlaylist } = playlistSlice.actions;
->>>>>>> eb42cc4a041953e03bb2dac83cfbbef5be7febfb
 
 export default playlistSlice.reducer;

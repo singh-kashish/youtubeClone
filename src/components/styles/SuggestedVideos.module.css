@@ -9,9 +9,8 @@
   gap: 5px;
   grid-auto-rows: minmax(100px, auto);
   margin: 0px;
-  margin-top: 10px;
 }
-@media screen and (min-width: 391px) {
+@media screen and (min-width: 600px) {
   #wobble {
     min-height: 100vh;
     margin-left: 5px;
@@ -22,7 +21,34 @@
     grid-template-columns: repeat(3, 1fr);
     gap: 10px;
     grid-auto-rows: minmax(100px, auto);
-    margin: 65px 0px 0px 250px !important;
+    margin: 8px 0px 0px 250px !important;
+    min-height: 100vh;
+  }
+  #video {
+    display: flex;
+    flex-direction: column;
+    margin-left: 5px;
+    margin-top: 0px;
+    background-image: linear-gradient(
+      to bottom,
+   rgb(0, 0, 0),
+      rgba(255, 0, 0, 0.224)
+    );
+  }
+}
+
+@media screen and (min-width: 950px) {
+  #wobble {
+    min-height: 100vh;
+    margin-left: 5px;
+    margin-top: 0px;
+  }
+  #home {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    grid-auto-rows: minmax(100px, auto);
+    margin: 8px 0px 0px 250px !important;
     min-height: 100vh;
   }
   #video {

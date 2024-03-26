@@ -6,14 +6,23 @@ const suggestedVideoSlice = createSlice({
     name: 'suggestedVideo',
     initialState,
     reducers:{
-        descendingViews(state){
-            state = state;
+        sortVideos(state,action){
+            const sortType = action.payload;
+            state.videos.sort((a,b)=>{
+                if(sortType==="descViews"){
+                    return b.viewCount-a.viewCount;
+                } else if(sortType==="asscViews"){
+                    return a.viewCount-b.viewCount
+                } else {
+                    return 0;
+                }
+            })
         },
         loadVideos(state,action){
-            state.videos.push(action.payload);
+            state.videos = action.payload;
         }
     }
 });
 
-export const {descendingViews,loadVideos} = suggestedVideoSlice.actions;
+export const {sortVideos,loadVideos} = suggestedVideoSlice.actions;
 export default suggestedVideoSlice.reducer;

@@ -28,7 +28,7 @@
   background-color: #212121;
   border-radius: 20px;
   cursor: pointer;
-  padding: 4px;
+  padding: 9px;
   height: 40px;
   width: 40px;
   margin-left: 5px;
@@ -69,7 +69,7 @@
 #headerEnd {
   display: none;
 }
-@media screen and (min-width: 391px) {
+@media screen and (min-width: 800px) {
   #headerEnd {
     display: flex;
     flex-direction: row;

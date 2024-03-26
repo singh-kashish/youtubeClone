@@ -10,8 +10,9 @@ import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
 import Link from "next/link";
 import LeftHeaderEnd from "./LeftHeaderEnd";
 import QueueMusicIcon from "@mui/icons-material/QueueMusic";
+import Search from "./Search";
 
-function LeftHeader({ densityClicked }) {
+function LeftHeader({ densityClicked,handleSubmit,searchText,setSearchText}) {
   const [selected, setSelected] = useState(1);
   const Router = useRouter();
   const selectedStyle = {
@@ -117,6 +118,7 @@ function LeftHeader({ densityClicked }) {
         id={styles.leftHeader}
         className="space-y-1 bg-[#181818] min-h-[650px]"
       >
+        <Search where="leftHeader" handleSubmit={handleSubmit} searchText={searchText} setSearchText={setSearchText}/>
         <Link href="/">
           <div
             style={selected === 1 ? selectedStyle : notSelectedStyle}
@@ -251,7 +253,8 @@ function LeftHeader({ densityClicked }) {
         id={styles.leftHeader_atVideo}
         className="space-y-1 bg-[#181818] min-h-[650px]"
       >
-        <Link href="/">
+       <Search where="leftHeader" handleSubmit={handleSubmit} searchText={searchText} setSearchText={setSearchText}/> 
+       <Link href="/">
           <div
             style={selected === 1 ? selectedStyle : notSelectedStyle}
             id={styles.row}

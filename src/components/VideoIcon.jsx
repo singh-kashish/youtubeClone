@@ -4,7 +4,6 @@ import { Roboto } from "next/font/google";
 import Link from "next/link";
 import Avatar from "./Avatar";
 import ReactPlayer from "react-player";
-import Image from "next/image";
 import MoreVertRoundedIcon from "@mui/icons-material/MoreVertRounded";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -18,7 +17,6 @@ const rb = Roboto({ weight: "300", subsets: ["latin"] });
 const rt = Roboto({ weight: "100", subsets: ["latin"] });
 
 function VideoIcon({ video, where,allowHover }) {
-  console.log(video);
   let linkUrl = `/video/${video.id}`;
   const [isHovering, setIsHovering] = useState(false);
   const handleMouseOver = (e) => {
@@ -122,7 +120,7 @@ function VideoIcon({ video, where,allowHover }) {
             />
           )}
           <div className="ml-1">
-            <h6 className={roboto.className} style={{ color: "#f9f6ee" }}>
+            <h6 className={roboto.className} style={{ color: "#f9f6ee",whiteSpace: 'pre-wrap', overflowWrap: 'break-word',width: '80%' }}>
               {video.title}
             </h6>
             <h1
@@ -140,8 +138,7 @@ function VideoIcon({ video, where,allowHover }) {
             <h1 className={r.className} id={styles.text}>
               {video.viewCount} Views
             </h1>
-          </div>
-          <div id={styles.moreAtVideoIcon}>
+            <div id={styles.moreAtVideoIcon} className="absolute right-2">
             <MoreVertRoundedIcon
               onClick={(e) => {
                 e.preventDefault();
@@ -150,9 +147,10 @@ function VideoIcon({ video, where,allowHover }) {
                   setMoreClicked(false);
                 }, 8000);
               }}
-              id={styles.moreButtonForIconVideoPage}
+              id={styles.moreButtonForIconVideo}
+              className="bg-gray-500 rounded-full shadow-lg"
             />
-            <div hidden={!moreClicked}>
+            <div hidden={!moreClicked} className="relative bottom-2 right-30" >
               <h1
                 onClick={(e) => {
                   e.preventDefault();
@@ -165,11 +163,12 @@ function VideoIcon({ video, where,allowHover }) {
               </h1>
             </div>
           </div>
+          </div>
+          
         </div>
       </Link>
     );
   } else if (video.videoStatus == true && where === "home") {
-    console.log("s", video);
     return (
       <Link href={linkUrl}>
         <div
@@ -198,6 +197,8 @@ function VideoIcon({ video, where,allowHover }) {
               <h6 className={roboto.className} style={{ color: "#f9f6ee" }}>
                 {video.title}
               </h6>
+              <div className="flex justify-start">
+              <div className="flex flex-col mr-16">
               <h1
                 className={r.className}
                 id={styles.text}
@@ -213,8 +214,8 @@ function VideoIcon({ video, where,allowHover }) {
               <h1 className={r.className} id={styles.text}>
                 {video.viewCount} views
               </h1>
-            </div>
-            <div id={styles.moreAtVideoIcon}>
+              </div>
+              <div id={styles.moreAtVideoIcon}>
               <MoreVertRoundedIcon
                 onClick={(e) => {
                   e.preventDefault();
@@ -234,6 +235,8 @@ function VideoIcon({ video, where,allowHover }) {
                   Add to queue
                 </h1>
               </div>
+            </div>
+            </div>
             </div>
           </div>
         </div>
@@ -337,7 +340,6 @@ function VideoIcon({ video, where,allowHover }) {
                 size={35}
                 where="video"
                 onUpload={(e) => {
-                  console.log("ek aur dukh");
                   return 0;
                 }}
               />
@@ -355,16 +357,16 @@ function VideoIcon({ video, where,allowHover }) {
     );
   } else if (video.videoStatus && where === "search") {
     return (
-      <div id={styles.searchHome} className="mt-1">
+      <div id={styles.searchHome} className="mt-1 w-full">
         <Link href={linkUrl}>
           <img
             src={video.thumbnailUrl}
-            width="450px"
-            height="350px"
+            width="370px"
+            height="230px"
             id={styles.searchImage}
           />
         </Link>
-        <div className="mt-2 ml-2">
+        <div className="mt-2 ml-2 w-2/3">
           <Link href={linkUrl}>
             <h6 className={r.className} id={styles.searchVideoTitle}>
               {video.title}
@@ -381,7 +383,6 @@ function VideoIcon({ video, where,allowHover }) {
                 size={35}
                 where="video"
                 onUpload={(e) => {
-                  console.log("ek aur dukh");
                   return 0;
                 }}
               />
@@ -391,7 +392,7 @@ function VideoIcon({ video, where,allowHover }) {
             </div>
           </Link>
           <h1 id={styles.text} className={rt.className}>
-            {video.description}
+            {video.description.substring(0,400)}
           </h1>
         </div>
       </div>
@@ -409,16 +410,16 @@ function VideoIcon({ video, where,allowHover }) {
           ) : (
             <img
               src={video.thumbnailUrl}
-              width="250px"
+              width="150px"
               height="150px"
-              id={styles.image_play}
+              id={styles.imageAtVideo}
             />
           )}
           <div className="mt-2 ml-0.5" id={styles.row_play}>
             <div style={{ marginLeft: "5px" }}>
               <h6
                 className={roboto.className}
-                style={{ color: "#f9f6ee", marginBottom: "10px" }}
+                style={{ color: "#f9f6ee",whiteSpace: 'pre-wrap', overflowWrap: 'break-word',width: '80%' }}
               >
                 {video.title}
               </h6>
@@ -443,9 +444,7 @@ function VideoIcon({ video, where,allowHover }) {
               <h1 className={r.className} id={styles.text}>
                 {video.viewCount} views
               </h1>
-            </div>
-          </div>
-          <div id={styles.moreAtVideoIcon}>
+              <div id={styles.moreAtVideoIcon}>
             <MoreVertRoundedIcon
               onClick={(e) => {
                 e.preventDefault();
@@ -479,6 +478,9 @@ function VideoIcon({ video, where,allowHover }) {
               </h1>
             </div>
           </div>
+            </div>
+          </div>
+          
         </div>
       </Link>
     );
