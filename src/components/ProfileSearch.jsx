@@ -1,34 +1,31 @@
 import { useUser } from "@supabase/auth-helpers-react";
 import React, { useEffect, useState } from "react";
-import { LineWobble } from "@uiball/loaders";
 import { useRouter } from "next/router";
 import Avatar from "./Avatar";
 import styles from "./styles/ProfileSearch.module.css";
 import { Roboto } from "next/font/google";
-import { useQuery } from "@apollo/client";
-import { GET_PROFILES_BY_SEARCH_TEXT } from "../../graphql/queries";
 import Link from "next/link";
-
+import useProfileSearchHook from "../hooks/useProfileSearchHook";
 const roboto = Roboto({ weight: "700", subsets: ["latin"] });
 const r = Roboto({ weight: "500", subsets: ["latin"] });
 const rb = Roboto({ weight: "300", subsets: ["latin"] });
 const rt = Roboto({ weight: "100", subsets: ["latin"] });
 function ProfileSearch({ text }) {
   const user = useUser();
-  let searchText = `${text}:*`;
-  const { loading, error, data } = useQuery(GET_PROFILES_BY_SEARCH_TEXT, {
-    variables: {
-      text: searchText,
-    },
-  });
+  const profiles = useProfileSearchHook(text);
   const videosFound = () => {
-    if (loading) {
+    if (profiles === undefined) {
       return (
         <div className="flex items-center justify-center" id={styles.wobble}>
-          <LineWobble size={300} color="red" />
+          <h5
+            id="shimmerItem"
+            className="py-20 w-3/4 text-lg font-normal text-gray-200 text-center"
+          >
+            Searching...
+          </h5>
         </div>
       );
-    } else if (!data || data?.getProfilesUsingSearchText?.length === 0) {
+    } else if (profiles?.length === 0) {
       return (
         <div
           className="flex items-center justify-center p-10 text-xxl m-1/2"
@@ -40,7 +37,7 @@ function ProfileSearch({ text }) {
     } else {
       return (
         <div id={styles.main}>
-          {data?.getProfilesUsingSearchText?.map((pie) => (
+          {profiles?.map((pie) => (
             <Link href={`/profiles/${pie?.id}`} key={pie?.id}>
               <div id={styles.user}>
                 <Avatar

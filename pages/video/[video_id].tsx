@@ -49,7 +49,7 @@ const Video = () => {
     subscribe,
     subscribed,
     liked,
-    upVote,
+    useUpVote,
     displayLikes,
     displayUnlikes,
     handleClose,
@@ -59,10 +59,10 @@ const Video = () => {
     setOpen
   } = useVideoHook();
   const player = () => {
-    if (video && video.videoUrl.includes("supabase")) {
-      let toUseUrl = video.videoUrl;
-      let lastDotIndx = toUseUrl.lastIndexOf(".") + 1;
-      let toUseType = toUseUrl.substr(lastDotIndx);
+    if (video && video?.videoUrl.includes("supabase")) {
+      let toUseUrl = video?.videoUrl;
+      let lastDotIndx = toUseUrl?.lastIndexOf(".") + 1;
+      let toUseType = toUseUrl?.substr(lastDotIndx);
       return (
         <div id={styles.video}>
           <video
@@ -162,7 +162,7 @@ const Video = () => {
                         className="pr-2"
                         onClick={(e) => {
                           e.preventDefault();
-                          upVote(true);
+                          useUpVote(true);
                         }}
                       />
                       {displayLikes(likeData)}
@@ -178,7 +178,7 @@ const Video = () => {
                         className="pr-2"
                         onClick={(e) => {
                           e.preventDefault();
-                          upVote(false);
+                          useUpVote(false);
                         }}
                       />
                       {displayUnlikes(likeData)}

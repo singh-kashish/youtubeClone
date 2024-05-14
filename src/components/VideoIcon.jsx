@@ -10,13 +10,14 @@ import {
   addToPlaylist,
   deleteFromPlaylist,
 } from "../../reduxReducers/playlistSlice";
+import PlaylistModal from "./PlaylistModal";
 
 const roboto = Roboto({ weight: "700", subsets: ["latin"] });
 const r = Roboto({ weight: "500", subsets: ["latin"] });
 const rb = Roboto({ weight: "300", subsets: ["latin"] });
 const rt = Roboto({ weight: "100", subsets: ["latin"] });
 
-function VideoIcon({ video, where,allowHover }) {
+function VideoIcon({ video, where, allowHover }) {
   let linkUrl = `/video/${video.id}`;
   const [isHovering, setIsHovering] = useState(false);
   const handleMouseOver = (e) => {
@@ -120,7 +121,15 @@ function VideoIcon({ video, where,allowHover }) {
             />
           )}
           <div className="ml-1">
-            <h6 className={roboto.className} style={{ color: "#f9f6ee",whiteSpace: 'pre-wrap', overflowWrap: 'break-word',width: '80%' }}>
+            <h6
+              className={roboto.className}
+              style={{
+                color: "#f9f6ee",
+                whiteSpace: "pre-wrap",
+                overflowWrap: "break-word",
+                width: "80%",
+              }}
+            >
               {video.title}
             </h6>
             <h1
@@ -139,91 +148,18 @@ function VideoIcon({ video, where,allowHover }) {
               {video.viewCount} Views
             </h1>
             <div id={styles.moreAtVideoIcon} className="absolute right-2">
-            <MoreVertRoundedIcon
-              onClick={(e) => {
-                e.preventDefault();
-                setMoreClicked(!moreClicked);
-                setTimeout(() => {
-                  setMoreClicked(false);
-                }, 8000);
-              }}
-              id={styles.moreButtonForIconVideo}
-              className="bg-gray-500 rounded-full shadow-lg"
-            />
-            <div hidden={!moreClicked} className="relative bottom-2 right-30" >
-              <h1
-                onClick={(e) => {
-                  e.preventDefault();
-                  dispatch(addToPlaylist(video));
-                  setMoreClicked(!moreClicked);
-                }}
-                id={styles.addToPlaylist}
-              >
-                Add to Queue
-              </h1>
-            </div>
-          </div>
-          </div>
-          
-        </div>
-      </Link>
-    );
-  } else if (video.videoStatus == true && where === "home") {
-    return (
-      <Link href={linkUrl}>
-        <div
-          id={styles.home}
-          onMouseOver={handleMouseOver}
-          onMouseOut={handleMouseOut}
-        >
-          {isHovering ? (
-            player()
-          ) : (
-            <img
-              src={video.thumbnailUrl}
-              width="250px"
-              height="150px"
-              id={styles.image}
-            />
-          )}
-          <div className="mt-2 ml-0.5" id={styles.row}>
-            <Avatar
-              uid={video?.user_id}
-              url={video?.profiles.avatar_url}
-              size={45}
-              where="video"
-            />
-            <div style={{ marginLeft: "5px" }}>
-              <h6 className={roboto.className} style={{ color: "#f9f6ee" }}>
-                {video.title}
-              </h6>
-              <div className="flex justify-start">
-              <div className="flex flex-col mr-16">
-              <h1
-                className={r.className}
-                id={styles.text}
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  alignItems: "center",
-                }}
-              >
-                <span style={{ fontSize: "10px", fontWeight: "900" }}>@</span>
-                {video.profiles.username}
-              </h1>
-              <h1 className={r.className} id={styles.text}>
-                {video.viewCount} views
-              </h1>
-              </div>
-              <div id={styles.moreAtVideoIcon}>
               <MoreVertRoundedIcon
                 onClick={(e) => {
                   e.preventDefault();
                   setMoreClicked(!moreClicked);
+                  setTimeout(() => {
+                    setMoreClicked(false);
+                  }, 8000);
                 }}
-                id={styles.moreButtonAtVideoIcon}
+                id={styles.moreButtonForIconVideo}
+                className="bg-gray-500 rounded-full shadow-lg"
               />
-              <div hidden={!moreClicked}>
+              <div hidden={!moreClicked} className="relative bottom-2 right-30">
                 <h1
                   onClick={(e) => {
                     e.preventDefault();
@@ -232,15 +168,100 @@ function VideoIcon({ video, where,allowHover }) {
                   }}
                   id={styles.addToPlaylist}
                 >
-                  Add to queue
+                  Add to Queue
                 </h1>
               </div>
-            </div>
-            </div>
             </div>
           </div>
         </div>
       </Link>
+    );
+  } else if (video.videoStatus == true && where === "home") {
+    return (
+      <div
+        id={styles.home}
+        onMouseOver={handleMouseOver}
+        onMouseOut={handleMouseOut}
+      >
+        {isHovering ? (
+          player()
+        ) : (
+          <Link href={linkUrl}>
+            <img
+              src={video.thumbnailUrl}
+              width="250px"
+              height="150px"
+              id={styles.image}
+            />
+          </Link>
+        )}
+        <div className="mt-2 ml-0.5" id={styles.row}>
+          <Avatar
+            uid={video?.user_id}
+            url={video?.profiles.avatar_url}
+            size={45}
+            where="video"
+          />
+          <div style={{ marginLeft: "5px" }}>
+            <Link href={linkUrl}>
+              <h6 className={roboto.className} style={{ color: "#f9f6ee" }}>
+                {video.title}
+              </h6>
+            </Link>
+            <div className="flex justify-start">
+              <div className="flex flex-col mr-16">
+                <h1
+                  className={r.className}
+                  id={styles.text}
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                  }}
+                >
+                  <span style={{ fontSize: "10px", fontWeight: "900" }}>@</span>
+                  {video.profiles.username}
+                </h1>
+                <h1 className={r.className} id={styles.text}>
+                  {video.viewCount} views
+                </h1>
+              </div>
+              <div id={styles.moreAtVideoIcon}>
+                <MoreVertRoundedIcon
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setMoreClicked(!moreClicked);
+                    setTimeout(() => {
+                      setMoreClicked(false);
+                    }, 8000);
+                  }}
+                  id={styles.moreButtonAtVideoIcon}
+                />
+                <div hidden={!moreClicked}>
+                  <h1
+                    onClick={(e) => {
+                      e.preventDefault();
+                      dispatch(addToPlaylist(video));
+                      setMoreClicked(!moreClicked);
+                    }}
+                    id={styles.addToPlaylist}
+                  >
+                    Add to queue
+                  </h1>
+                  <PlaylistModal
+                    why="Add video to playlist"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      setMoreClicked(!moreClicked);
+                    }}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     );
   } else if (video.videoStatus && where == "subs") {
     return (
@@ -392,7 +413,7 @@ function VideoIcon({ video, where,allowHover }) {
             </div>
           </Link>
           <h1 id={styles.text} className={rt.className}>
-            {video.description.substring(0,400)}
+            {video.description.substring(0, 400)}
           </h1>
         </div>
       </div>
@@ -405,7 +426,7 @@ function VideoIcon({ video, where,allowHover }) {
           onMouseOver={handleMouseOver}
           onMouseOut={handleMouseOut}
         >
-          {(isHovering && allowHover) ? (
+          {isHovering && allowHover ? (
             player()
           ) : (
             <img
@@ -419,7 +440,12 @@ function VideoIcon({ video, where,allowHover }) {
             <div style={{ marginLeft: "5px" }}>
               <h6
                 className={roboto.className}
-                style={{ color: "#f9f6ee",whiteSpace: 'pre-wrap', overflowWrap: 'break-word',width: '80%' }}
+                style={{
+                  color: "#f9f6ee",
+                  whiteSpace: "pre-wrap",
+                  overflowWrap: "break-word",
+                  width: "80%",
+                }}
               >
                 {video.title}
               </h6>
@@ -445,42 +471,41 @@ function VideoIcon({ video, where,allowHover }) {
                 {video.viewCount} views
               </h1>
               <div id={styles.moreAtVideoIcon}>
-            <MoreVertRoundedIcon
-              onClick={(e) => {
-                e.preventDefault();
-                setMoreClicked(!moreClicked);
-                setTimeout(() => {
-                  setMoreClicked(false);
-                }, 8000);
-              }}
-              id={styles.moreButtonAtVideoIcon}
-            />
-            <div hidden={!moreClicked}>
-              <h1
-                onClick={(e) => {
-                  e.preventDefault();
-                  dispatch(addToPlaylist(video));
-                  setMoreClicked(!moreClicked);
-                }}
-                id={styles.addToPlaylist}
-              >
-                Add to Queue
-              </h1>
-              <h1
-                onClick={(e) => {
-                  e.preventDefault();
-                  dispatch(deleteFromPlaylist(video));
-                  setMoreClicked(!moreClicked);
-                }}
-                id={styles.addToPlaylist}
-              >
-                Remove from Queue
-              </h1>
+                <MoreVertRoundedIcon
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setMoreClicked(!moreClicked);
+                    setTimeout(() => {
+                      setMoreClicked(false);
+                    }, 8000);
+                  }}
+                  id={styles.moreButtonAtVideoIcon}
+                />
+                <div hidden={!moreClicked}>
+                  <h1
+                    onClick={(e) => {
+                      e.preventDefault();
+                      dispatch(addToPlaylist(video));
+                      setMoreClicked(!moreClicked);
+                    }}
+                    id={styles.addToPlaylist}
+                  >
+                    Add to Queue
+                  </h1>
+                  <h1
+                    onClick={(e) => {
+                      e.preventDefault();
+                      dispatch(deleteFromPlaylist(video));
+                      setMoreClicked(!moreClicked);
+                    }}
+                    id={styles.addToPlaylist}
+                  >
+                    Remove from Queue
+                  </h1>
+                </div>
+              </div>
             </div>
           </div>
-            </div>
-          </div>
-          
         </div>
       </Link>
     );

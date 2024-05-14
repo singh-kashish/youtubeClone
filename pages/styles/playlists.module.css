@@ -3,12 +3,12 @@
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
-  margin: 100px 0px 0px 0px;
+  margin: 0px 0px 0px 0px;
 }
 #currentQueue {
   font-family: "Courier New", Courier, monospace;
   font-weight: 700;
-  font-size: large;
+  font-size: larger;
   color:aliceblue;
 }
 #mainLine {
@@ -34,14 +34,15 @@
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
-    margin: 100px 0px 0px 250px;
   }
 
   #mainLine {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
     justify-content: flex-start;
+    margin: 0px 0px 0px 250px;
+ 
   }
   #pageName {
     font-size: x-large;

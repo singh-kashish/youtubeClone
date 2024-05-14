@@ -19,7 +19,7 @@ const HeaderEnd = () => {
   const [username, setUsername] = useState(null);
   const [full_name, setFull_name] = useState(null);
   useEffect(() => {
-    getProfile();
+    if (session !== null) getProfile();
   }, [session]);
 
   async function getProfile() {
@@ -72,7 +72,15 @@ const HeaderEnd = () => {
               className={styles.addVideo}
             />
           </Link>
-          <Avatar uid={user?.id} url={avatar_url} size={30} where="header" onUpload={()=>{console.log("so many errors")}} />
+          <Avatar
+            uid={user?.id}
+            url={avatar_url}
+            size={30}
+            where="header"
+            onUpload={() => {
+              console.log("so many errors");
+            }}
+          />
           <Link href="/">
             <button
               className="py-2 px-4 shadow-md no-underline rounded-full bg-red text-white font-sans font-semibold text-sm border-red btn-primary hover:text-white hover:bg-red-light focus:outline-none active:shadow-none"

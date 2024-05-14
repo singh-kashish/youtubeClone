@@ -12,7 +12,12 @@ import LeftHeaderEnd from "./LeftHeaderEnd";
 import QueueMusicIcon from "@mui/icons-material/QueueMusic";
 import Search from "./Search";
 
-function LeftHeader({ densityClicked,handleSubmit,searchText,setSearchText}) {
+function LeftHeader({
+  densityClicked,
+  handleSubmit,
+  searchText,
+  setSearchText,
+}) {
   const [selected, setSelected] = useState(1);
   const Router = useRouter();
   const selectedStyle = {
@@ -116,9 +121,14 @@ function LeftHeader({ densityClicked,handleSubmit,searchText,setSearchText}) {
     return (
       <div
         id={styles.leftHeader}
-        className="space-y-1 bg-[#181818] min-h-[650px]"
+        className="space-y-1 bg-[#181818] min-h-[650px] w-screen"
       >
-        <Search where="leftHeader" handleSubmit={handleSubmit} searchText={searchText} setSearchText={setSearchText}/>
+        <Search
+          where="leftHeader"
+          handleSubmit={handleSubmit}
+          searchText={searchText}
+          setSearchText={setSearchText}
+        />
         <Link href="/">
           <div
             style={selected === 1 ? selectedStyle : notSelectedStyle}
@@ -204,7 +214,7 @@ function LeftHeader({ densityClicked,handleSubmit,searchText,setSearchText}) {
     return (
       <div
         id={styles.leftHeader_atVideo_d}
-        className="space-y-1 bg-[#181818] min-h-[650px]"
+        className="space-y-1 bg-[#181818] min-h-[650px] w-screen"
       >
         <Link href="/">
           <div
@@ -253,8 +263,13 @@ function LeftHeader({ densityClicked,handleSubmit,searchText,setSearchText}) {
         id={styles.leftHeader_atVideo}
         className="space-y-1 bg-[#181818] min-h-[650px]"
       >
-       <Search where="leftHeader" handleSubmit={handleSubmit} searchText={searchText} setSearchText={setSearchText}/> 
-       <Link href="/">
+        <Search
+          where="leftHeader"
+          handleSubmit={handleSubmit}
+          searchText={searchText}
+          setSearchText={setSearchText}
+        />
+        <Link href="/">
           <div
             style={selected === 1 ? selectedStyle : notSelectedStyle}
             id={styles.row}
@@ -316,6 +331,19 @@ function LeftHeader({ densityClicked,handleSubmit,searchText,setSearchText}) {
           >
             <ThumbUpOffAltIcon className="mr-2" />
             Liked Videos
+          </div>
+        </Link>
+        <Link href="/playlists">
+          <div
+            id={styles.row}
+            style={selected === 6 ? selectedStyle : notSelectedStyle}
+            onClick={(e) => {
+              setSelected(6);
+            }}
+            className="py-2 px-4 shadow-md no-underline rounded-full bg-red text-white font-sans font-semibold text-sm border-red btn-primary hover:text-white hover:bg-red-light focus:outline-none active:shadow-none"
+          >
+            <QueueMusicIcon />
+            Playlists
           </div>
         </Link>
         <Subscriptions className="mt-2 border-t-2 border-t-slate-700" />

@@ -5,10 +5,10 @@ import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import Link from "next/link";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 import { DotSpinner } from "@uiball/loaders";
-
+import { brokenImage } from "../utils/constants";
 export default function Avatar({ uid, url, size, onUpload, where }) {
   const supabase = useSupabaseClient();
-  const [avatarUrl, setAvatarUrl] = useState(null);
+  const [avatarUrl, setAvatarUrl] = useState(brokenImage);
   const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
@@ -17,14 +17,16 @@ export default function Avatar({ uid, url, size, onUpload, where }) {
 
   async function downloadImage(path) {
     try {
-      const { data, error } = await supabase.storage
-        .from("avatars")
-        .download(path);
-      if (error) {
-        throw error;
+      if (url !== brokenImage && url !== undefined) {
+        const { data, error } = await supabase.storage
+          .from("avatars")
+          .download(path);
+        if (error) {
+          throw error;
+        }
+        const url = URL.createObjectURL(data);
+        setAvatarUrl(url);
       }
-      const url = URL.createObjectURL(data);
-      setAvatarUrl(url);
     } catch (error) {
       const errMsg = new Error(error.message);
       console.error("Error downloading image: ", error);
@@ -61,7 +63,7 @@ export default function Avatar({ uid, url, size, onUpload, where }) {
     } catch (error) {
       alert("Error uploading avatar!");
       const errMsg = new Error(error.message);
-      throw(errMsg);
+      throw errMsg;
       console.error(error);
     } finally {
       setUploading(false);

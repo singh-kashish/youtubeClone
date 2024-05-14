@@ -18,6 +18,7 @@ import {
   MODIFY_LIKE_ON_COMMENT,
 } from "../../graphql/mutations";
 import toast from "react-hot-toast";
+import uuid from "./uuid";
 
 const roboto = Roboto({ weight: "700", subsets: ["latin"] });
 const r = Roboto({ weight: "500", subsets: ["latin"] });
@@ -43,21 +44,21 @@ const EveryComment = ({ comment, user }) => {
   const [insertLikedComments] = useMutation(ADD_LIKE_ON_COMMENT, {
     refetchQueries: [
       GET_LIKES_ON_COMMENT_USING_COMMENT_ID,
-      "getLikedCommentsUsingLikedComments_comment_id_fkey",
+      "likedCommentsUsingLikedComments_comment_id_fkey",
     ],
   });
 
   const [deleteLikedComments] = useMutation(REMOVE_LIKE_ON_COMMENT, {
     refetchQueries: [
       GET_LIKES_ON_COMMENT_USING_COMMENT_ID,
-      "getLikedCommentsUsingLikedComments_comment_id_fkey",
+      "likedCommentsUsingLikedComments_comment_id_fkey",
     ],
   });
 
   const [updateLikedComments] = useMutation(MODIFY_LIKE_ON_COMMENT, {
     refetchQueries: [
       GET_LIKES_ON_COMMENT_USING_COMMENT_ID,
-      "getLikedCommentsUsingLikedComments_comment_id_fkey",
+      "likedCommentsUsingLikedComments_comment_id_fkey",
     ],
   });
   const upVote = async (typeOfLike) => {
@@ -116,10 +117,12 @@ const EveryComment = ({ comment, user }) => {
       toast("Changed to Like!");
     } else {
       toast("Inserting your Like!");
+      const toInsertID = uuid();
       const {
         data: { addLike: newLike },
       } = await insertLikedComments({
         variables: {
+          id: toInsertID,
           comment_id: comment?.id,
           user_id: user.id,
           like: typeOfLike,
@@ -130,7 +133,7 @@ const EveryComment = ({ comment, user }) => {
   };
 
   const displayLikes = (data) => {
-    const likes = data?.getLikedCommentsUsingLikedComments_comment_id_fkey;
+    const likes = data?.likedCommentsUsingLikedComments_comment_id_fkey;
     const displayNumber = likes?.reduce(
       (total, vote) => (vote.like ? (total += 1) : total),
       0
@@ -140,7 +143,7 @@ const EveryComment = ({ comment, user }) => {
     return displayNumber;
   };
   const displayUnlikes = (data) => {
-    const likes = data?.getLikedCommentsUsingLikedComments_comment_id_fkey;
+    const likes = data?.likedCommentsUsingLikedComments_comment_id_fkey;
     const displayNumber = likes?.reduce(
       (total, vote) => (vote.like === false ? (total += 1) : total),
       0
@@ -150,7 +153,8 @@ const EveryComment = ({ comment, user }) => {
     return displayNumber;
   };
   useEffect(() => {
-    const likes = data?.getLikedCommentsUsingLikedComments_comment_id_fkey;
+    console.log(data);
+    const likes = data?.likedCommentsUsingLikedComments_comment_id_fkey;
     const like = likes?.find((vote) => vote.user_id === user?.id)?.like;
     const likeId = likes?.find((vote) => vote.user_id === user?.id)?.id;
     setLike(like);
@@ -238,7 +242,7 @@ const EveryComment = ({ comment, user }) => {
               e.preventDefault();
               setTextForEdit(e.target.value);
             }}
-            className="rounded-full"
+            className="rounded-full text-black px-2"
           />
           <button
             className="py-2 px-4 mr-2 ml-2 shadow-md no-underline rounded-full text-white font-sans font-semibold text-sm border-red hover:bg-gray-900 hover:bg-red-light focus:outline-none active:shadow-none"
