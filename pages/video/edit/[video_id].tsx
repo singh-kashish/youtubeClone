@@ -33,7 +33,7 @@ function EditVideo() {
     },
   });
   console.log(data);
-  const video: Video = data?.video;
+  const video = data?.video as Video;
   const {
     register,
     setValue,
@@ -42,12 +42,14 @@ function EditVideo() {
     formState: { errors },
   } = useForm<FormData>();
   useEffect(() => {
-    setValue("videoTitle", video?.title);
-    setValue("videoDescription", video?.description);
-    setValue("thumbnailUrl", video?.thumbnailUrl);
-    setValue("videoUrl", video?.videoUrl);
-    setValue("videoStatus", video?.videoStatus);
-  }, [video]);
+    if(video && video?.title && video?.description && video?.thumbnailUrl && video.videoStatus && video.videoUrl){
+      setValue("videoTitle", video?.title);
+      setValue("videoDescription", video?.description);
+      setValue("thumbnailUrl", video?.thumbnailUrl);
+      setValue("videoUrl", video?.videoUrl);
+      setValue("videoStatus", video?.videoStatus);
+    }
+    }, [video]);
   function isValidHttpUrl(string: any) {
     let url: any;
     try {

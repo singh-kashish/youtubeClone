@@ -2134,9 +2134,9 @@ export function useGetVideoByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptio
           const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetVideoByIdQuery, GetVideoByIdQueryVariables>(GetVideoByIdDocument, options);
         }
-export function useGetVideoByIdSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetVideoByIdQuery, GetVideoByIdQueryVariables>) {
+export function useGetVideoByIdSuspenseQuery(baseOptions?: Apollo.QueryHookOptions<GetVideoByIdQuery, GetVideoByIdQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<GetVideoByIdQuery, GetVideoByIdQueryVariables>(GetVideoByIdDocument, options);
+          return Apollo.useQuery<GetVideoByIdQuery, GetVideoByIdQueryVariables>(GetVideoByIdDocument, options);
         }
 export type GetVideoByIdQueryHookResult = ReturnType<typeof useGetVideoByIdQuery>;
 export type GetVideoByIdLazyQueryHookResult = ReturnType<typeof useGetVideoByIdLazyQuery>;
@@ -2181,9 +2181,9 @@ export function useGetLikesOnCommentUsingCommentIdLazyQuery(baseOptions?: Apollo
           const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetLikesOnCommentUsingCommentIdQuery, GetLikesOnCommentUsingCommentIdQueryVariables>(GetLikesOnCommentUsingCommentIdDocument, options);
         }
-export function useGetLikesOnCommentUsingCommentIdSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetLikesOnCommentUsingCommentIdQuery, GetLikesOnCommentUsingCommentIdQueryVariables>) {
+export function useGetLikesOnCommentUsingCommentIdSuspenseQuery(baseOptions?: Apollo.QueryHookOptions<GetLikesOnCommentUsingCommentIdQuery, GetLikesOnCommentUsingCommentIdQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<GetLikesOnCommentUsingCommentIdQuery, GetLikesOnCommentUsingCommentIdQueryVariables>(GetLikesOnCommentUsingCommentIdDocument, options);
+          return Apollo.useQuery<GetLikesOnCommentUsingCommentIdQuery, GetLikesOnCommentUsingCommentIdQueryVariables>(GetLikesOnCommentUsingCommentIdDocument, options);
         }
 export type GetLikesOnCommentUsingCommentIdQueryHookResult = ReturnType<typeof useGetLikesOnCommentUsingCommentIdQuery>;
 export type GetLikesOnCommentUsingCommentIdLazyQueryHookResult = ReturnType<typeof useGetLikesOnCommentUsingCommentIdLazyQuery>;
@@ -2236,9 +2236,9 @@ export function useGetVideosLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<
           const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetVideosQuery, GetVideosQueryVariables>(GetVideosDocument, options);
         }
-export function useGetVideosSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetVideosQuery, GetVideosQueryVariables>) {
+export function useGetVideosSuspenseQuery(baseOptions?: Apollo.QueryHookOptions<GetVideosQuery, GetVideosQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<GetVideosQuery, GetVideosQueryVariables>(GetVideosDocument, options);
+          return Apollo.useQuery<GetVideosQuery, GetVideosQueryVariables>(GetVideosDocument, options);
         }
 export type GetVideosQueryHookResult = ReturnType<typeof useGetVideosQuery>;
 export type GetVideosLazyQueryHookResult = ReturnType<typeof useGetVideosLazyQuery>;
@@ -2279,9 +2279,9 @@ export function useGetLikesOnVideoUsingVideoIdLazyQuery(baseOptions?: Apollo.Laz
           const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetLikesOnVideoUsingVideoIdQuery, GetLikesOnVideoUsingVideoIdQueryVariables>(GetLikesOnVideoUsingVideoIdDocument, options);
         }
-export function useGetLikesOnVideoUsingVideoIdSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetLikesOnVideoUsingVideoIdQuery, GetLikesOnVideoUsingVideoIdQueryVariables>) {
+export function useGetLikesOnVideoUsingVideoIdSuspenseQuery(baseOptions?: Apollo.QueryHookOptions<GetLikesOnVideoUsingVideoIdQuery, GetLikesOnVideoUsingVideoIdQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<GetLikesOnVideoUsingVideoIdQuery, GetLikesOnVideoUsingVideoIdQueryVariables>(GetLikesOnVideoUsingVideoIdDocument, options);
+          return Apollo.useQuery<GetLikesOnVideoUsingVideoIdQuery, GetLikesOnVideoUsingVideoIdQueryVariables>(GetLikesOnVideoUsingVideoIdDocument, options);
         }
 export type GetLikesOnVideoUsingVideoIdQueryHookResult = ReturnType<typeof useGetLikesOnVideoUsingVideoIdQuery>;
 export type GetLikesOnVideoUsingVideoIdLazyQueryHookResult = ReturnType<typeof useGetLikesOnVideoUsingVideoIdLazyQuery>;
@@ -2343,9 +2343,9 @@ export function useGetSubscribersUsingUserIdLazyQuery(baseOptions?: Apollo.LazyQ
           const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetSubscribersUsingUserIdQuery, GetSubscribersUsingUserIdQueryVariables>(GetSubscribersUsingUserIdDocument, options);
         }
-export function useGetSubscribersUsingUserIdSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetSubscribersUsingUserIdQuery, GetSubscribersUsingUserIdQueryVariables>) {
+export function useGetSubscribersUsingUserIdSuspenseQuery(baseOptions?: Apollo.QueryHookOptions<GetSubscribersUsingUserIdQuery, GetSubscribersUsingUserIdQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<GetSubscribersUsingUserIdQuery, GetSubscribersUsingUserIdQueryVariables>(GetSubscribersUsingUserIdDocument, options);
+          return Apollo.useQuery<GetSubscribersUsingUserIdQuery, GetSubscribersUsingUserIdQueryVariables>(GetSubscribersUsingUserIdDocument, options);
         }
 export type GetSubscribersUsingUserIdQueryHookResult = ReturnType<typeof useGetSubscribersUsingUserIdQuery>;
 export type GetSubscribersUsingUserIdLazyQueryHookResult = ReturnType<typeof useGetSubscribersUsingUserIdLazyQuery>;
@@ -2410,9 +2410,9 @@ export function useGetProfileLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions
           const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetProfileQuery, GetProfileQueryVariables>(GetProfileDocument, options);
         }
-export function useGetProfileSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetProfileQuery, GetProfileQueryVariables>) {
+export function useGetProfileSuspenseQuery(baseOptions?: Apollo.QueryHookOptions<GetProfileQuery, GetProfileQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<GetProfileQuery, GetProfileQueryVariables>(GetProfileDocument, options);
+          return Apollo.useQuery<GetProfileQuery, GetProfileQueryVariables>(GetProfileDocument, options);
         }
 export type GetProfileQueryHookResult = ReturnType<typeof useGetProfileQuery>;
 export type GetProfileLazyQueryHookResult = ReturnType<typeof useGetProfileLazyQuery>;
@@ -2469,9 +2469,9 @@ export function useGetProfilesListLazyQuery(baseOptions?: Apollo.LazyQueryHookOp
           const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetProfilesListQuery, GetProfilesListQueryVariables>(GetProfilesListDocument, options);
         }
-export function useGetProfilesListSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetProfilesListQuery, GetProfilesListQueryVariables>) {
+export function useGetProfilesListSuspenseQuery(baseOptions?: Apollo.QueryHookOptions<GetProfilesListQuery, GetProfilesListQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<GetProfilesListQuery, GetProfilesListQueryVariables>(GetProfilesListDocument, options);
+          return Apollo.useQuery<GetProfilesListQuery, GetProfilesListQueryVariables>(GetProfilesListDocument, options);
         }
 export type GetProfilesListQueryHookResult = ReturnType<typeof useGetProfilesListQuery>;
 export type GetProfilesListLazyQueryHookResult = ReturnType<typeof useGetProfilesListLazyQuery>;
@@ -2526,9 +2526,9 @@ export function useGetLikedVideosByUserIdLazyQuery(baseOptions?: Apollo.LazyQuer
           const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<GetLikedVideosByUserIdQuery, GetLikedVideosByUserIdQueryVariables>(GetLikedVideosByUserIdDocument, options);
         }
-export function useGetLikedVideosByUserIdSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<GetLikedVideosByUserIdQuery, GetLikedVideosByUserIdQueryVariables>) {
+export function useGetLikedVideosByUserIdSuspenseQuery(baseOptions?: Apollo.QueryHookOptions<GetLikedVideosByUserIdQuery, GetLikedVideosByUserIdQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<GetLikedVideosByUserIdQuery, GetLikedVideosByUserIdQueryVariables>(GetLikedVideosByUserIdDocument, options);
+          return Apollo.useQuery<GetLikedVideosByUserIdQuery, GetLikedVideosByUserIdQueryVariables>(GetLikedVideosByUserIdDocument, options);
         }
 export type GetLikedVideosByUserIdQueryHookResult = ReturnType<typeof useGetLikedVideosByUserIdQuery>;
 export type GetLikedVideosByUserIdLazyQueryHookResult = ReturnType<typeof useGetLikedVideosByUserIdLazyQuery>;
@@ -2600,9 +2600,9 @@ export function usePlaylistListLazyQuery(baseOptions?: Apollo.LazyQueryHookOptio
           const options = {...defaultOptions, ...baseOptions}
           return Apollo.useLazyQuery<PlaylistListQuery, PlaylistListQueryVariables>(PlaylistListDocument, options);
         }
-export function usePlaylistListSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<PlaylistListQuery, PlaylistListQueryVariables>) {
+export function usePlaylistListSuspenseQuery(baseOptions?: Apollo.QueryHookOptions<PlaylistListQuery, PlaylistListQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<PlaylistListQuery, PlaylistListQueryVariables>(PlaylistListDocument, options);
+          return Apollo.useQuery<PlaylistListQuery, PlaylistListQueryVariables>(PlaylistListDocument, options);
         }
 export type PlaylistListQueryHookResult = ReturnType<typeof usePlaylistListQuery>;
 export type PlaylistListLazyQueryHookResult = ReturnType<typeof usePlaylistListLazyQuery>;

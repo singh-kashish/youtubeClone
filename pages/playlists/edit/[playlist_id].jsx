@@ -14,13 +14,13 @@ import toast from "react-hot-toast";
 const EditPlaylist = () => {
   const router = useRouter();
   const playlistId = router.query.playlist_id;
-  const [playlistName, setPlaylistName] = useState<string>("loading");
-  const [playlistVisibility, setPlaylistVisibility] = useState<boolean>(false);
+  const [playlistName, setPlaylistName] = useState("loading");
+  const [playlistVisibility, setPlaylistVisibility] = useState();
   const { data, loading, error } = useQuery(GET_PLAYLIST_BY_ID, {
     variables: { id: playlistId },
   });
   const [deletePlaylistVideo] = useMutation(DELETE_PLAYLIST_VIDEO, {
-    refetchQueries: GET_PLAYLIST_BY_ID,
+    refetchQueries: [GET_PLAYLIST_BY_ID],
   });
   const user = useUser();
   console.log(data);
@@ -66,9 +66,7 @@ const EditPlaylist = () => {
             <option value={false}>Only to you</option>
             <option value={true}>Everyone</option>
           </select>
-          <button
-            className="bg-red-500 rounded-full px-2 ml-1 hover:bg-red-300"
-          >
+          <button className="bg-red-500 rounded-full px-2 ml-1 hover:bg-red-300">
             Update Playlist
           </button>
           {data?.playlist?.playlistVideos?.map((vid, index) => {

@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import { Playlist } from "../gql/graphql";
+import { Playlist, PlaylistVideos } from "../gql/graphql";
 import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutlined";
 import ArrowForwardIosOutlinedIcon from "@mui/icons-material/ArrowForwardIosOutlined";
 import { playPlaylist } from "../../reduxReducers/playlistSlice";
@@ -15,7 +15,8 @@ import { useMutation } from "@apollo/client";
 import toast from "react-hot-toast";
 import { GET_PLAYLIST_FOR_USER } from "../../graphql/queries";
 import { useUser } from "@supabase/auth-helpers-react";
-function ShowPlaylist({ playlist }: { playlist: Array<Playlist> }) {
+import { PlaylistVideo } from "../types/Playlist";
+function ShowPlaylist({ playlist }) {
   const dispatch = useDispatch();
   const router = useRouter();
   const user = useUser();
@@ -25,16 +26,16 @@ function ShowPlaylist({ playlist }: { playlist: Array<Playlist> }) {
   });
   const [deletePlaylistVideo] = useMutation(DELETE_PLAYLIST_VIDEO);
   const sliderLeft = () => {
-    let slider = document.getElementById("slider") as HTMLElement;
+    let slider = document.getElementById("slider");
     slider.scrollLeft = slider.scrollLeft - 500;
   };
   const sliderRight = () => {
-    let slider = document.getElementById("slider") as HTMLElement;
+    let slider = document.getElementById("slider");
     slider.scrollLeft = slider.scrollLeft + 500;
   };
   return (
     <div className="pb-10 mr-40 w-full">
-      {playlist?.map((p: Playlist) => (
+      {playlist?.map((p) => (
         <div key={p?.id}>
           <div className="flex justify-start items-center space-x-3">
             <div className=" flex-col justify-start items-start">
@@ -46,7 +47,7 @@ function ShowPlaylist({ playlist }: { playlist: Array<Playlist> }) {
               onClick={(e) => {
                 e.preventDefault();
                 dispatch(playPlaylist(p?.playlistVideos));
-                if (p?.playlistVideos?.length > 0) {
+                if (p && p?.playlistVideos && p?.playlistVideos?.length > 0) {
                   router.push(`/video/${p?.playlistVideos[0]?.video_id}`);
                 }
               }}
@@ -64,14 +65,14 @@ function ShowPlaylist({ playlist }: { playlist: Array<Playlist> }) {
                 className="text-red-500 hover:shadow-lg hover:shadow-black cursor-pointer"
                 onClick={(e) => {
                   try {
-                    const { data, loading, error } = deletePlaylist({
+                    deletePlaylist({
                       variables: { id: p?.id },
                     });
-                    data?.playlistVideos?.map((v) => {
+                    p?.playlistVideos?.map((v) => {
                       deletePlaylistVideo({ variables: { id: v?.id } });
                     });
                   } catch (e) {
-                    toast.error(e.message);
+                    alert(e);
                   } finally {
                     toast.success("Playlist delete successful!");
                   }
@@ -100,7 +101,7 @@ function ShowPlaylist({ playlist }: { playlist: Array<Playlist> }) {
               className="flex max-w-fit h-full overflow-x-scroll scroll whitespace-nowrap scroll-smooth space-x-4 no-scrollbar"
               id="slider"
             >
-              {p?.playlistVideos?.map((video: Maybe<PlaylistVideos>) => (
+              {p?.playlistVideos?.map((video) => (
                 <VideoIcon
                   video={video?.video}
                   where="home"
