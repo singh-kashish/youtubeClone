@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styles from "./[video_id].module.css";
 import ReactPlayer from "react-player/lazy";
 import { Roboto } from "next/font/google";
@@ -21,10 +21,10 @@ import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import CurrentQueue from "../../src/components/CurrentQueue";
 import VideoShimmer from "../../src/components/VideoShimmer.jsx";
 import useVideoHook from "../../src/hooks/useVideoHook";
-
+import { usePathname } from "next/navigation";
 const roboto = Roboto({ weight: "700", subsets: ["latin"] });
 const r = Roboto({ weight: "500", subsets: ["latin"] });
-const style:React.CSSProperties = {
+const style = {
   position: "absolute",
   top: "50%",
   left: "50%",
@@ -38,6 +38,7 @@ const Video = () => {
   const suggestProps = {
     where: "Video",
   };
+  const pathname = usePathname();
   const {
     video,
     loading,
@@ -59,7 +60,7 @@ const Video = () => {
     setOpen
   } = useVideoHook();
   const player = () => {
-    if (video && video?.videoUrl.includes("supabase")) {
+    if ((video!==null || video!==undefined) && video.videoUrl && video?.videoUrl.includes("supabase")) {
       let toUseUrl = video?.videoUrl;
       let lastDotIndx = toUseUrl?.lastIndexOf(".") + 1;
       let toUseType = toUseUrl?.substr(lastDotIndx);
@@ -75,7 +76,7 @@ const Video = () => {
           </video>
         </div>
       );
-    } else {
+    } else if(video && video?.videoUrl){
       return (
         <div id={styles.video}>
           <ReactPlayer
@@ -96,7 +97,7 @@ const Video = () => {
   if (!video) {
     return <VideoShimmer/>;
   } else if (video && video?.videoStatus === true) {
-    const accountUrl: string = `/profiles/${video.user_id}`;
+    const accountUrl = `/profiles/${video.user_id}`;
 
     return (
       <div className="min-h-screen md:pl-3 pt-5 lg:dvw" id={styles.main}>
@@ -112,11 +113,11 @@ const Video = () => {
               <div id={styles.left}>
                 <Link href={accountUrl}>
                   <Avatar
-                    uid={video.user_id}
-                    url={video.profiles.avatar_url}
+                    uid={video?.user_id}
+                    url={video?.profiles?.avatar_url}
                     size={55}
                     where="video"
-                    onUpload={(e: any) => {
+                    onUpload={(e) => {
                       return 0;
                     }}
                   />
@@ -124,12 +125,12 @@ const Video = () => {
                 <div>
                   <Link href={accountUrl}>
                     <h1 className={roboto.className} style={{color:"white"}}>
-                      {video.profiles.username}
+                      {video?.profiles?.username}
                       <MusicNote fontSize="small" />
                     </h1>
                   </Link>
                   <div className="text-gray-300 font-extralight">
-                    {`${video.profiles.subscribersUsingSubscribers_subscribed_to_id_fkey.length} subscribers`}
+                    {`${video?.profiles?.subscribersUsingSubscribers_subscribed_to_id_fkey?.length} subscribers`}
                   </div>
                 </div>
                 <div>
@@ -217,13 +218,13 @@ const Video = () => {
                         </div>
                         <div>
                           <input
-                            value={`https://youtube-clone-singh-kashish.vercel.app${Router.asPath}`}
+                            value={`https://youtube-clone-singh-kashish.vercel.app${pathname}`}
                             id={styles.showInput}
                           />
                           <button
                             onClick={() => {
                               navigator.clipboard.writeText(
-                                `https://youtube-clone-singh-kashish.vercel.app${Router.asPath}`
+                                `https://youtube-clone-singh-kashish.vercel.app${pathname}`
                               );
                               toast.success("Link copied to clipboard");
                               handleClose();
@@ -240,7 +241,7 @@ const Video = () => {
                           }}
                         >
                           <a
-                            href={`https://api.whatsapp.com/send?text=https://youtube-clone-singh-kashish.vercel.app${Router.asPath}`}
+                            href={`https://api.whatsapp.com/send?text=https://youtube-clone-singh-kashish.vercel.app${pathname}`}
                             data-action="share/whatsapp/share"
                             target="to_blank"
                           >

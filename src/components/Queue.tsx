@@ -12,7 +12,6 @@ const Queue = ({ playlist }: { playlist: Array<Video> }) => {
             <VideoIcon
               video={vid}
               where="playlist"
-              className="mt-1 max-w-fit"
               allowHover={false}
             />
             <ReorderIcon className="cursor-pointer hover:shadow-lg hover:shadow-red-600 rounded-full hover:bg-red-400 hover:text-gray-900" />

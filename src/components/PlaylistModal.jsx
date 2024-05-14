@@ -14,7 +14,8 @@ import { useUser } from "@supabase/auth-helpers-react";
 import toast from "react-hot-toast";
 import uuid from "./uuid";
 import { GET_ALL_PLAYLISTS } from "../../graphql/queries";
-export default function PlaylistModal({ why }: { why: string }) {
+import { rootState } from "../../store";
+export default function PlaylistModal({ why }) {
   const [open, setOpen] = React.useState(false);
   const [insertPlaylist] = useMutation(ADD_PLAYLIST);
   const [insertPlaylistVideos, { data, loading, error }] = useMutation(
@@ -35,9 +36,6 @@ export default function PlaylistModal({ why }: { why: string }) {
     <React.Fragment>
       <div
         className="bg-green-300 px-4 py-2 hover:shadow-lg shadow-inner rounded-full hover:bg-green-500 hover:cursor-pointer text-black"
-        onClick={(e) => {
-          e.preventDefault();
-        }}
         onClick={handleClickOpen}
       >
         Add to Playlist
@@ -47,10 +45,9 @@ export default function PlaylistModal({ why }: { why: string }) {
         onClose={handleClose}
         PaperProps={{
           component: "form",
-          onSubmit: (event: React.FormEvent<HTMLFormElement>) => {
-            event.preventDefault();
+          onSubmit: (event) => {
             const formData = new FormData(event.currentTarget);
-            const formJson = Object.fromEntries((formData as any).entries());
+            const formJson = Object.fromEntries((formData).entries());
             const { playlist_name, playlist_visiblity } = formJson;
             const toInsertId = uuid();
             try {
@@ -70,7 +67,7 @@ export default function PlaylistModal({ why }: { why: string }) {
                       id: toInsertId,
                       playlist_id: insertedPlaylistId,
                       video_id: video.id,
-                      positionInPlaylist: index+1,
+                      positionInPlaylist: index + 1,
                     },
                   });
                 });
@@ -121,7 +118,7 @@ export default function PlaylistModal({ why }: { why: string }) {
                   className="mt-1 max-w-fit"
                   allowHover={false}
                 />
-                <p className="text-black	">{index+1}</p>
+                <p className="text-black	">{index + 1}</p>
               </div>
             );
           })}
