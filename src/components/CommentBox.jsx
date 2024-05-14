@@ -5,6 +5,7 @@ import { GET_VIDEO_BY_ID } from "../../graphql/queries";
 import { useMutation } from "@apollo/client";
 import client from "../../apollo-client";
 import { toast } from "react-hot-toast";
+import uuid from "./uuid";
 
 function CommentBox({ video, user }) {
   const [comment, setComment] = useState("");
@@ -14,10 +15,12 @@ function CommentBox({ video, user }) {
   const onSubmit = async () => {
     const notification = toast.loading("Posting your comment...");
     try {
+      const toInsertId  = uuid();
       const {
         data: { insertComment: newComment },
       } = await insertComment({
         variables: {
+          id:toInsertId,
           video_id: video.id,
           text: comment,
           user_id: user.id,

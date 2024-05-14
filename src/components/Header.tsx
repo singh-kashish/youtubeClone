@@ -12,6 +12,7 @@ import LeftHeader from "./LeftHeader";
 import {useRouter} from "next/router";
 import { toast } from "react-hot-toast";
 import Search from './Search';
+import { youtubeIconUrl } from "../utils/constants";
 const roboto = Roboto({
   weight: "700",
   subsets: ["latin"],
@@ -47,7 +48,7 @@ const Header = () => {
           <div className={styles.logoDiv}>
             <div className="relative h-10 w-20 flex-shrink-0 cursor-pointer">
               <Image
-                src="https://www.youtube.com/s/desktop/4965577f/img/favicon_144x144.png"
+                src={youtubeIconUrl}
                 fill={true}
                 alt="1083486789"
                 className="object-contain"
@@ -57,7 +58,7 @@ const Header = () => {
               className="text-xl flex-shrink-0 cursor-pointer"
               id={styles.text}
             >
-              <span className={roboto.className}>Video Streaming/Sharing App</span>
+              <span className={roboto.className}>Video Stream||Share App</span>
             </div>
           </div>
         </Link>

@@ -46,54 +46,54 @@
   font-size: x-large;
 }
 #moreButtonAtVideoIcon {
-    background-color: #252424;
-    border-radius: 20px;
-    margin-top: 5px;
-    margin-left: 5px;
-  }
-  #moreButtonForIconVideoPage {
-    border-radius: 20px;
-    margin-top: 5px;
-    margin-right:25px;
-    background-color:#b4b4b4 ;
-  }
-  #moreButtonForIconVideoPage:hover{
-    background-color: rgb(127, 255, 212,0.89);
-    margin-right:25px;
-  }
-  #moreAtVideoIcon {
-    position: relative;
-    overflow: hidden;
-    left: 3px;
-  }
-  #moreButtonAtVideoIcon:hover {
-    background-color: #bd9393;
-    border-radius: 20px;
-  }
-  #addToPlaylist {
-    z-index: 22;
-    border-radius: 15px;
-    background-color: #252424;
-    padding: 4px 8px;
-  }
-  #addToPlaylist:hover {
-    background-color: rgb(227, 206, 206) !important;
-  }
-  #home_play {
-    display: flex;
-    flex-direction: row;
-    text-wrap: pretty;
-    line-clamp: 3;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 3;
-  }
+  background-color: #252424;
+  border-radius: 20px;
+  margin-top: 5px;
+  margin-left: 5px;
+}
+#moreButtonForIconVideoPage {
+  border-radius: 20px;
+  margin-top: 5px;
+  margin-right: 25px;
+  background-color: #b4b4b4;
+}
+#moreButtonForIconVideoPage:hover {
+  background-color: rgb(127, 255, 212, 0.89);
+  margin-right: 25px;
+}
+#moreAtVideoIcon {
+  position: relative;
+  overflow: hidden;
+  left: 3px;
+}
+#moreButtonAtVideoIcon:hover {
+  background-color: #bd9393;
+  border-radius: 20px;
+}
+#addToPlaylist {
+  z-index: 22;
+  border-radius: 15px;
+  background-color: #252424;
+  padding: 4px 8px;
+}
+#addToPlaylist:hover {
+  background-color: rgb(227, 206, 206) !important;
+}
+#home_play {
+  display: flex;
+  flex-direction: row;
+  text-wrap: pretty;
+  line-clamp: 3;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
 @media screen and (min-width: 1025px) {
   #main {
     display: flex;
-    flex-direction: row; 
+    flex-direction: row;
     justify-content: flex-start;
     align-items: flex-start;
     z-index: 20;
@@ -133,12 +133,13 @@
       rgb(0, 0, 0) 0,
       rgb(14, 13, 13)
     );
-    transform: scale3d(1.05, 1.05, 1);
+    transform: scale3d(1.05, 1.05, 1.02);
     z-index: 80 !important;
     transition-timing-function: ease-in;
-    transition: 0.1s;
-    border-radius: 15px !important;
+    transition: 0.2s;
+    border-radius: 20px !important;
     align-items: space-around !important;
+    padding: 20px;
   }
   #image:hover {
     width: 100% !important;
@@ -157,9 +158,6 @@
   #imageAtVideo {
     width: 200px !important;
     height: 150px !important;
-  }
-  #imageAtVideo:hover {
-    width: 100% !important;
   }
   #searchHome {
     display: flex;
@@ -215,12 +213,12 @@
   #moreButtonForIconVideoPage {
     border-radius: 20px;
     margin-top: 5px;
-    margin-right:25px;
-    background-color:#b4b4b4 ;
+    margin-right: 25px;
+    background-color: #b4b4b4;
   }
-  #moreButtonForIconVideoPage:hover{
-    background-color: rgb(127, 255, 212,0.89);
-    margin-right:25px;
+  #moreButtonForIconVideoPage:hover {
+    background-color: rgb(127, 255, 212, 0.89);
+    margin-right: 25px;
   }
   #moreAtVideoIcon {
     position: relative;

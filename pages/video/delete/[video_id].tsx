@@ -7,7 +7,7 @@ import { DELETE_VIDEO } from "../../../graphql/mutations";
 import { SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import styles from "./[video_id].module.css";
-import { LineWobble } from "@uiball/loaders";
+import VideoShimmer from '../../../src/components/VideoShimmer';
 
 type FormData = {
   videoTitle: string;
@@ -26,7 +26,7 @@ function DeleteVideo() {
       id: Router.query.video_id,
     },
   });
-  const video: any = data?.getVideo;
+  const video: any = data?.video;
   const {
     register,
     setValue,
@@ -67,7 +67,7 @@ function DeleteVideo() {
   if (!video) {
     return (
       <div className="flex w-full items-center justify-center p-10 text-xxl m-5">
-        <LineWobble size={250} color="red" />
+        <VideoShimmer/>
       </div>
     );
   } else if (video && user?.id === video?.user_id) {

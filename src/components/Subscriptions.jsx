@@ -13,15 +13,16 @@ function Subscriptions() {
       id: user?.id,
     },
   });
+  console.log(data);
   const videosFound = () => {
     if (!user) {
       return <h1>Login to see your subscriptions</h1>;
-    } else if (data?.getSubscribersUsingSubscribers_user_id_fkey?.length == 0) {
+    } else if (data?.subscribersUsingSubscribers_user_id_fkey?.length == 0) {
       return <h1>No subscriptions found</h1>;
     } else {
       return (
         <div>
-          {data?.getSubscribersUsingSubscribers_user_id_fkey.map((pie) => (
+          {data?.subscribersUsingSubscribers_user_id_fkey.map((pie) => (
             <Link href={`/profiles/${pie.subscribed_to_id}`} key={pie.id}>
               <div id={styles.row}>
                 <Avatar

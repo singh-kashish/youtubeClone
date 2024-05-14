@@ -8,10 +8,12 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import styles from "./[video_id].module.css";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
-import { DotSpinner, LineWobble } from "@uiball/loaders";
+import { DotSpinner } from "@uiball/loaders";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import CustomizedSteppers from "../../../src/components/CustomizedStepper";
 import MouseOverPopover from "../../../src/components/MouseOverPopover";
+import { useGetVideoByIdQuery, Video } from "../../../src/gql/graphql";
+import VideoShimmer from "../../../src/components/VideoShimmer";
 
 type FormData = {
   videoTitle: string;
@@ -25,12 +27,13 @@ function EditVideo() {
   const Router = useRouter();
   const user = useUser();
   const supabase = useSupabaseClient<any>();
-  const { loading, error, data } = useQuery(GET_VIDEO_BY_ID, {
+  const { loading, error, data } = useGetVideoByIdQuery({
     variables: {
-      id: Router.query.video_id,
+      id: Router?.query?.video_id as string,
     },
   });
-  const video: any = data?.getVideo;
+  console.log(data);
+  const video: Video = data?.video;
   const {
     register,
     setValue,
@@ -189,7 +192,7 @@ function EditVideo() {
       } else {
         toast.error("This file type is not allowed.");
       }
-    } catch (error:unknown) {
+    } catch (error: unknown) {
       toast.error("Error uploading thumbnail!");
       console.error(error);
     } finally {
@@ -232,7 +235,7 @@ function EditVideo() {
   if (!video) {
     return (
       <div className="flex w-full items-center justify-center p-10 text-xxl m-5">
-        <LineWobble size={250} color="red" />
+        <VideoShimmer/>
       </div>
     );
   } else if (video && user?.id === video?.user_id) {
