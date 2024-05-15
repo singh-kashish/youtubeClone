@@ -36,7 +36,7 @@ type LikedVideos {
 }
 
 type Playlist {
-  created_at: DateTime
+  created_at: DateTime!
   id: ID!
   playlistVideos: [PlaylistVideos]
     @materializer(
@@ -50,7 +50,7 @@ type Playlist {
 }
 
 type PlaylistVideos {
-  created_at: DateTime
+  created_at: DateTime!
   id: ID!
   playlist: Playlist
     @materializer(query: "playlistUsingPublic_playlistVideos_playlist_id_fkey")
@@ -832,11 +832,7 @@ type Mutation {
       dml: DELETE
       configuration: "postgresql_config"
     )
-  insertSubscribers(
-    subscribed_to_id: ID
-    user_id: ID
-    id: ID
-  ): Subscribers
+  insertSubscribers(subscribed_to_id: ID, user_id: ID, id: ID): Subscribers
     @dbquery(
       type: "postgresql"
       schema: "public"
@@ -844,11 +840,7 @@ type Mutation {
       dml: INSERT
       configuration: "postgresql_config"
     )
-  updateSubscribers(
-    id: ID!
-    subscribed_to_id: ID
-    user_id: ID
-  ): Subscribers
+  updateSubscribers(id: ID!, subscribed_to_id: ID, user_id: ID): Subscribers
     @dbquery(
       type: "postgresql"
       schema: "public"

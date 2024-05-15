@@ -94,7 +94,7 @@ const Video = () => {
       );
     }
   };
-  if (!video) {
+  if (loading) {
     return <VideoShimmer/>;
   } else if (video && video?.videoStatus === true) {
     const accountUrl = `/profiles/${video.user_id}`;
