@@ -7,9 +7,9 @@ import {
   DELETE_SUBSCRIBER,
 } from "../../graphql/mutations";
 import { useUser } from "@supabase/auth-helpers-react";
-import {useRouter}  from "next/navigation";
-import {useState} from 'react';
-import {useEffect} from 'react';
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useEffect } from "react";
 import { useQuery, useMutation } from "@apollo/client";
 import toast from "react-hot-toast";
 import { useSelector, useDispatch } from "react-redux";
@@ -33,14 +33,24 @@ import {
   Video,
 } from "../gql/graphql";
 import uuid from "../components/uuid";
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, usePathname } from "next/navigation";
 const useVideoHook = () => {
   const Router = useRouter();
   const user = useUser();
-  const routerQueryId = useSearchParams();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const [routerQueryId, setRouterQueryId] = useState("");
+  const [video, setVideo] = useState({ loading: "loading" });
+  useEffect(() => {
+    if (pathname) setRouterQueryId(`${`${searchParams}`.substring(9)}`);
+  }, [pathname, searchParams]);
   const { loading, error, data } = useGetVideoByIdQuery({
     variables: { id: routerQueryId || "" },
   });
+  useEffect(() => {
+    if (!loading && data) setVideo(data?.video);
+  }, [data, loading]);
+  console.log(loading, error, data);
   const [liked, setLiked] = useState();
   const [likedId, setLikedId] = useState("");
   const [subscribed, setSubscribed] = useState(false);
@@ -60,11 +70,9 @@ const useVideoHook = () => {
     },
   });
 
-  const video = data?.video;
   const prevViewCount = video?.viewCount;
   const toBeInsertedViewCount = (prevViewCount || 0) + 1;
-  const [updateVideoMutationMutation, updateVideoMutationRef] =
-    useUpdateVideoMutationMutation();
+  const [updateVideo] = useMutation(UPDATE_VIDEO);
   const [removeLikeOnVideoMutationMutation, videoRef] =
     useRemoveLikeOnVideoMutationMutation({
       refetchQueries: [
@@ -72,7 +80,7 @@ const useVideoHook = () => {
         "getLikedVideosUsingLikedVideos_video_id_fkey",
       ],
       variables: {
-        id: likedId ,
+        id: likedId,
       },
     });
   const [modifyLikeOnVideoMutation] = useMutation(
@@ -108,45 +116,53 @@ const useVideoHook = () => {
       ],
     });
   const onOpen = async () => {
+    console.log("prev>", prevViewCount, viewsChanged);
     if (prevViewCount != undefined && viewsChanged === false) {
       const notification = toast.loading(
         "Updating view count for this video..."
       );
       try {
-        updateVideoMutationMutation({
+        const d = updateVideo({
           variables: {
             id: routerQueryId,
             viewCount: toBeInsertedViewCount,
+            description: video?.description,
+            dislikes: video?.dislikes,
+            likes: video?.likes,
+            thumbnailUrl: video?.thumbnailUrl,
+            user_id: user?.id,
+            title: video?.title,
+            videoStatus: video?.videoStatus,
+            videoUrl: video?.videoUrl,
           },
         });
+        console.log(d);
+      } catch (error) {
+        toast.error("Whoops something went wrong while updating view count!");
+      } finally {
         toast.success("View Count was updated!", {
           id: notification,
         });
         setViewsChanged(true);
         toast.dismiss();
-      } catch (error) {
-        toast.error(
-          "Whoops something went wrong while updating view count!"
-        );
       }
     }
   };
-  const { value } = useSelector((state) => state.playlist);
+  const { value } = useSelector((state) => state?.playlist);
   const dispatch = useDispatch();
   useEffect(() => {
     const likes = likeData?.likedVideosUsingLikedVideos_video_id_fkey;
     const liked = likes?.find((vote) => vote.user_id === user?.id)?.liked;
-    const likeId = likes?.find((vote) => vote.user_id === user?.id)
-      ?.id;
+    const likeId = likes?.find((vote) => vote.user_id === user?.id)?.id;
     setLiked(liked);
     console.log(likedId);
     setLikedId(likeId);
   }, [likeData]);
   useEffect(() => {
-    onOpen();
-    const subs = video?.profiles
-      ?.subscribersUsingSubscribers_subscribed_to_id_fkey;
-    const subbed=
+    if (video) onOpen();
+    const subs =
+      video?.profiles?.subscribersUsingSubscribers_subscribed_to_id_fkey;
+    const subbed =
       subs?.find((sub) => sub.user_id === user?.id) !== undefined
         ? true
         : false;
@@ -196,7 +212,7 @@ const useVideoHook = () => {
         const toastId = toast("Removing your Like!");
         removeLikeOnVideoMutationMutation({
           variables: {
-            id: likedId ,
+            id: likedId,
           },
         });
         toast.dismiss(toastId);
@@ -259,7 +275,7 @@ const useVideoHook = () => {
       addLikeOnVideoMutation({
         variables: {
           video_id: routerQueryId,
-          user_id: user.id,
+          user_id: user?.id,
           liked: typeOfLike,
         },
       });
@@ -292,7 +308,7 @@ const useVideoHook = () => {
         toast("Inserting your Subscription!");
         insertSubscriberMutationMutation({
           variables: {
-            user_id: user.id,
+            user_id: user?.id,
             subscribed_to_id: video?.user_id,
           },
         });
@@ -306,7 +322,7 @@ const useVideoHook = () => {
   const displayLikes = (data) => {
     const likes = data?.likedVideosUsingLikedVideos_video_id_fkey;
     const displayNumber = likes?.reduce(
-      (total, vote) => (vote.liked ? (total += 1) : total),
+      (total, vote) => (vote?.liked ? (total += 1) : total),
       0
     );
 
@@ -314,9 +330,9 @@ const useVideoHook = () => {
     return displayNumber;
   };
   const displayUnlikes = (data) => {
-    const likes = data.likedVideosUsingLikedVideos_video_id_fkey;
+    const likes = data?.likedVideosUsingLikedVideos_video_id_fkey;
     const displayNumber = likes?.reduce(
-      (total, vote) => (vote.liked === false ? (total += 1) : total),
+      (total, vote) => (vote?.liked === false ? (total += 1) : total),
       0
     );
 
@@ -325,7 +341,7 @@ const useVideoHook = () => {
   };
   function checker(element) {
     for (let itr = 0; itr < value.length; itr++) {
-      if (element.id === value[itr]?.["id"]) {
+      if (element?.id === value[itr]?.["id"]) {
         return itr;
       }
     }
