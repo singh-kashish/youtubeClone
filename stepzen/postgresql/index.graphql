@@ -614,9 +614,9 @@ type Mutation {
   insertLikedComments(
     id: ID
     created_at: DateTime
-    like: Boolean
-    comment_id: ID
-    user_id: ID
+    like: Boolean!
+    comment_id: ID!
+    user_id: ID!
   ): LikedComments
     @dbquery(
       type: "postgresql"
@@ -657,10 +657,10 @@ type Mutation {
       configuration: "postgresql_config"
     )
   insertLikedVideos(
-    video_id: ID
-    user_id: ID
+    video_id: ID!
+    user_id: ID!
     id: ID
-    liked: Boolean
+    liked: Boolean!
     created_at: DateTime
   ): LikedVideos
     @dbquery(
@@ -885,6 +885,7 @@ type Mutation {
     )
   updateVideo(
     id: ID!
+    created_at: DateTime
     description: String
     dislikes: Int
     likes: Int

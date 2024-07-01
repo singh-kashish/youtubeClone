@@ -22,6 +22,7 @@ import CurrentQueue from "../../src/components/CurrentQueue";
 import VideoShimmer from "../../src/components/VideoShimmer.jsx";
 import useVideoHook from "../../src/hooks/useVideoHook";
 import { usePathname } from "next/navigation";
+import { useUser } from "@supabase/auth-helpers-react";
 const roboto = Roboto({ weight: "700", subsets: ["latin"] });
 const r = Roboto({ weight: "500", subsets: ["latin"] });
 const style = {
@@ -39,6 +40,7 @@ const Video = () => {
     where: "Video",
   };
   const pathname = usePathname();
+  const user = useUser();
   const {
     video,
     loading,
@@ -58,7 +60,7 @@ const Video = () => {
     Router,
     open,
     setOpen
-  } = useVideoHook();
+  } = useVideoHook(user);
   const player = () => {
     if ((video!==null || video!==undefined) && video.videoUrl && video?.videoUrl.includes("supabase")) {
       let toUseUrl = video?.videoUrl;

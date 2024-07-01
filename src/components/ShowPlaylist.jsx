@@ -20,7 +20,6 @@ function ShowPlaylist({ playlist }) {
   const dispatch = useDispatch();
   const router = useRouter();
   const user = useUser();
-  console.log(user);
   const [deletePlaylist] = useMutation(DELETE_PLAYLIST, {
     refetchQueries: [GET_PLAYLIST_FOR_USER],
   });
