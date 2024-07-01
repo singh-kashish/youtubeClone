@@ -31,7 +31,7 @@ function CurrentQueue() {
             <div
               style={{ fontSize: "14px", color: "#717171", fontWeight: "600" }}
             >
-              {videoPosition}/{playlist.length}
+              {videoPosition}/{playlist?.length}
             </div>
             <PlaylistModal why="Add Playlist"/>
             <div

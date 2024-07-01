@@ -25,7 +25,6 @@ export const ADD_VIDEO = gql`
       dislikes: $dislikes
       id: $id
     ) {
-      created_at
       id
       title
       viewCount
@@ -39,7 +38,7 @@ export const ADD_VIDEO = gql`
   }
 `;
 export const UPDATE_VIDEO = gql`
-  mutation updateVideoMutation(
+  mutation updateVideo(
     $description: String
     $id: ID!
     $user_id: ID
@@ -48,6 +47,8 @@ export const UPDATE_VIDEO = gql`
     $videoUrl: String
     $thumbnailUrl: String
     $viewCount: Int
+    $likes: Int
+    $dislikes: Int
   ) {
     updateVideo(
       id: $id
@@ -58,6 +59,8 @@ export const UPDATE_VIDEO = gql`
       videoUrl: $videoUrl
       thumbnailUrl: $thumbnailUrl
       viewCount: $viewCount
+      likes: $likes
+      dislikes: $dislikes
     ) {
       id
       description
@@ -67,6 +70,8 @@ export const UPDATE_VIDEO = gql`
       videoUrl
       thumbnailUrl
       viewCount
+      likes
+      dislikes
     }
   }
 `;

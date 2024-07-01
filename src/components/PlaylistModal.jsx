@@ -51,7 +51,7 @@ export default function PlaylistModal({ why }) {
             const { playlist_name, playlist_visiblity } = formJson;
             const toInsertId = uuid();
             try {
-              insertPlaylist({
+              const ad=insertPlaylist({
                 variables: {
                   id: toInsertId,
                   playlist_name: playlist_name,
@@ -72,6 +72,7 @@ export default function PlaylistModal({ why }) {
                   });
                 });
               });
+              console.log(ad);
             } catch (error) {
               toast.error(error?.message);
             } finally {

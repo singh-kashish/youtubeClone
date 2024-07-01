@@ -114,6 +114,7 @@ function VideoIcon({ video, where, allowHover }) {
             playerAtVideo()
           ) : (
             <img
+              loading="lazy"
               src={video.thumbnailUrl}
               height="150px"
               width="150px"
@@ -188,6 +189,7 @@ function VideoIcon({ video, where, allowHover }) {
         ) : (
           <Link href={linkUrl}>
             <img
+              loading="lazy"
               src={video.thumbnailUrl}
               width="250px"
               height="150px"
@@ -275,6 +277,7 @@ function VideoIcon({ video, where, allowHover }) {
             player()
           ) : (
             <img
+              loading="lazy"
               src={video.thumbnailUrl}
               width="250px"
               height="150px"

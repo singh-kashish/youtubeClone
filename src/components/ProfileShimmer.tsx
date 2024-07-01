@@ -7,7 +7,7 @@ function ProfileShimmer() {
             id="shimmerItem"
             className="bg-zinc-900 min-w-full px-6 py-2 flex items-start"
           >
-            <img className="w-20 h-20 rounded-full border-gray-800 border" />
+            <img className="w-20 h-20 rounded-full border-gray-800 border" loading="lazy" />
             <div id="shimmerItem" className="flex flex-col mt-2">
               <h1 className="text-gray-800" id="shimmerItem">
                 Default Name
@@ -52,7 +52,7 @@ function ProfileShimmer() {
           className="flex items-center mt-1 justify-start ml-2"
           id="shimerItem"
         >
-          <img className=" w-32 h-32 rounded-full" id="shimmerItem" />
+          <img className=" w-32 h-32 rounded-full" id="shimmerItem" loading="lazy" />
           <div className="flex items-between justify-between w-2/3 ml-7">
             {Array(5)
               .fill("")

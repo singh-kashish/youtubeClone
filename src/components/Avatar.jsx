@@ -90,6 +90,7 @@ export default function Avatar({ uid, url, size, onUpload, where }) {
         <div className="font-sans font-bold text-lg flex items-center">
           Current Profile Avatar
           <img
+            loading="lazy"
             src={avatarUrl}
             alt="Avatar"
             className="rounded-full ml-1"
@@ -133,6 +134,7 @@ export default function Avatar({ uid, url, size, onUpload, where }) {
         <Link href="/login">
           <button className="flex items-center h-9 px-3 transition-colors duration-150 bg-indigo-700 rounded-full focus:shadow-outline hover:bg-indigo-800">
             <img
+              loading="lazy"
               src={avatarUrl}
               alt="Avatar"
               className="rounded-full mr-1"
@@ -150,6 +152,7 @@ export default function Avatar({ uid, url, size, onUpload, where }) {
       <div className="font-sans font-semibold text-md">
         <Link href={link}>
           <img
+            loading="lazy"
             src={avatarUrl}
             alt="Avatar"
             className="rounded-full mr-1"

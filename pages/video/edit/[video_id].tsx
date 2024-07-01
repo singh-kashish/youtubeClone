@@ -32,7 +32,7 @@ function EditVideo() {
       id: Router?.query?.video_id as string,
     },
   });
-  console.log(data);
+  console.log('dsafdasf>',data);
   const video = data?.video as Video;
   const {
     register,
@@ -42,7 +42,7 @@ function EditVideo() {
     formState: { errors },
   } = useForm<FormData>();
   useEffect(() => {
-    if(video && video?.title && video?.description && video?.thumbnailUrl && video.videoStatus && video.videoUrl){
+    if(video && video?.title && video?.description && video?.thumbnailUrl && video?.videoStatus && video?.videoUrl){
       setValue("videoTitle", video?.title);
       setValue("videoDescription", video?.description);
       setValue("thumbnailUrl", video?.thumbnailUrl);

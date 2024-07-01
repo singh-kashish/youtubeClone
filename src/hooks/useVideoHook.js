@@ -34,9 +34,8 @@ import {
 } from "../gql/graphql";
 import uuid from "../components/uuid";
 import { useSearchParams, usePathname } from "next/navigation";
-const useVideoHook = () => {
+const useVideoHook = (user) => {
   const Router = useRouter();
-  const user = useUser();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [routerQueryId, setRouterQueryId] = useState("");
@@ -50,7 +49,6 @@ const useVideoHook = () => {
   useEffect(() => {
     if (!loading && data) setVideo(data?.video);
   }, [data, loading]);
-  console.log(loading, error, data);
   const [liked, setLiked] = useState();
   const [likedId, setLikedId] = useState("");
   const [subscribed, setSubscribed] = useState(false);
@@ -72,7 +70,11 @@ const useVideoHook = () => {
 
   const prevViewCount = video?.viewCount;
   const toBeInsertedViewCount = (prevViewCount || 0) + 1;
-  const [updateVideo] = useMutation(UPDATE_VIDEO);
+  const [updateVideoMutationMutation, updateVideoRef] = useUpdateVideoMutationMutation({
+       variables: {
+        id: routerQueryId,
+        },
+     });
   const [removeLikeOnVideoMutationMutation, videoRef] =
     useRemoveLikeOnVideoMutationMutation({
       refetchQueries: [
@@ -96,7 +98,7 @@ const useVideoHook = () => {
       },
     }
   );
-  const [addLikeOnVideoMutation, addLikeOnVideoRef] =
+  const [addLikeOnVideoMutationMutation, addLikeOnVideoRef] =
     useAddLikeOnVideoMutationMutation({
       refetchQueries: [
         GetLikesOnVideoUsingVideoIdDocument,
@@ -122,21 +124,12 @@ const useVideoHook = () => {
         "Updating view count for this video..."
       );
       try {
-        const d = updateVideo({
+        updateVideoMutationMutation({
           variables: {
             id: routerQueryId,
             viewCount: toBeInsertedViewCount,
-            description: video?.description,
-            dislikes: video?.dislikes,
-            likes: video?.likes,
-            thumbnailUrl: video?.thumbnailUrl,
-            user_id: user?.id,
-            title: video?.title,
-            videoStatus: video?.videoStatus,
-            videoUrl: video?.videoUrl,
           },
         });
-        console.log(d);
       } catch (error) {
         toast.error("Whoops something went wrong while updating view count!");
       } finally {
@@ -169,7 +162,7 @@ const useVideoHook = () => {
     const subbedId = subs?.find((sub) => sub.user_id === user?.id)?.id;
     setSubscribed(subbed);
     setSubscribedId(subbedId);
-    if (video !== undefined) {
+    if (video !== undefined && video?.loading!=="loading") {
       dispatch(addToPlaylist(video));
     }
   }, [video]);
@@ -268,11 +261,11 @@ const useVideoHook = () => {
       } catch (error) {
         console.error(error);
       }
-    } else {
+    } else if(user && typeOfLike){
       const toastId = toast.loading(
         `Inserting your ${typeOfLike ? "Like" : "Unlike"}!`
       );
-      addLikeOnVideoMutation({
+      var app=addLikeOnVideoMutationMutation({
         variables: {
           video_id: routerQueryId,
           user_id: user?.id,
