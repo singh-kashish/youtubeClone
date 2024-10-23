@@ -78,7 +78,6 @@ export default function PlaylistModal({ why }) {
             } finally {
               toast.success("Playlist added successfully");
             }
-
             handleClose();
           },
         }}
