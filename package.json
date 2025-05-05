@@ -6,11 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "codegen": "graphql-codegen --config codegen.ts"
+    "lint": "next lint"
   },
   "dependencies": {
-    "@apollo/client": "^3.7.1",
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
     "@heroicons/react": "^2.0.13",
@@ -25,24 +23,19 @@
     "@types/react": "18.0.25",
     "@types/react-dom": "18.0.8",
     "@types/react-redux": "^7.1.33",
-    "@uiball/loaders": "^1.2.6",
     "fs": "^0.0.1-security",
-    "graphql": "^16.6.0",
     "lodash": "^4.17.21",
-    "next": "^13.4.7-canary.1",
+    "next": "^15.0.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.39.3",
     "react-hot-toast": "^2.4.0",
     "react-player": "^2.11.0",
     "react-redux": "^8.1.1",
-    "redux": "^4.2.1"
+    "redux": "^4.2.1",
+    "redux-persist": "^6.0.0"
   },
   "devDependencies": {
-    "@graphql-codegen/cli": "^5.0.2",
-    "@graphql-codegen/client-preset": "^4.2.5",
-    "@graphql-codegen/introspection": "4.0.3",
-    "@graphql-codegen/typescript-react-apollo": "^4.3.0",
     "@parcel/watcher": "^2.4.1",
     "autoprefixer": "^10.4.13",
     "postcss": "^8.4.18",

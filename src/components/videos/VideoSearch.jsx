@@ -1,10 +1,10 @@
 import { useUser } from "@supabase/auth-helpers-react";
 import React, { useEffect } from "react";
 import VideoIcon from "./VideoIcon";
-import Shimmer from '../components/Shimmer';
+import Shimmer from '../Shimmer';
 import { useRouter } from "next/router";
 import styles from "./styles/VideoSearch.module.css";
-import useVideoSearchHook from "../hooks/useVideoSearchHook";
+import useVideoSearchHook from "../../hooks/useVideoSearchHook";
 
 function VideoSearch({ text }) {
   const user = useUser();

@@ -1,4 +1,3 @@
-import { useQuery } from "@apollo/client";
 import { useUser } from "@supabase/auth-helpers-react";
 import React from "react";
 import { GET_PROFILE } from "../graphql/queries";
@@ -11,11 +10,11 @@ import Shimmer from "../src/components/Shimmer";
 
 function Library() {
   const user = useUser();
-  const { loading, error, data } = useQuery(GET_PROFILE, {
-    variables: {
-      id: user?.id,
-    },
-  });
+  // const { loading, error, data } = useQuery(GET_PROFILE, {
+  //   variables: {
+  //     id: user?.id,
+  //   },
+  // });
   const videosFound = () => {
     if (data?.profiles?.video.length == 0) {
       return (
