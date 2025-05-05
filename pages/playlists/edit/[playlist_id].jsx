@@ -1,15 +1,15 @@
 import { useRouter } from "next/router";
-import { useMutation, useQuery } from "@apollo/client";
-import { GET_PLAYLIST_BY_ID } from "../../../graphql/queries";
+// import { useMutation, useQuery } from "@apollo/client";
+// import { GET_PLAYLIST_BY_ID } from "../../../graphql/queries";
 import { useEffect, useState } from "react";
 import { useUser } from "@supabase/auth-helpers-react";
 import { TextField } from "@mui/material";
 import VideoIcon from "../../../src/components/VideoIcon";
 import Delete from "@mui/icons-material/Delete";
-import {
-  DELETE_PLAYLIST_VIDEO,
-  UPDATE_PLAYLIST,
-} from "../../../graphql/mutations";
+// import {
+//   DELETE_PLAYLIST_VIDEO,
+//   UPDATE_PLAYLIST,
+// } from "../../../graphql/mutations";
 import toast from "react-hot-toast";
 const EditPlaylist = () => {
   const router = useRouter();

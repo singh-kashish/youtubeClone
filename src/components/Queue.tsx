@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
 import { Video } from "../gql/graphql";
-import VideoIcon from "./VideoIcon";
+import VideoIcon from "./videos/VideoIcon";
 import ReorderIcon from "@mui/icons-material/Reorder";
 import { useEffect, useRef, useState } from "react";
 const Queue = ({ playlist }: { playlist: Array<Video> }) => {

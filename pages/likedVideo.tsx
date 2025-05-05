@@ -3,17 +3,17 @@ import { useUser } from "@supabase/auth-helpers-react";
 import React from "react";
 import { GET_LIKED_VIDEOS_BY_USER_ID } from "../graphql/queries";
 import styles from "./styles/likedVideo.module.css";
-import VideoIcon from "../src/components/VideoIcon";
+import VideoIcon from "../src/components/videos/VideoIcon";
 import Link from "next/link";
 import Shimmer from "../src/components/Shimmer";
 
 function LikedVideo() {
   const user = useUser();
-  const { loading, error, data } = useQuery(GET_LIKED_VIDEOS_BY_USER_ID, {
-    variables: {
-      id: user?.id,
-    },
-  });
+  // const { loading, error, data } = (GET_LIKED_VIDEOS_BY_USER_ID, {
+  //   variables: {
+  //     id: user?.id,
+  //   },
+  // });
   const videosFound = () => {
     if (data?.likedVideosUsingLikedVideos_user_id_fkey?.length == 0) {
       return (

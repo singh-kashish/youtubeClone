@@ -1,19 +1,14 @@
 import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
 import { useRouter } from "next/router";
 import React, { useState, useEffect, DragEvent } from "react";
-import { useMutation, useQuery } from "@apollo/client";
-import { GET_VIDEO_BY_ID } from "../../../graphql/queries";
-import { UPDATE_VIDEO } from "../../../graphql/mutations";
 import { SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import styles from "./[video_id].module.css";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
-import { DotSpinner } from "@uiball/loaders";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import CustomizedSteppers from "../../../src/components/CustomizedStepper";
 import MouseOverPopover from "../../../src/components/MouseOverPopover";
-import { useGetVideoByIdQuery, Video } from "../../../src/gql/graphql";
-import VideoShimmer from "../../../src/components/VideoShimmer";
+import VideoShimmer from "../../../src/components/shimmers/VideoShimmer";
 
 type FormData = {
   videoTitle: string;

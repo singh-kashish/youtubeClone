@@ -1,6 +1,6 @@
 import { useUser } from "@supabase/auth-helpers-react";
 import React from "react";
-import styles from "./styles/Comments.module.css";
+import styles from "../../styles/Comments.module.css";
 import CommentBox from "./CommentBox";
 import CommentList from "./CommentList";
 
