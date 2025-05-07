@@ -8,7 +8,9 @@
   );
   justify-content: flex-start;
   align-items: center;
-  width: 100%;
+  width: fit-content;
+  white-space:pre-wrap;
+  color:rgba(255, 255, 255, 0.705);
 }
 #modalFirstLine {
   display: flex;
@@ -57,12 +59,12 @@
   width: 50px;
 }
 #like:hover {
-  background-color: rgba(41, 38, 38, 0.753);
+  background-color: rgba(118, 112, 112, 0.753);
   border-radius: 15px;
 }
 #likeD {
   width: 50px;
-  color: rgba(31, 24, 24, 0.769);
+  color: rgba(149, 148, 148, 0.769) !important;
 }
 #likeD:hover {
   background-color: rgba(41, 38, 38, 0.753);
@@ -84,10 +86,12 @@
   align-items: center;
 }
 #description {
-  border-radius: 15px;
+  border-radius: 11px;
   display: flex;
   flex-direction: column;
-  padding: 10px;
+  padding: 10px 10px 10px 5px !important;
+  margin-top: 6px;
+  background-color: rgb(40, 40, 40);
 }
 #description:hover {
   background-color: rgb(69, 69, 69);
@@ -123,7 +127,7 @@
   background-color: #2d2d2d;
   border-radius: 10px;
 }
-@media screen and (min-width: 392px) {
+@media screen and (min-width: 900px) {
   #showInput {
     width: 450px !important;
   }

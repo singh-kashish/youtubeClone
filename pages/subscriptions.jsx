@@ -3,8 +3,8 @@ import { useUser } from "@supabase/auth-helpers-react";
 import React from "react";
 import { GET_SUBSCRIBERS_USING_USER_ID } from "../graphql/queries";
 import styles from "./styles/subscriptions.module.css";
-import VideoIcon from "../components/VideoIcon";
-import { LineWobble } from "@uiball/loaders";
+import VideoIcon from "../src/components/VideoIcon";
+import Shimmer from "../src/components/Shimmer";
 import Link from "next/link";
 
 function subscriptions() {
@@ -22,7 +22,7 @@ function subscriptions() {
           Login First!
         </h6></Link>
       );
-    } else if (data?.getSubscribersUsingSubscribers_user_id_fkey?.length == 0) {
+    } else if (data?.subscribersUsingSubscribers_user_id_fkey?.length == 0) {
       return (
         <h6 className="font-sans font-bold text-xl text-center text-red-400 mb-1 pb-1 ml-[15%]">
           You haven't subscribed to any creator yet
@@ -30,16 +30,16 @@ function subscriptions() {
       );
     } else if (!data) {
       return (
-        <div className="flex w-full items-center justify-center p-10 text-xxl m-5">
-          <LineWobble size={250} color="red" />
+        <div className="flex flex-row basis-80 flex-wrap ml-[250px] w-full">
+          <Shimmer />
         </div>
       );
     } else {
       return (
         <div id={styles.main}>
-          {data?.getSubscribersUsingSubscribers_user_id_fkey.map((pie) =>
+          {data?.subscribersUsingSubscribers_user_id_fkey.map((pie) =>
             pie.profilesUsingSubscribers_subscribed_to_id_fkey?.video.map(
-              (e) => <VideoIcon video={e} where="subs" />
+              (e) => <VideoIcon video={e} where="subs" key={e?.id} />
             )
           )}
         </div>
