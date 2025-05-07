@@ -11,6 +11,8 @@ const useVideoLoadHook = () => {
     if (!loading) dispatch(loadVideos(data?.videoList));
   }, [data]);
   let videos = useSelector((state) => state.suggestedVideo.videos);
+  console.log("videos", videos);
   return { videos, loading, error };
+
 };
 export default useVideoLoadHook;
