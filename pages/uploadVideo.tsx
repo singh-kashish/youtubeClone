@@ -7,9 +7,9 @@ import client from "../apollo-client";
 import { toast } from "react-hot-toast";
 import { ADD_VIDEO } from "../graphql/mutations";
 import { Router, useRouter } from "next/router";
-import CustomizedStepper from "../components/CustomizedStepper";
-import MouseOverPopover from "../components/MouseOverPopover";
-
+import CustomizedStepper from "../src/components/CustomizedStepper";
+import MouseOverPopover from "../src/components/MouseOverPopover";
+import uuid from "../src/components/uuid";
 type FormData = {
   videoTitle: string;
   videoDescription: string;
@@ -47,10 +47,12 @@ function uploadVideo() {
           : formData.thumbnailUrl;
       formData.videoUrl =
         isValidHttpUrl(formData.videoUrl) === false ? "" : formData.videoUrl;
+          const idToInsert = uuid();
       const {
         data: { insertVideo: newVideo },
       } = await insertVideo({
         variables: {
+          id:idToInsert,
           user_id: user?.id,
           video_status: formData.videoStatus,
           videoUrl: formData.videoUrl,
@@ -63,9 +65,7 @@ function uploadVideo() {
           viewCount: 0,
         },
       });
-      console.warn(newVideo);
-      console.log(newVideo.id);
-      toast.success("New Post Created!", {
+      toast.success("New Video Created!", {
         id: notification,
       });
       toast.dismiss();
@@ -74,7 +74,7 @@ function uploadVideo() {
       toast.error("Whoops something went wrong!", {
         id: notification,
       });
-      console.error(error);
+      console.log(error);
     }
   });
   if (user) {

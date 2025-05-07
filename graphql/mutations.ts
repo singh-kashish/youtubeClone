@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 
 export const ADD_VIDEO = gql`
-  mutation MyMutation(
+  mutation addVideoMutation(
     $description: String
     $viewCount: Int
     $user_id: ID!
@@ -11,6 +11,7 @@ export const ADD_VIDEO = gql`
     $thumbnailUrl: String
     $likes: Int
     $dislikes: Int
+    $id: ID
   ) {
     insertVideo(
       description: $description
@@ -22,8 +23,8 @@ export const ADD_VIDEO = gql`
       thumbnailUrl: $thumbnailUrl
       likes: $likes
       dislikes: $dislikes
+      id: $id
     ) {
-      created_at
       id
       title
       viewCount
@@ -37,7 +38,7 @@ export const ADD_VIDEO = gql`
   }
 `;
 export const UPDATE_VIDEO = gql`
-  mutation MyMutation(
+  mutation updateVideo(
     $description: String
     $id: ID!
     $user_id: ID
@@ -46,6 +47,8 @@ export const UPDATE_VIDEO = gql`
     $videoUrl: String
     $thumbnailUrl: String
     $viewCount: Int
+    $likes: Int
+    $dislikes: Int
   ) {
     updateVideo(
       id: $id
@@ -56,6 +59,8 @@ export const UPDATE_VIDEO = gql`
       videoUrl: $videoUrl
       thumbnailUrl: $thumbnailUrl
       viewCount: $viewCount
+      likes: $likes
+      dislikes: $dislikes
     ) {
       id
       description
@@ -65,18 +70,22 @@ export const UPDATE_VIDEO = gql`
       videoUrl
       thumbnailUrl
       viewCount
+      likes
+      dislikes
     }
   }
 `;
 export const MAKE_COMMENT = gql`
-  mutation MyMutation(
+  mutation makeCommentMutation(
     $video_id: ID!
     $text: String!
     $user_id: ID!
     $likeCount: Int
     $dislikeCount: Int
+    $id: ID
   ) {
     insertComment(
+      id: $id
       video_id: $video_id
       text: $text
       user_id: $user_id
@@ -90,7 +99,7 @@ export const MAKE_COMMENT = gql`
   }
 `;
 export const UPDATE_COMMENT = gql`
-  mutation MyMutation($id: ID!, $text: String!) {
+  mutation updateCommentMutation($id: ID!, $text: String!) {
     updateComment(id: $id, text: $text) {
       id
       text
@@ -99,18 +108,24 @@ export const UPDATE_COMMENT = gql`
   }
 `;
 export const DELETE_COMMENT = gql`
-  mutation MyMutation($id: ID!) {
+  mutation deleteCommentMutation($id: ID!) {
     deleteComment(id: $id) {
       id
     }
   }
 `;
 export const ADD_LIKE_ON_COMMENT = gql`
-  mutation MyMutation($like: Boolean!, $comment_id: ID!, $user_id: ID!) {
+  mutation addLikeOnCommentMutation(
+    $like: Boolean!
+    $comment_id: ID!
+    $user_id: ID!
+    $id: ID
+  ) {
     insertLikedComments(
       comment_id: $comment_id
       user_id: $user_id
       like: $like
+      id: $id
     ) {
       id
       created_at
@@ -122,7 +137,7 @@ export const ADD_LIKE_ON_COMMENT = gql`
 `;
 
 export const REMOVE_LIKE_ON_COMMENT = gql`
-  mutation myMutation($id: ID!) {
+  mutation removeLikeOnCommentMutation($id: ID!) {
     deleteLikedComments(id: $id) {
       id
     }
@@ -130,7 +145,7 @@ export const REMOVE_LIKE_ON_COMMENT = gql`
 `;
 
 export const MODIFY_LIKE_ON_COMMENT = gql`
-  mutation myMutation($id: ID!, $like: Boolean) {
+  mutation modifyLikeOnCommentMutation($id: ID!, $like: Boolean) {
     updateLikedComments(id: $id, like: $like) {
       id
       like
@@ -138,8 +153,18 @@ export const MODIFY_LIKE_ON_COMMENT = gql`
   }
 `;
 export const ADD_LIKE_ON_VIDEO = gql`
-  mutation MyMutation($liked: Boolean!, $video_id: ID!, $user_id: ID!) {
-    insertLikedVideos(video_id: $video_id, user_id: $user_id, liked: $liked) {
+  mutation addLikeOnVideoMutation(
+    $liked: Boolean!
+    $video_id: ID!
+    $user_id: ID!
+    $id: ID
+  ) {
+    insertLikedVideos(
+      id: $id
+      video_id: $video_id
+      user_id: $user_id
+      liked: $liked
+    ) {
       id
       created_at
       video_id
@@ -150,7 +175,7 @@ export const ADD_LIKE_ON_VIDEO = gql`
 `;
 
 export const REMOVE_LIKE_ON_VIDEO = gql`
-  mutation myMutation($id: ID!) {
+  mutation removeLikeOnVideoMutation($id: ID!) {
     deleteLikedVideos(id: $id) {
       id
     }
@@ -158,7 +183,7 @@ export const REMOVE_LIKE_ON_VIDEO = gql`
 `;
 
 export const MODIFY_LIKE_ON_VIDEO = gql`
-  mutation myMutation($id: ID!, $liked: Boolean) {
+  mutation modifyLikeOnVideoMutation($id: ID!, $liked: Boolean) {
     updateLikedVideos(id: $id, liked: $liked) {
       id
       liked
@@ -166,7 +191,7 @@ export const MODIFY_LIKE_ON_VIDEO = gql`
   }
 `;
 export const INSERT_SUBSCRIBER = gql`
-  mutation myMutation($user_id: ID!, $subscribed_to_id: ID!) {
+  mutation insertSubscriberMutation($user_id: ID!, $subscribed_to_id: ID!) {
     insertSubscribers(subscribed_to_id: $subscribed_to_id, user_id: $user_id) {
       id
       user_id
@@ -175,7 +200,7 @@ export const INSERT_SUBSCRIBER = gql`
   }
 `;
 export const DELETE_SUBSCRIBER = gql`
-  mutation myMutation($id: ID!) {
+  mutation deleteSubscriberMutation($id: ID!) {
     deleteSubscribers(id: $id) {
       id
       user_id
@@ -184,9 +209,105 @@ export const DELETE_SUBSCRIBER = gql`
   }
 `;
 export const DELETE_VIDEO = gql`
-  mutation myMutation($id: ID!){
-    deleteVideo(id: $id){
+  mutation deleteVideoMutation($id: ID!) {
+    deleteVideo(id: $id) {
       id
     }
   }
-`
+`;
+export const ADD_PLAYLIST = gql`
+  mutation insertPlaylist(
+    $playlist_name: String!
+    $user: ID!
+    $playlistVisibility: Boolean!
+    $id: ID
+  ) {
+    insertPlaylist(
+      playlist_name: $playlist_name
+      user: $user
+      playlistVisibility: $playlistVisibility
+      id: $id
+    ) {
+      id
+      playlist_name
+      playlistVisibility
+    }
+  }
+`;
+export const ADD_VIDEOS_TO_PLAYLIST = gql`
+  mutation insertPlaylistVideos(
+    $video_id: ID!
+    $playlist_id: ID!
+    $id: ID
+    $positionInPlaylist: Int
+  ) {
+    insertPlaylistVideos(
+      id: $id
+      video_id: $video_id
+      playlist_id: $playlist_id
+      positionInPlaylist: $positionInPlaylist
+    ) {
+      id
+      video_id
+      playlist_id
+      positionInPlaylist
+    }
+  }
+`;
+export const UPDATE_PROFILE = gql`
+  mutation updateProfiles(
+    $id: ID!
+    $avatar_url: string
+    $full_name: string
+    $username: string
+  ) {
+    updateProfiles(
+      id: $id
+      avatar_url: $avatar_url
+      full_name: $full_name
+      username: $username
+    ) {
+      id
+      username
+      full_name
+      avatar_url
+    }
+  }
+`;
+export const DELETE_PLAYLIST = gql`
+  mutation deletePlaylist($id: ID!) {
+    deletePlaylist(id: $id) {
+      id
+      playlistVideos {
+        id
+      }
+    }
+  }
+`;
+export const DELETE_PLAYLIST_VIDEO = gql`
+  mutation deletePlaylistVideo($id: ID!) {
+    deletePlaylistVideos(id: $id) {
+      id
+    }
+  }
+`;
+export const UPDATE_PLAYLIST = gql`
+  mutation updatePlaylist(
+    $id: ID!
+    $playlist_name: String
+    $playlistVisibility: Boolean
+    $user: ID
+  ) {
+    updatePlaylist(
+      id: $id
+      playlist_name: $playlist_name
+      playlistVisibility: $playlistVisibility
+      user: $user
+    ) {
+      id
+      playlist_name
+      playlistVisibility
+      user
+    }
+  }
+`;

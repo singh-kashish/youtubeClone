@@ -1,99 +1,111 @@
-"""
-Table 'comment' aliased as GQLName: 'Comment'
-"""
 type Comment {
   created_at: DateTime
   dislikeCount: Int
   id: ID!
   likeCount: Int
   likedComments: [LikedComments]
-    @materializer(query: "getLikedCommentsUsingLikedComments_comment_id_fkey")
-  profiles: Profiles
-    @materializer(query: "getProfilesUsingComment_user_id_fkey")
+    @materializer(query: "likedCommentsUsingLikedComments_comment_id_fkey")
+  profiles: Profiles @materializer(query: "profilesUsingComment_user_id_fkey")
   text: String
   user_id: ID
-  video: Video @materializer(query: "getVideoUsingComment_video_id_fkey")
+  video: Video @materializer(query: "videoUsingComment_video_id_fkey")
   video_id: ID
 }
 
-"""
-Table 'likedComments' aliased as GQLName: 'LikedComments'
-"""
 type LikedComments {
   comment: Comment
-    @materializer(query: "getCommentUsingLikedComments_comment_id_fkey")
+    @materializer(query: "commentUsingLikedComments_comment_id_fkey")
   comment_id: ID
   created_at: DateTime
   id: ID!
   like: Boolean
   profiles: Profiles
-    @materializer(query: "getProfilesUsingLikedComments_user_id_fkey")
+    @materializer(query: "profilesUsingLikedComments_user_id_fkey")
   user_id: ID
 }
 
-"""
-Table 'likedVideos' aliased as GQLName: 'LikedVideos'
-"""
 type LikedVideos {
   created_at: DateTime
   id: ID!
   liked: Boolean
   profiles: Profiles
-    @materializer(query: "getProfilesUsingLikedVideos_user_id_fkey")
+    @materializer(query: "profilesUsingLikedVideos_user_id_fkey")
   user_id: ID
-  video: Video @materializer(query: "getVideoUsingLikedVideos_video_id_fkey")
+  video: Video @materializer(query: "videoUsingLikedVideos_video_id_fkey")
   video_id: ID
 }
 
-"""
-Table 'profiles' aliased as GQLName: 'Profiles'
-"""
+type Playlist {
+  created_at: DateTime!
+  id: ID!
+  playlistVideos: [PlaylistVideos]
+    @materializer(
+      query: "playlistVideosUsingPublic_playlistVideos_playlist_id_fkey"
+    )
+  playlistVisibility: Boolean!
+  playlist_name: String!
+  profiles: Profiles
+    @materializer(query: "profilesUsingPublic_playlist_user_fkey")
+  user: ID!
+}
+
+type PlaylistVideos {
+  created_at: DateTime!
+  id: ID!
+  playlist: Playlist
+    @materializer(query: "playlistUsingPublic_playlistVideos_playlist_id_fkey")
+  playlist_id: ID
+  positionInPlaylist: Int
+  video: Video
+    @materializer(query: "videoUsingPublic_playlistVideos_video_id_fkey")
+  video_id: ID
+}
+
 type Profiles {
   avatar_url: String
-  comment: [Comment] @materializer(query: "getCommentUsingComment_user_id_fkey")
+  comment: [Comment] @materializer(query: "commentUsingComment_user_id_fkey")
   full_name: String
   id: ID!
   likedComments: [LikedComments]
-    @materializer(query: "getLikedCommentsUsingLikedComments_user_id_fkey")
+    @materializer(query: "likedCommentsUsingLikedComments_user_id_fkey")
   likedVideos: [LikedVideos]
-    @materializer(query: "getLikedVideosUsingLikedVideos_user_id_fkey")
+    @materializer(query: "likedVideosUsingLikedVideos_user_id_fkey")
+  playlist: [Playlist]
+    @materializer(query: "playlistUsingPublic_playlist_user_fkey")
   subscribersUsingSubscribers_subscribed_to_id_fkey: [Subscribers]
-    @materializer(query: "getSubscribersUsingSubscribers_subscribed_to_id_fkey")
+    @materializer(query: "subscribersUsingSubscribers_subscribed_to_id_fkey")
   subscribersUsingSubscribers_user_id_fkey: [Subscribers]
-    @materializer(query: "getSubscribersUsingSubscribers_user_id_fkey")
+    @materializer(query: "subscribersUsingSubscribers_user_id_fkey")
   updated_at: DateTime
   username: String
-  video: [Video] @materializer(query: "getVideoUsingVideo_user_id_fkey")
+  video: [Video] @materializer(query: "videoUsingVideo_user_id_fkey")
 }
 
-"""
-Table 'subscribers' aliased as GQLName: 'Subscribers'
-"""
 type Subscribers {
   created_at: DateTime
   id: ID!
   profilesUsingSubscribers_subscribed_to_id_fkey: Profiles
-    @materializer(query: "getProfilesUsingSubscribers_subscribed_to_id_fkey")
+    @materializer(query: "profilesUsingSubscribers_subscribed_to_id_fkey")
   profilesUsingSubscribers_user_id_fkey: Profiles
-    @materializer(query: "getProfilesUsingSubscribers_user_id_fkey")
+    @materializer(query: "profilesUsingSubscribers_user_id_fkey")
   subscribed_to_id: ID
   user_id: ID
 }
 
-"""
-Table 'video' aliased as GQLName: 'Video'
-"""
 type Video {
-  comment: [Comment]
-    @materializer(query: "getCommentUsingComment_video_id_fkey")
+  comment: [Comment] @materializer(query: "commentUsingComment_video_id_fkey")
   created_at: DateTime
   description: String
   dislikes: Int
   id: ID!
   likedVideos: [LikedVideos]
-    @materializer(query: "getLikedVideosUsingLikedVideos_video_id_fkey")
+    @materializer(query: "likedVideosUsingLikedVideos_video_id_fkey")
   likes: Int
-  profiles: Profiles @materializer(query: "getProfilesUsingVideo_user_id_fkey")
+  playlistVideos: [PlaylistVideos]
+    @materializer(
+      query: "playlistVideosUsingPublic_playlistVideos_video_id_fkey"
+    )
+  profiles: Profiles @materializer(query: "profilesUsingVideo_user_id_fkey")
   thumbnailUrl: String
   title: String
   user_id: ID
@@ -108,21 +120,21 @@ Feel free to modify them or aggregate more.
 """
 type Query {
   " Queries for type 'Comment' "
-  getComment(id: ID!): Comment
+  comment(id: ID!): Comment
     @dbquery(
       type: "postgresql"
       schema: "public"
       table: "comment"
       configuration: "postgresql_config"
     )
-  getCommentList: [Comment]
+  commentList: [Comment]
     @dbquery(
       type: "postgresql"
       schema: "public"
       table: "comment"
       configuration: "postgresql_config"
     )
-  getCommentPaginatedList(first: Int, after: Int): [Comment]
+  commentPaginatedList(first: Int, after: Int): [Comment]
     @dbquery(
       type: "postgresql"
       schema: "public"
@@ -131,7 +143,7 @@ type Query {
       """
       configuration: "postgresql_config"
     )
-  getCommentUsingComment_user_id_fkey(id: ID!): [Comment]
+  commentUsingComment_user_id_fkey(id: ID!): [Comment]
     @dbquery(
       type: "postgresql"
       schema: "public"
@@ -140,7 +152,7 @@ type Query {
       """
       configuration: "postgresql_config"
     )
-  getCommentUsingComment_video_id_fkey(id: ID!): [Comment]
+  commentUsingComment_video_id_fkey(id: ID!): [Comment]
     @dbquery(
       type: "postgresql"
       schema: "public"
@@ -149,7 +161,7 @@ type Query {
       """
       configuration: "postgresql_config"
     )
-  getCommentUsingLikedComments_comment_id_fkey(comment_id: ID!): Comment
+  commentUsingLikedComments_comment_id_fkey(comment_id: ID!): Comment
     @dbquery(
       type: "postgresql"
       schema: "public"
@@ -159,21 +171,21 @@ type Query {
       configuration: "postgresql_config"
     )
   " Queries for type 'LikedComments' "
-  getLikedComments(id: ID!): LikedComments
+  likedComments(id: ID!): LikedComments
     @dbquery(
       type: "postgresql"
       schema: "public"
       table: "likedComments"
       configuration: "postgresql_config"
     )
-  getLikedCommentsList: [LikedComments]
+  likedCommentsList: [LikedComments]
     @dbquery(
       type: "postgresql"
       schema: "public"
       table: "likedComments"
       configuration: "postgresql_config"
     )
-  getLikedCommentsPaginatedList(first: Int, after: Int): [LikedComments]
+  likedCommentsPaginatedList(first: Int, after: Int): [LikedComments]
     @dbquery(
       type: "postgresql"
       schema: "public"
@@ -182,7 +194,7 @@ type Query {
       """
       configuration: "postgresql_config"
     )
-  getLikedCommentsUsingLikedComments_comment_id_fkey(id: ID!): [LikedComments]
+  likedCommentsUsingLikedComments_comment_id_fkey(id: ID!): [LikedComments]
     @dbquery(
       type: "postgresql"
       schema: "public"
@@ -191,7 +203,7 @@ type Query {
       """
       configuration: "postgresql_config"
     )
-  getLikedCommentsUsingLikedComments_user_id_fkey(id: ID!): [LikedComments]
+  likedCommentsUsingLikedComments_user_id_fkey(id: ID!): [LikedComments]
     @dbquery(
       type: "postgresql"
       schema: "public"
@@ -201,21 +213,21 @@ type Query {
       configuration: "postgresql_config"
     )
   " Queries for type 'LikedVideos' "
-  getLikedVideos(id: ID!): LikedVideos
+  likedVideos(id: ID!): LikedVideos
     @dbquery(
       type: "postgresql"
       schema: "public"
       table: "likedVideos"
       configuration: "postgresql_config"
     )
-  getLikedVideosList: [LikedVideos]
+  likedVideosList: [LikedVideos]
     @dbquery(
       type: "postgresql"
       schema: "public"
       table: "likedVideos"
       configuration: "postgresql_config"
     )
-  getLikedVideosPaginatedList(first: Int, after: Int): [LikedVideos]
+  likedVideosPaginatedList(first: Int, after: Int): [LikedVideos]
     @dbquery(
       type: "postgresql"
       schema: "public"
@@ -224,7 +236,7 @@ type Query {
       """
       configuration: "postgresql_config"
     )
-  getLikedVideosUsingLikedVideos_user_id_fkey(id: ID!): [LikedVideos]
+  likedVideosUsingLikedVideos_user_id_fkey(id: ID!): [LikedVideos]
     @dbquery(
       type: "postgresql"
       schema: "public"
@@ -233,40 +245,121 @@ type Query {
       """
       configuration: "postgresql_config"
     )
-  getLikedVideosUsingLikedVideos_video_id_fkey(id: ID!): [LikedVideos]
+  likedVideosUsingLikedVideos_video_id_fkey(id: ID!): [LikedVideos]
     @dbquery(
       type: "postgresql"
       schema: "public"
       query: """
-      SELECT "id", "liked", "user_id", "video_id" FROM "likedVideos" WHERE "video_id" = $1
+      SELECT "created_at", "id", "liked", "user_id", "video_id" FROM "likedVideos" WHERE "video_id" = $1
+      """
+      configuration: "postgresql_config"
+    )
+  " Queries for type 'Playlist' "
+  playlist(id: ID!): Playlist
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      table: "playlist"
+      configuration: "postgresql_config"
+    )
+  playlistList: [Playlist]
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      table: "playlist"
+      configuration: "postgresql_config"
+    )
+  playlistPaginatedList(first: Int, after: Int): [Playlist]
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      query: """
+      SELECT "created_at", "id", "playlistVisibility", "playlist_name", "user" FROM "playlist" ORDER BY "id" LIMIT $1 OFFSET $2
+      """
+      configuration: "postgresql_config"
+    )
+  playlistUsingPublic_playlistVideos_playlist_id_fkey(
+    playlist_id: ID!
+  ): Playlist
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      query: """
+      SELECT "created_at", "id", "playlistVisibility", "playlist_name", "user" FROM "playlist" WHERE "id" = $1
+      """
+      configuration: "postgresql_config"
+    )
+  playlistUsingPublic_playlist_user_fkey(id: ID!): [Playlist]
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      query: """
+      SELECT "created_at", "id", "playlistVisibility", "playlist_name", "user" FROM "playlist" WHERE "user" = $1
+      """
+      configuration: "postgresql_config"
+    )
+  " Queries for type 'PlaylistVideos' "
+  playlistVideos(id: ID!): PlaylistVideos
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      table: "playlistVideos"
+      configuration: "postgresql_config"
+    )
+  playlistVideosList: [PlaylistVideos]
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      table: "playlistVideos"
+      configuration: "postgresql_config"
+    )
+  playlistVideosPaginatedList(first: Int, after: Int): [PlaylistVideos]
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      query: """
+      SELECT "created_at", "id", "playlist_id", "positionInPlaylist", "video_id" FROM "playlistVideos" ORDER BY "id" LIMIT $1 OFFSET $2
+      """
+      configuration: "postgresql_config"
+    )
+  playlistVideosUsingPublic_playlistVideos_playlist_id_fkey(
+    id: ID!
+  ): [PlaylistVideos]
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      query: """
+      SELECT "created_at", "id", "playlist_id", "positionInPlaylist", "video_id" FROM "playlistVideos" WHERE "playlist_id" = $1
+      """
+      configuration: "postgresql_config"
+    )
+  playlistVideosUsingPublic_playlistVideos_video_id_fkey(
+    id: ID!
+  ): [PlaylistVideos]
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      query: """
+      SELECT "created_at", "id", "playlist_id", "positionInPlaylist", "video_id" FROM "playlistVideos" WHERE "video_id" = $1
       """
       configuration: "postgresql_config"
     )
   " Queries for type 'Profiles' "
-  getProfiles(id: ID!): Profiles
+  profiles(id: ID!): Profiles
     @dbquery(
       type: "postgresql"
       schema: "public"
       table: "profiles"
       configuration: "postgresql_config"
     )
-  getProfilesUsingSearchText(text: String!): [Profiles]
-    @dbquery(
-      type: "postgresql"
-      schema: "public"
-      query: """
-      SELECT "username", "full_name", "id", "avatar_url" FROM "profiles" WHERE to_tsvector(username || ' ' || full_name) @@ to_tsquery($1)
-      """
-      configuration: "postgresql_config"
-    )
-  getProfilesList: [Profiles]
+  profilesList: [Profiles]
     @dbquery(
       type: "postgresql"
       schema: "public"
       table: "profiles"
       configuration: "postgresql_config"
     )
-  getProfilesPaginatedList(first: Int, after: Int): [Profiles]
+  profilesPaginatedList(first: Int, after: Int): [Profiles]
     @dbquery(
       type: "postgresql"
       schema: "public"
@@ -275,7 +368,7 @@ type Query {
       """
       configuration: "postgresql_config"
     )
-  getProfilesUsingComment_user_id_fkey(user_id: ID!): Profiles
+  profilesUsingComment_user_id_fkey(user_id: ID!): Profiles
     @dbquery(
       type: "postgresql"
       schema: "public"
@@ -284,7 +377,7 @@ type Query {
       """
       configuration: "postgresql_config"
     )
-  getProfilesUsingLikedComments_user_id_fkey(user_id: ID!): Profiles
+  profilesUsingLikedComments_user_id_fkey(user_id: ID!): Profiles
     @dbquery(
       type: "postgresql"
       schema: "public"
@@ -293,7 +386,7 @@ type Query {
       """
       configuration: "postgresql_config"
     )
-  getProfilesUsingLikedVideos_user_id_fkey(user_id: ID!): Profiles
+  profilesUsingLikedVideos_user_id_fkey(user_id: ID!): Profiles
     @dbquery(
       type: "postgresql"
       schema: "public"
@@ -302,16 +395,16 @@ type Query {
       """
       configuration: "postgresql_config"
     )
-  getProfilesUsingProfiles_username_key(username: String!): Profiles
+  profilesUsingPublic_playlist_user_fkey(user: ID!): Profiles
     @dbquery(
       type: "postgresql"
       schema: "public"
       query: """
-      SELECT "avatar_url", "full_name", "id", "updated_at", "username" FROM "profiles" WHERE "username" = $1
+      SELECT "avatar_url", "full_name", "id", "updated_at", "username" FROM "profiles" WHERE "id" = $1
       """
       configuration: "postgresql_config"
     )
-  getProfilesUsingSubscribers_subscribed_to_id_fkey(
+  profilesUsingSubscribers_subscribed_to_id_fkey(
     subscribed_to_id: ID!
   ): Profiles
     @dbquery(
@@ -322,7 +415,7 @@ type Query {
       """
       configuration: "postgresql_config"
     )
-  getProfilesUsingSubscribers_user_id_fkey(user_id: ID!): Profiles
+  profilesUsingSubscribers_user_id_fkey(user_id: ID!): Profiles
     @dbquery(
       type: "postgresql"
       schema: "public"
@@ -331,31 +424,40 @@ type Query {
       """
       configuration: "postgresql_config"
     )
-  getProfilesUsingVideo_user_id_fkey(user_id: ID!): Profiles
+  profilesUsingVideo_user_id_fkey(user_id: ID!): Profiles
     @dbquery(
       type: "postgresql"
       schema: "public"
       query: """
       SELECT "avatar_url", "full_name", "id", "updated_at", "username" FROM "profiles" WHERE "id" = $1
+      """
+      configuration: "postgresql_config"
+    )
+  profilesUsingprofiles_username_key(username: String!): Profiles
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      query: """
+      SELECT "avatar_url", "full_name", "id", "updated_at", "username" FROM "profiles" WHERE "username" = $1
       """
       configuration: "postgresql_config"
     )
   " Queries for type 'Subscribers' "
-  getSubscribers(id: ID!): Subscribers
+  subscribers(id: ID!): Subscribers
     @dbquery(
       type: "postgresql"
       schema: "public"
       table: "subscribers"
       configuration: "postgresql_config"
     )
-  getSubscribersList: [Subscribers]
+  subscribersList: [Subscribers]
     @dbquery(
       type: "postgresql"
       schema: "public"
       table: "subscribers"
       configuration: "postgresql_config"
     )
-  getSubscribersPaginatedList(first: Int, after: Int): [Subscribers]
+  subscribersPaginatedList(first: Int, after: Int): [Subscribers]
     @dbquery(
       type: "postgresql"
       schema: "public"
@@ -364,7 +466,7 @@ type Query {
       """
       configuration: "postgresql_config"
     )
-  getSubscribersUsingSubscribers_subscribed_to_id_fkey(id: ID!): [Subscribers]
+  subscribersUsingSubscribers_subscribed_to_id_fkey(id: ID!): [Subscribers]
     @dbquery(
       type: "postgresql"
       schema: "public"
@@ -373,7 +475,7 @@ type Query {
       """
       configuration: "postgresql_config"
     )
-  getSubscribersUsingSubscribers_user_id_fkey(id: ID!): [Subscribers]
+  subscribersUsingSubscribers_user_id_fkey(id: ID!): [Subscribers]
     @dbquery(
       type: "postgresql"
       schema: "public"
@@ -383,23 +485,21 @@ type Query {
       configuration: "postgresql_config"
     )
   " Queries for type 'Video' "
-  getVideo(id: ID!): Video
+  video(id: ID!): Video
     @dbquery(
       type: "postgresql"
       schema: "public"
       table: "video"
       configuration: "postgresql_config"
     )
-  getVideoList: [Video]
+  videoList: [Video]
     @dbquery(
       type: "postgresql"
       schema: "public"
-      query: """
-      SELECT "created_at", "description", "dislikes", "id", "likes", "thumbnailUrl", "title", "user_id", "videoStatus", "videoUrl", "viewCount" FROM "video" ORDER BY "viewCount" DESC
-      """
+      table: "video"
       configuration: "postgresql_config"
     )
-  getVideoPaginatedList(first: Int, after: Int): [Video]
+  videoPaginatedList(first: Int, after: Int): [Video]
     @dbquery(
       type: "postgresql"
       schema: "public"
@@ -408,7 +508,7 @@ type Query {
       """
       configuration: "postgresql_config"
     )
-  getVideoUsingComment_video_id_fkey(video_id: ID!): Video
+  videoUsingComment_video_id_fkey(video_id: ID!): Video
     @dbquery(
       type: "postgresql"
       schema: "public"
@@ -417,7 +517,7 @@ type Query {
       """
       configuration: "postgresql_config"
     )
-  getVideoUsingLikedVideos_video_id_fkey(video_id: ID!): Video
+  videoUsingLikedVideos_video_id_fkey(video_id: ID!): Video
     @dbquery(
       type: "postgresql"
       schema: "public"
@@ -426,16 +526,16 @@ type Query {
       """
       configuration: "postgresql_config"
     )
-  getVideosUsingSearchText(text: String!): [Video]
+  videoUsingPublic_playlistVideos_video_id_fkey(video_id: ID!): Video
     @dbquery(
       type: "postgresql"
       schema: "public"
       query: """
-      SELECT "created_at", "description", "dislikes", "id", "likes", "thumbnailUrl", "title", "user_id", "videoStatus", "videoUrl", "viewCount" FROM "video" WHERE to_tsvector(title || ' ' || description) @@ to_tsquery($1)
+      SELECT "created_at", "description", "dislikes", "id", "likes", "thumbnailUrl", "title", "user_id", "videoStatus", "videoUrl", "viewCount" FROM "video" WHERE "id" = $1
       """
       configuration: "postgresql_config"
     )
-  getVideoUsingVideo_user_id_fkey(id: ID!): [Video]
+  videoUsingVideo_user_id_fkey(id: ID!): [Video]
     @dbquery(
       type: "postgresql"
       schema: "public"
@@ -464,6 +564,7 @@ type Mutation {
     video_id: ID
     text: String
     user_id: ID
+    id: ID
     created_at: DateTime
     dislikeCount: Int
     likeCount: Int
@@ -511,10 +612,11 @@ type Mutation {
       configuration: "postgresql_config"
     )
   insertLikedComments(
+    id: ID
     created_at: DateTime
-    like: Boolean
-    comment_id: ID
-    user_id: ID
+    like: Boolean!
+    comment_id: ID!
+    user_id: ID!
   ): LikedComments
     @dbquery(
       type: "postgresql"
@@ -555,9 +657,10 @@ type Mutation {
       configuration: "postgresql_config"
     )
   insertLikedVideos(
-    video_id: ID
-    user_id: ID
-    liked: Boolean
+    video_id: ID!
+    user_id: ID!
+    id: ID
+    liked: Boolean!
     created_at: DateTime
   ): LikedVideos
     @dbquery(
@@ -589,6 +692,92 @@ type Mutation {
       """
       configuration: "postgresql_config"
     )
+  " Mutations for type 'Playlist' "
+  deletePlaylist(id: ID!): Playlist
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      table: "playlist"
+      dml: DELETE
+      configuration: "postgresql_config"
+    )
+  insertPlaylist(
+    playlistVisibility: Boolean!
+    id: ID
+    playlist_name: String!
+    user: ID!
+  ): Playlist
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      table: "playlist"
+      dml: INSERT
+      configuration: "postgresql_config"
+    )
+  updatePlaylist(
+    id: ID!
+    playlistVisibility: Boolean
+    playlist_name: String
+    user: ID
+  ): Playlist
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      query: """
+      UPDATE "playlist" SET
+        "created_at" = COALESCE($2, "created_at"),
+        "playlistVisibility" = COALESCE($3, "playlistVisibility"),
+        "playlist_name" = COALESCE($4, "playlist_name"),
+        "user" = COALESCE($5, "user")
+      WHERE
+        "id" = $1
+      RETURNING *
+      """
+      configuration: "postgresql_config"
+    )
+  " Mutations for type 'PlaylistVideos' "
+  deletePlaylistVideos(id: ID!): PlaylistVideos
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      table: "playlistVideos"
+      dml: DELETE
+      configuration: "postgresql_config"
+    )
+  insertPlaylistVideos(
+    video_id: ID
+    positionInPlaylist: Int
+    id: ID
+    playlist_id: ID
+  ): PlaylistVideos
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      table: "playlistVideos"
+      dml: INSERT
+      configuration: "postgresql_config"
+    )
+  updatePlaylistVideos(
+    id: ID!
+    playlist_id: ID
+    positionInPlaylist: Int
+    video_id: ID
+  ): PlaylistVideos
+    @dbquery(
+      type: "postgresql"
+      schema: "public"
+      query: """
+      UPDATE "playlistVideos" SET
+        "created_at" = COALESCE($2, "created_at"),
+        "playlist_id" = COALESCE($3, "playlist_id"),
+        "positionInPlaylist" = COALESCE($4, "positionInPlaylist"),
+        "video_id" = COALESCE($5, "video_id")
+      WHERE
+        "id" = $1
+      RETURNING *
+      """
+      configuration: "postgresql_config"
+    )
   " Mutations for type 'Profiles' "
   deleteProfiles(id: ID!): Profiles
     @dbquery(
@@ -599,6 +788,7 @@ type Mutation {
       configuration: "postgresql_config"
     )
   insertProfiles(
+    id: ID
     updated_at: DateTime
     avatar_url: String
     username: String
@@ -642,11 +832,7 @@ type Mutation {
       dml: DELETE
       configuration: "postgresql_config"
     )
-  insertSubscribers(
-    subscribed_to_id: ID
-    user_id: ID
-    created_at: DateTime
-  ): Subscribers
+  insertSubscribers(subscribed_to_id: ID, user_id: ID, id: ID): Subscribers
     @dbquery(
       type: "postgresql"
       schema: "public"
@@ -654,12 +840,7 @@ type Mutation {
       dml: INSERT
       configuration: "postgresql_config"
     )
-  updateSubscribers(
-    id: ID!
-    created_at: DateTime
-    subscribed_to_id: ID
-    user_id: ID
-  ): Subscribers
+  updateSubscribers(id: ID!, subscribed_to_id: ID, user_id: ID): Subscribers
     @dbquery(
       type: "postgresql"
       schema: "public"
@@ -689,10 +870,10 @@ type Mutation {
     description: String
     user_id: ID
     likes: Int
+    id: ID
     dislikes: Int
     title: String
     thumbnailUrl: String
-    created_at: DateTime
     videoStatus: Boolean
   ): Video
     @dbquery(

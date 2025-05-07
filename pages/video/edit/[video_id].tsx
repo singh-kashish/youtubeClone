@@ -8,10 +8,12 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import styles from "./[video_id].module.css";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
-import { DotSpinner, LineWobble } from "@uiball/loaders";
+import { DotSpinner } from "@uiball/loaders";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import CustomizedSteppers from "../../../components/CustomizedStepper";
-import MouseOverPopover from "../../../components/MouseOverPopover";
+import CustomizedSteppers from "../../../src/components/CustomizedStepper";
+import MouseOverPopover from "../../../src/components/MouseOverPopover";
+import { useGetVideoByIdQuery, Video } from "../../../src/gql/graphql";
+import VideoShimmer from "../../../src/components/VideoShimmer";
 
 type FormData = {
   videoTitle: string;
@@ -25,12 +27,13 @@ function EditVideo() {
   const Router = useRouter();
   const user = useUser();
   const supabase = useSupabaseClient<any>();
-  const { loading, error, data } = useQuery(GET_VIDEO_BY_ID, {
+  const { loading, error, data } = useGetVideoByIdQuery({
     variables: {
-      id: Router.query.video_id,
+      id: Router?.query?.video_id as string,
     },
   });
-  const video: any = data?.getVideo;
+  console.log('dsafdasf>',data);
+  const video = data?.video as Video;
   const {
     register,
     setValue,
@@ -39,12 +42,14 @@ function EditVideo() {
     formState: { errors },
   } = useForm<FormData>();
   useEffect(() => {
-    setValue("videoTitle", video?.title);
-    setValue("videoDescription", video?.description);
-    setValue("thumbnailUrl", video?.thumbnailUrl);
-    setValue("videoUrl", video?.videoUrl);
-    setValue("videoStatus", video?.videoStatus);
-  }, [video]);
+    if(video && video?.title && video?.description && video?.thumbnailUrl && video?.videoStatus && video?.videoUrl){
+      setValue("videoTitle", video?.title);
+      setValue("videoDescription", video?.description);
+      setValue("thumbnailUrl", video?.thumbnailUrl);
+      setValue("videoUrl", video?.videoUrl);
+      setValue("videoStatus", video?.videoStatus);
+    }
+    }, [video]);
   function isValidHttpUrl(string: any) {
     let url: any;
     try {
@@ -153,7 +158,6 @@ function EditVideo() {
       }
     } catch (error) {
       toast.error("Error uploading Video!");
-      console.log(error);
     } finally {
       setVideoUploading(false);
     }
@@ -190,9 +194,9 @@ function EditVideo() {
       } else {
         toast.error("This file type is not allowed.");
       }
-    } catch (error) {
+    } catch (error: unknown) {
       toast.error("Error uploading thumbnail!");
-      console.log(error);
+      console.error(error);
     } finally {
       setThumbnailUploading(false);
     }
@@ -233,12 +237,12 @@ function EditVideo() {
   if (!video) {
     return (
       <div className="flex w-full items-center justify-center p-10 text-xxl m-5">
-        <LineWobble size={250} color="red" />
+        <VideoShimmer/>
       </div>
     );
   } else if (video && user?.id === video?.user_id) {
     return (
-      <div className="mx-5 z-50">
+      <div className="mx-5 z-50 w-dvw flex flex-col items-center justify-center">
         <h1 className="font-sans font-bold text-xl border-b-2 border-gray-400 w-full text-center text-white mb-1 pb-1">
           Edit the Video
         </h1>

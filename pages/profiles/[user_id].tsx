@@ -1,12 +1,14 @@
 import { useQuery } from "@apollo/client";
 import { useRouter } from "next/router";
 import React from "react";
-import Avatar from "../../components/Avatar";
+import Avatar from "../../src/components/Avatar";
 import { GET_PROFILE } from "../../graphql/queries";
 import styles from "./[user_id].module.css";
-import { Roboto } from "@next/font/google";
-import VideoIcon from "../../components/VideoIcon";
-import { LineWobble } from "@uiball/loaders";
+import { Roboto } from "next/font/google";
+import VideoIcon from "../../src/components/VideoIcon";
+import {} from "@uiball/loaders";
+import ProfileShimmer from "../../src/components/ProfileShimmer";
+import { Profiles } from "../../src/gql/graphql";
 
 const roboto = Roboto({
   weight: "700",
@@ -19,29 +21,26 @@ function Profile() {
       id: Router.query.user_id,
     },
   });
-  const profile: any = data?.getProfiles;
+  console.log(data);
+  const profile: Profiles = data?.profiles;
   const returnVideos = () => {
     if (!profile) {
       return (
-        <div className="flex w-full min-h-screen items-center justify-center p-10 text-xxl m-5">
-          <LineWobble size={250} color="red" />
+        <div className="flex w-full min-h-screen items-center justify-center p-2 text-xxl">
+          <ProfileShimmer />
         </div>
       );
     } else {
       return (
         <div className="min-h-screen">
           <div id={styles.col}>
-            <div
-              id={styles.row}
-              className="bg-zinc-900 min-w-full px-6 py-2"
-            >
+            <div id={styles.row} className="bg-zinc-900 min-w-full px-6 py-2">
               <Avatar
                 uid={profile?.id}
                 url={profile?.avatar_url}
                 size={75}
                 where="video"
                 onUpload={(e: any) => {
-                  console.log("ek aur dukh");
                   return;
                 }}
               />
@@ -58,7 +57,12 @@ function Profile() {
             </h1>
             <div id={styles.grid} className="p-1">
               {profile?.video?.map((pie: any) => (
-                <VideoIcon video={pie} where="profile" /> 
+                <VideoIcon
+                  video={pie}
+                  where="profile"
+                  allowHover={true}
+                  key={pie?.id}
+                />
               ))}
             </div>
           </div>

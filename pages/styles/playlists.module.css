@@ -1,0 +1,52 @@
+#main {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  margin: 0px 0px 0px 0px;
+}
+#currentQueue {
+  font-family: "Courier New", Courier, monospace;
+  font-weight: 700;
+  font-size: larger;
+  color:aliceblue;
+}
+#mainLine {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+#pageName {
+  font-size: x-large;
+  font-weight: 800;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  color: azure;
+}
+#icon {
+  margin-top: 10px;
+  border-top: 1px solid #d4caca;
+  padding-top: 5px;
+}
+@media screen and (min-width: 391px) {
+  #main {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+
+  #mainLine {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    margin: 0px 0px 0px 250px;
+ 
+  }
+  #pageName {
+    font-size: x-large;
+    font-weight: 600;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+  }
+}
