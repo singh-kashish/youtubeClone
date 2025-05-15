@@ -7,23 +7,20 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { useSelector } from "react-redux";
-import VideoIcon from "./VideoIcon";
-import { useMutation } from "@apollo/client";
-import { ADD_PLAYLIST, ADD_VIDEOS_TO_PLAYLIST } from "../../graphql/mutations";
+import VideoIcon from "./videos/VideoIcon";
 import { useUser } from "@supabase/auth-helpers-react";
 import toast from "react-hot-toast";
 import uuid from "./uuid";
-import { GET_ALL_PLAYLISTS } from "../../graphql/queries";
 import { rootState } from "../../store";
 export default function PlaylistModal({ why }) {
   const [open, setOpen] = React.useState(false);
-  const [insertPlaylist] = useMutation(ADD_PLAYLIST);
-  const [insertPlaylistVideos, { data, loading, error }] = useMutation(
-    ADD_VIDEOS_TO_PLAYLIST,
-    {
-      refetchQueries: [GET_ALL_PLAYLISTS],
-    }
-  );
+  // const [insertPlaylist] = useMutation(ADD_PLAYLIST);
+  // const [insertPlaylistVideos, { data, loading, error }] = useMutation(
+  //   ADD_VIDEOS_TO_PLAYLIST,
+  //   {
+  //     refetchQueries: [GET_ALL_PLAYLISTS],
+  //   }
+  // );
   const user = useUser();
   const handleClickOpen = () => {
     setOpen(true);

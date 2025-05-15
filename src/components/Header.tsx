@@ -13,6 +13,7 @@ import {useRouter} from "next/router";
 import { toast } from "react-hot-toast";
 import Search from './Search';
 import { youtubeIconUrl } from "../utils/constants";
+import PlayIcon from '../../public/PlayIcon.png';
 const roboto = Roboto({
   weight: "700",
   subsets: ["latin"],
@@ -48,8 +49,9 @@ const Header = () => {
           <div className={styles.logoDiv}>
             <div className="relative h-10 w-20 flex-shrink-0 cursor-pointer">
               <Image
-                src={youtubeIconUrl}
+                src={PlayIcon}
                 fill={true}
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 alt="1083486789"
                 className="object-contain"
               />
@@ -58,7 +60,7 @@ const Header = () => {
               className="text-xl flex-shrink-0 cursor-pointer"
               id={styles.text}
             >
-              <span className={roboto.className}>Video Stream||Share App</span>
+              <span className={roboto.className}>VidShare</span>
             </div>
           </div>
         </Link>

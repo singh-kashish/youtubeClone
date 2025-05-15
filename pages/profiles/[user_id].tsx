@@ -1,14 +1,10 @@
-import { useQuery } from "@apollo/client";
 import { useRouter } from "next/router";
 import React from "react";
 import Avatar from "../../src/components/Avatar";
-import { GET_PROFILE } from "../../graphql/queries";
 import styles from "./[user_id].module.css";
 import { Roboto } from "next/font/google";
-import VideoIcon from "../../src/components/VideoIcon";
-import {} from "@uiball/loaders";
-import ProfileShimmer from "../../src/components/ProfileShimmer";
-import { Profiles } from "../../src/gql/graphql";
+import VideoIcon from "../../src/components/videos/VideoIcon";
+import ProfileShimmer from "../../src/components/shimmers/ProfileShimmer";
 
 const roboto = Roboto({
   weight: "700",
@@ -16,13 +12,13 @@ const roboto = Roboto({
 });
 function Profile() {
   const Router = useRouter();
-  const { loading, error, data } = useQuery(GET_PROFILE, {
-    variables: {
-      id: Router.query.user_id,
-    },
-  });
+  // const { loading, error, data } = useQuery(GET_PROFILE, {
+  //   variables: {
+  //     id: Router.query.user_id,
+  //   },
+  // });
   console.log(data);
-  const profile: Profiles = data?.profiles;
+  //const profile: Profiles = data?.profiles;
   const returnVideos = () => {
     if (!profile) {
       return (

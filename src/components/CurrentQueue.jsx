@@ -5,7 +5,7 @@ import {
   deleteFromPlaylist,
   clearPlaylist,
 } from "../../reduxReducers/playlistSlice";
-import VideoIcon from "../components/VideoIcon";
+import VideoIcon from "../components/videos/VideoIcon";
 import styles from "./styles/CurrentQueue.module.css";
 import { Roboto } from "next/font/google";
 const roboto = Roboto({ weight: "700", subsets: ["latin"] });

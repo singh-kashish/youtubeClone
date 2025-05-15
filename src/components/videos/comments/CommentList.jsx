@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./styles/CommentList.module.css";
+import styles from "../../styles/CommentList.module.css";
 import EveryComment from "./EveryComment";
 
 const CommentList = ({ user, comments }) => {

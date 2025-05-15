@@ -1,19 +1,12 @@
-import { useQuery } from "@apollo/client";
 import { useUser } from "@supabase/auth-helpers-react";
 import Link from "next/link";
 import React from "react";
-import { GET_SUBSCRIBERS_USING_USER_ID } from "../../graphql/queries";
 import Avatar from "./Avatar";
 import styles from "./styles/Subscriptions.module.css";
 
 function Subscriptions() {
   const user = useUser();
-  const { loading, error, data } = useQuery(GET_SUBSCRIBERS_USING_USER_ID, {
-    variables: {
-      id: user?.id,
-    },
-  });
-  console.log(data);
+
   const videosFound = () => {
     if (!user) {
       return <h1>Login to see your subscriptions</h1>;

@@ -4,7 +4,7 @@ import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutl
 import ArrowForwardIosOutlinedIcon from "@mui/icons-material/ArrowForwardIosOutlined";
 import { playPlaylist } from "../../reduxReducers/playlistSlice";
 import PlayCircleFilledIcon from "@mui/icons-material/PlayCircleFilled";
-import VideoIcon from "./VideoIcon";
+import VideoIcon from "./videos/VideoIcon";
 import { useRouter } from "next/router";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {

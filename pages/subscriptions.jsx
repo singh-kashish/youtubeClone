@@ -1,4 +1,3 @@
-import { useQuery } from "@apollo/client";
 import { useUser } from "@supabase/auth-helpers-react";
 import React from "react";
 import { GET_SUBSCRIBERS_USING_USER_ID } from "../graphql/queries";
@@ -9,11 +8,11 @@ import Link from "next/link";
 
 function subscriptions() {
   const user = useUser();
-  const { loading, error, data } = useQuery(GET_SUBSCRIBERS_USING_USER_ID, {
-    variables: {
-      id: user?.id,
-    },
-  });
+  // const { loading, error, data } = useQuery(GET_SUBSCRIBERS_USING_USER_ID, {
+  //   variables: {
+  //     id: user?.id,
+  //   },
+  // });
   const videosFound = () => {
     if (!user) {
       return (

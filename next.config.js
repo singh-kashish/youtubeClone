@@ -4,7 +4,6 @@ const nextConfig = {
   images:{
     domains:['www.youtube.com'],
   },
-  swcMinify: true,
 }
 
 module.exports = nextConfig

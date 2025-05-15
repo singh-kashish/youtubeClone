@@ -32,7 +32,7 @@ function Search({
           handleSubmit(e);
         }}
       >
-        <div className="w-full">
+        <div className="w-[90%]">
           <input
             type="text"
             placeholder="Search by hitting enter or the searchIcon on right"
@@ -53,7 +53,7 @@ function Search({
         >
           <SearchRoundedIcon
             id={styles.search}
-            className="py-1 w-[30px] h-[35px] mr-0 px-4 no-underline rounded-full"
+            className="py-1  mr-0 no-underline rounded-full"
             onClick={(e) => {
               handleSubmit(e);
             }}
