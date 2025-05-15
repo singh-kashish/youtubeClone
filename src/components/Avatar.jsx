@@ -4,7 +4,6 @@ import styles from "./styles/Avatar.module.css";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import Link from "next/link";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
-import { DotSpinner } from "@uiball/loaders";
 import { brokenImage } from "../utils/constants";
 export default function Avatar({ uid, url, size, onUpload, where }) {
   const supabase = useSupabaseClient();

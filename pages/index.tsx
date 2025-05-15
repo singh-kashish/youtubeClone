@@ -17,7 +17,7 @@ export default function Home() {
   return (
     <div className={roboto.className} style={{minHeight: "100vh",maxWidth:"100wh"}}>
       <Head>
-        <title>Youtube Clone</title>
+        <title>VidShare</title>
       </Head>
       <SuggestedVideos where="Home" />
     </div>

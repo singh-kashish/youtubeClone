@@ -1,11 +1,7 @@
 import React, { useState } from "react";
-import Avatar from "./Avatar";
-import { MAKE_COMMENT } from "../../graphql/mutations";
-import { GET_VIDEO_BY_ID } from "../../graphql/queries";
-import { useMutation } from "@apollo/client";
-import client from "../../apollo-client";
+import Avatar from "../../Avatar";
 import { toast } from "react-hot-toast";
-import uuid from "./uuid";
+import uuid from "../../uuid";
 
 function CommentBox({ video, user }) {
   const [comment, setComment] = useState("");

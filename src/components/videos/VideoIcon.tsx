@@ -1,23 +1,28 @@
 import React, { useState } from "react";
-import styles from "./styles/VideoIcon.module.css";
+import styles from "../styles/VideoIcon.module.css";
 import { Roboto } from "next/font/google";
 import Link from "next/link";
-import Avatar from "./Avatar";
+import Avatar from "../Avatar";
 import ReactPlayer from "react-player";
 import MoreVertRoundedIcon from "@mui/icons-material/MoreVertRounded";
 import { useSelector, useDispatch } from "react-redux";
 import {
   addToPlaylist,
   deleteFromPlaylist,
-} from "../../reduxReducers/playlistSlice";
-import PlaylistModal from "./PlaylistModal";
+} from "../../../reduxReducers/playlistSlice";
+import PlaylistModal from "../PlaylistModal";
+import { VideosWithProfile, VideoWithProfile } from "../../types/VideoRedux";
 
 const roboto = Roboto({ weight: "700", subsets: ["latin"] });
 const r = Roboto({ weight: "500", subsets: ["latin"] });
 const rb = Roboto({ weight: "300", subsets: ["latin"] });
 const rt = Roboto({ weight: "100", subsets: ["latin"] });
-
-function VideoIcon({ video, where, allowHover }) {
+interface VideoIconProps{
+  video:VideoWithProfile;
+  where:string;
+  allowHover:boolean;
+}
+const VideoIcon: React.FC<VideoIconProps> = ({ video, where, allowHover }) => {
   let linkUrl = `/video/${video.id}`;
   const [isHovering, setIsHovering] = useState(false);
   const handleMouseOver = (e) => {

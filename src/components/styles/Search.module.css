@@ -21,9 +21,9 @@
   background-color: #212121;
   border-radius: 20px;
   cursor: pointer;
-  padding: 9px;
-  height: 40px;
-  width: 40px;
+  padding: 2px;
+  height: 80% !important;
+  width: 40px !important;
   margin-left: 5px;
   color:aquamarine;
 }
@@ -32,8 +32,8 @@
 }
 #search {
   background: linear-gradient(rgb(11, 11, 65),rgb(11, 11, 45));
-  width: 60px;
-  height: 30px;
+  width: 40px !important;
+  height: 40px !important;
   color:rgb(94, 250, 198);
   cursor: pointer;
 }
@@ -55,6 +55,7 @@
   }
   #searchDiv {
     background: linear-gradient(rgb(11, 11, 65),rgb(11, 11, 45));
+    width:50px;
     cursor: pointer;
   }
   #searchDiv:hover{
@@ -64,10 +65,11 @@
     background-color: #212121;
     border-radius: 20px;
     cursor: pointer;
-    padding: 9px;
-    height: 40px;
-    width: 40px;
+    padding: 2px;
+    height: 40px !important;
+    width: 40px !important;
     margin-left: 5px;
+    object-fit: fill;
     color:aquamarine;
   }
   .mic:hover {
@@ -75,8 +77,8 @@
   }
   #search {
     background: linear-gradient(rgb(11, 11, 65),rgb(11, 11, 45));
-    width: 60px;
-    height: 30px;
+    width: 40px !important;
+    height: 40px !important;
     color:rgb(94, 250, 198);
     cursor: pointer;
   }

@@ -1,8 +1,6 @@
 import { useUser } from "@supabase/auth-helpers-react";
 import React, { useState } from "react";
-import VideoIcon from "../../src/components/VideoIcon";
 import { useRouter } from "next/router";
-import { createClient } from "@supabase/supabase-js";
 import styles from "./[text].module.css";
 import VideoSearch from "../../src/components/VideoSearch";
 import ProfileSearch from "../../src/components/ProfileSearch";

@@ -1,37 +1,35 @@
-import {
-  UPDATE_VIDEO,
-  ADD_LIKE_ON_VIDEO,
-  REMOVE_LIKE_ON_VIDEO,
-  MODIFY_LIKE_ON_VIDEO,
-  INSERT_SUBSCRIBER,
-  DELETE_SUBSCRIBER,
-} from "../../graphql/mutations";
+// import {
+//   UPDATE_VIDEO,
+//   ADD_LIKE_ON_VIDEO,
+//   REMOVE_LIKE_ON_VIDEO,
+//   MODIFY_LIKE_ON_VIDEO,
+//   INSERT_SUBSCRIBER,
+//   DELETE_SUBSCRIBER,
+// } from "../../graphql/mutations";
 import { useUser } from "@supabase/auth-helpers-react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { useEffect } from "react";
-import { useQuery, useMutation } from "@apollo/client";
+import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import { useSelector, useDispatch } from "react-redux";
 import { addToPlaylist } from "../../reduxReducers/playlistSlice";
 import { rootState } from "../../store";
-import { ApolloError } from "@apollo/client/errors";
-import {
-  GetLikesOnVideoUsingVideoIdDocument,
-  GetVideoByIdDocument,
-  ModifyLikeOnVideoMutationDocument,
-  Subscribers,
-  UpdateVideoMutationDocument,
-  useAddLikeOnVideoMutationMutation,
-  useDeleteSubscriberMutationMutation,
-  useGetLikesOnVideoUsingVideoIdQuery,
-  useGetVideoByIdQuery,
-  useInsertSubscriberMutationMutation,
-  useModifyLikeOnVideoMutationMutation,
-  useRemoveLikeOnVideoMutationMutation,
-  useUpdateVideoMutationMutation,
-  Video,
-} from "../gql/graphql";
+// import { ApolloError } from "@apollo/client/errors";
+// import {
+//   GetLikesOnVideoUsingVideoIdDocument,
+//   GetVideoByIdDocument,
+//   ModifyLikeOnVideoMutationDocument,
+//   Subscribers,
+//   UpdateVideoMutationDocument,
+//   useAddLikeOnVideoMutationMutation,
+//   useDeleteSubscriberMutationMutation,
+//   useGetLikesOnVideoUsingVideoIdQuery,
+//   useGetVideoByIdQuery,
+//   useInsertSubscriberMutationMutation,
+//   useModifyLikeOnVideoMutationMutation,
+//   useRemoveLikeOnVideoMutationMutation,
+//   useUpdateVideoMutationMutation,
+//   Video,
+// } from "../gql/graphql";
 import uuid from "../components/uuid";
 import { useSearchParams, usePathname } from "next/navigation";
 const useVideoHook = (user) => {
@@ -374,3 +372,4 @@ const useVideoHook = (user) => {
   };
 };
 export default useVideoHook;
+ 

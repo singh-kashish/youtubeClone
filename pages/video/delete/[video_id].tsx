@@ -1,13 +1,10 @@
 import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
 import { useRouter } from "next/router";
 import React, { useState, useEffect } from "react";
-import { useMutation, useQuery } from "@apollo/client";
-import { GET_VIDEO_BY_ID } from "../../../graphql/queries";
-import { DELETE_VIDEO } from "../../../graphql/mutations";
 import { SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import styles from "./[video_id].module.css";
-import VideoShimmer from '../../../src/components/VideoShimmer';
+import VideoShimmer from '../../../src/components/shimmers/VideoShimmer';
 
 type FormData = {
   videoTitle: string;
@@ -21,12 +18,12 @@ function DeleteVideo() {
   const Router = useRouter();
   const user = useUser();
   const supabase = useSupabaseClient<any>();
-  const { loading, error, data } = useQuery(GET_VIDEO_BY_ID, {
-    variables: {
-      id: Router.query.video_id,
-    },
-  });
-  const video: any = data?.video;
+  // const { loading, error, data } = useQuery(GET_VIDEO_BY_ID, {
+  //   variables: {
+  //     id: Router.query.video_id,
+  //   },
+  // });
+  // const video: any = data?.video;
   const {
     register,
     setValue,
@@ -34,35 +31,35 @@ function DeleteVideo() {
     watch,
     formState: { errors },
   } = useForm<FormData>();
-  useEffect(() => {
-    setValue("videoTitle", video?.title);
-    setValue("videoDescription", video?.description);
-    setValue("thumbnailUrl", video?.thumbnailUrl);
-    setValue("videoUrl", video?.videoUrl);
-    setValue("videoStatus", video?.videoStatus);
-  }, [video]);
-  const [deleteVideo] = useMutation(DELETE_VIDEO);
-  const onSubmit = handleSubmit(async (formData) => {
-    const notification = toast.loading("Removing this video...");
-    try {
-      const {
-        data: { deleteVideo: video },
-      } = await deleteVideo({
-        variables: {
-          id: Router.query.video_id,
-        },
-      });
-      toast.success("Video is removed!", {
-        id: notification,
-      });
-      toast.dismiss();
-      Router.push("/");
-    } catch (error) {
-      toast.error("Whoops something went wrong!", {
-        id: notification,
-      });
-    }
-  });
+  // useEffect(() => {
+  //   setValue("videoTitle", video?.title);
+  //   setValue("videoDescription", video?.description);
+  //   setValue("thumbnailUrl", video?.thumbnailUrl);
+  //   setValue("videoUrl", video?.videoUrl);
+  //   setValue("videoStatus", video?.videoStatus);
+  // }, [video]);
+  // const [deleteVideo] = useMutation(DELETE_VIDEO);
+  // const onSubmit = handleSubmit(async (formData) => {
+  //   const notification = toast.loading("Removing this video...");
+  //   try {
+  //     const {
+  //       data: { deleteVideo: video },
+  //     } = await deleteVideo({
+  //       variables: {
+  //         id: Router.query.video_id,
+  //       },
+  //     });
+  //     toast.success("Video is removed!", {
+  //       id: notification,
+  //     });
+  //     toast.dismiss();
+  //     Router.push("/");
+  //   } catch (error) {
+  //     toast.error("Whoops something went wrong!", {
+  //       id: notification,
+  //     });
+  //   }
+  // });
 
   if (!video) {
     return (

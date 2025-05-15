@@ -1,24 +1,23 @@
 import React, { useState, useEffect } from "react";
-import styles from "./styles/EveryComment.module.css";
-import Avatar from "./Avatar";
+import styles from "../../styles/EveryComment.module.css";
+import Avatar from "../../Avatar";
 import { Roboto } from "next/font/google";
 import ThumbUpOutlinedIcon from "@mui/icons-material/ThumbUpOutlined";
 import ThumbDownAltOutlinedIcon from "@mui/icons-material/ThumbDownAltOutlined";
 import ThumbDownAltOutlined from "@mui/icons-material/ThumbDownAltOutlined";
-import { useMutation, useQuery } from "@apollo/client";
-import {
-  GET_VIDEO_BY_ID,
-  GET_LIKES_ON_COMMENT_USING_COMMENT_ID,
-} from "../../graphql/queries";
-import {
-  UPDATE_COMMENT,
-  DELETE_COMMENT,
-  ADD_LIKE_ON_COMMENT,
-  REMOVE_LIKE_ON_COMMENT,
-  MODIFY_LIKE_ON_COMMENT,
-} from "../../graphql/mutations";
+// import {
+//   GET_VIDEO_BY_ID,
+//   GET_LIKES_ON_COMMENT_USING_COMMENT_ID,
+// } from "../../graphql/queries";
+// import {
+//   UPDATE_COMMENT,
+//   DELETE_COMMENT,
+//   ADD_LIKE_ON_COMMENT,
+//   REMOVE_LIKE_ON_COMMENT,
+//   MODIFY_LIKE_ON_COMMENT,
+// } from "../../graphql/mutations";
 import toast from "react-hot-toast";
-import uuid from "./uuid";
+import uuid from "../../uuid";
 
 const roboto = Roboto({ weight: "700", subsets: ["latin"] });
 const r = Roboto({ weight: "500", subsets: ["latin"] });
@@ -33,34 +32,34 @@ const EveryComment = ({ comment, user }) => {
   });
   const [like, setLike] = useState();
   const [likeId, setLikeId] = useState();
-  const { data, loading, error } = useQuery(
-    GET_LIKES_ON_COMMENT_USING_COMMENT_ID,
-    {
-      variables: {
-        id: comment?.id,
-      },
-    }
-  );
-  const [insertLikedComments] = useMutation(ADD_LIKE_ON_COMMENT, {
-    refetchQueries: [
-      GET_LIKES_ON_COMMENT_USING_COMMENT_ID,
-      "likedCommentsUsingLikedComments_comment_id_fkey",
-    ],
-  });
+  // const { data, loading, error } = useQuery(
+  //   GET_LIKES_ON_COMMENT_USING_COMMENT_ID,
+  //   {
+  //     variables: {
+  //       id: comment?.id,
+  //     },
+  //   }
+  // );
+  // const [insertLikedComments] = useMutation(ADD_LIKE_ON_COMMENT, {
+  //   refetchQueries: [
+  //     GET_LIKES_ON_COMMENT_USING_COMMENT_ID,
+  //     "likedCommentsUsingLikedComments_comment_id_fkey",
+  //   ],
+  // });
 
-  const [deleteLikedComments] = useMutation(REMOVE_LIKE_ON_COMMENT, {
-    refetchQueries: [
-      GET_LIKES_ON_COMMENT_USING_COMMENT_ID,
-      "likedCommentsUsingLikedComments_comment_id_fkey",
-    ],
-  });
+  // const [deleteLikedComments] = useMutation(REMOVE_LIKE_ON_COMMENT, {
+  //   refetchQueries: [
+  //     GET_LIKES_ON_COMMENT_USING_COMMENT_ID,
+  //     "likedCommentsUsingLikedComments_comment_id_fkey",
+  //   ],
+  // });
 
-  const [updateLikedComments] = useMutation(MODIFY_LIKE_ON_COMMENT, {
-    refetchQueries: [
-      GET_LIKES_ON_COMMENT_USING_COMMENT_ID,
-      "likedCommentsUsingLikedComments_comment_id_fkey",
-    ],
-  });
+  // const [updateLikedComments] = useMutation(MODIFY_LIKE_ON_COMMENT, {
+  //   refetchQueries: [
+  //     GET_LIKES_ON_COMMENT_USING_COMMENT_ID,
+  //     "likedCommentsUsingLikedComments_comment_id_fkey",
+  //   ],
+  // });
   const upVote = async (typeOfLike) => {
     if (!user) {
       toast("Hey, You need to sign in to be able to vote!");
