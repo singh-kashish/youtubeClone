@@ -15,7 +15,7 @@ import Search from './Search';
 import { youtubeIconUrl } from "../utils/constants";
 import PlayIcon from '../../public/PlayIcon.png';
 const roboto = Roboto({
-  weight: "700",
+  weight: "900",
   subsets: ["latin"],
 });
 const Header = () => {
@@ -60,7 +60,7 @@ const Header = () => {
               className="text-xl flex-shrink-0 cursor-pointer"
               id={styles.text}
             >
-              <span className={roboto.className}>VidShare</span>
+              <span className={roboto.className}>FlixPlay</span>
             </div>
           </div>
         </Link>

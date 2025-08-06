@@ -42,7 +42,7 @@ function Subscriptions() {
       <h6 className="font-sans font-medium text-lg border-b-2 border-gray-400 w-full text-center text-gray-300 mb-1 pb-1">
         Subscriptions
       </h6>
-      {videosFound()}
+      {/* {videosFound()} */}
     </div>
   );
 }

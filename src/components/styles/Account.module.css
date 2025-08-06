@@ -4,6 +4,7 @@
   justify-content: space-evenly;
   align-items: center;
   width: fit-content;
+  min-height: fit-content;
   margin-left: 0 !important;
 }
 #updateButton {

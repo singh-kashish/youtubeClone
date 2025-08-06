@@ -5,6 +5,7 @@ import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import Link from "next/link";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 import { brokenImage } from "../utils/constants";
+import UploadingDots from "./shimmers/UploadingDots";
 export default function Avatar({ uid, url, size, onUpload, where }) {
   const supabase = useSupabaseClient();
   const [avatarUrl, setAvatarUrl] = useState(brokenImage);
@@ -74,10 +75,7 @@ export default function Avatar({ uid, url, size, onUpload, where }) {
   const returnSpinner = () => {
     if (uploading) {
       return (
-        <div className="flex">
-          <p className="mr-2">Uploading...</p>
-          <DotSpinner size={30} speed={0.9} color="orange" />
-        </div>
+          <UploadingDots />
       );
     } else {
       return <span>{message}</span>;
@@ -85,7 +83,7 @@ export default function Avatar({ uid, url, size, onUpload, where }) {
   };
   if (where === "login") {
     return (
-      <div className="my-2">
+      <div className="my-2 min-h-fit">
         <div className="font-sans font-bold text-lg flex items-center">
           Current Profile Avatar
           <img
@@ -98,7 +96,7 @@ export default function Avatar({ uid, url, size, onUpload, where }) {
           />
         </div>
         <div
-          className="flex-col my-2 h-[120px] px-4 border-dashed border-2 border-sky-500 rounded-3xl bg-gray-800"
+          className="flex-col my-2 min-h-fit px-4 border-dashed border-2 border-sky-500 rounded-3xl bg-gray-800 justify-center"
           id={styles.uploadDiv}
         >
           <div className="button primary block md:w-max">{returnSpinner()}</div>

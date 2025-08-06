@@ -186,9 +186,8 @@
     height: 240px !important;
   }
   #reactPlayer {
-    border-top-left-radius: 15px;
+    border-radius: 1%;
     overflow: hidden;
-    border-top-right-radius: 15px;
   }
   #videoAtVideo {
     height: 240px !important;

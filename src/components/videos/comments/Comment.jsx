@@ -1,18 +1,35 @@
-import { useUser } from "@supabase/auth-helpers-react";
 import React from "react";
 import styles from "../../styles/Comments.module.css";
-import CommentBox from "./CommentBox";
-import CommentList from "./CommentList";
+import CommentBox from "./CommentBox.jsx";
+import CommentList from "./CommentList.jsx";
+import { useUser } from "@supabase/auth-helpers-react";
 
-function Comment({ comments, video }) {
+/**
+ * Comment component to display a list of comments and a comment input box for a video.
+ * @param comments The list of comments for the video.
+ * @param video The video object.
+ * @param refreshVideo Function to refresh the video data.
+ * @param addCommentOptimistically Function to optimistically add a comment to the UI.
+ */
+function Comment({ comments, video, refreshVideo, addCommentOptimistically }) {
   const user = useUser();
+  console.log("Comments loaded:", comments);
   return (
-    <div id={styles.main}>
-      <h1 className="font-sans font-bold text-lg border-b-2 border-gray-400 w-full text-white mb-1 pb-1">
-        {comments.length} Comments
-      </h1>
-      <CommentBox video={video} user={user} />
-      <CommentList comments={comments} user={user}/>
+    <div id={styles.container}>
+      <h2 className="text-lg font-bold text-white mb-4">
+        {comments?.length || 0} Comments
+      </h2>
+      <CommentBox
+        video={video}
+        user={user}
+        refreshVideo={refreshVideo}
+        addCommentOptimistically={addCommentOptimistically}
+      />
+      <div id={styles.comments}>
+        {comments?.map((comment) => (
+          <CommentList key={comment.id} comments={comments} />
+        ))}
+      </div>
     </div>
   );
 }

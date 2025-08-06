@@ -15,6 +15,6 @@
     "jsx": "preserve",
     "incremental": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/hooks/useVideoLoadHook.ts", "src/components/videos/VideoIcon.tsx", "src/components/SuggestedVideos.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/hooks/useVideoLoadHook.ts", "src/components/videos/VideoIcon.tsx", "src/components/SuggestedVideos.tsx", "src/components/videos/comments/CommentBox.jsx"],
   "exclude": ["node_modules"]
 }

@@ -1,6 +1,6 @@
-import { GET_ALL_PLAYLISTS } from "../../graphql/queries";
-import { useQuery } from "@apollo/client";
-import { usePlaylistListQuery } from "../gql/graphql";
+// import { GET_ALL_PLAYLISTS } from "../../graphql/queries";
+// import { useQuery } from "@apollo/client";
+// import { usePlaylistListQuery } from "../gql/graphql";
 import { useUser } from "@supabase/auth-helpers-react";
 import { useMemo } from "react";
 const useAllPlaylist = () => {

@@ -1,77 +1,54 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react";
 import styles from "./styles/Account.module.css";
 import EditIcon from "@mui/icons-material/Edit";
 import EditOffIcon from "@mui/icons-material/EditOff";
-import Avatar from "./Avatar";
+import Avatar from './Avatar';
 import Link from "next/link";
-import { brokenImage } from "../utils/constants";
-import { useGetProfileQuery } from "../gql/graphql";
-import { UPDATE_PROFILE } from "../../graphql/mutations";
-import { useMutation } from "@apollo/client";
+
 export default function Account({ session }) {
   const supabase = useSupabaseClient();
   const user = useUser();
+  const [loading, setLoading] = useState(true);
   const [username, setUsername] = useState(null);
   const [full_name, setFull_name] = useState(null);
-  const [avatar_url, setAvatarUrl] = useState(brokenImage);
-  const [updateUserNameEnabled, setUpdateUserNameEnabled] = useState(false);
-  const [updateFullNameEnabled, setUpdateFullNameEnabled] = useState(false);
-  const [primaryButtonState, setPrimaryButtonState] = useState(null);
-  const [updateProfiles] = useMutation(UPDATE_PROFILE);
-  console.log(updateProfiles);
-  const { data, loading, error } = useGetProfileQuery({
-    variables: {
-      id: user?.id,
-    },
-  });
-  console.log(data?.profiles);
-  let buttonText = () => {
-    if (loading) {
-      return "Loading";
-    } else if (updateUserNameEnabled || updateFullNameEnabled) {
-      return "Update User";
-    } else {
-      return "Click on Pen Icons Above to enable update for your UserName or FullName";
-    }
-  };
+  const [avatar_url, setAvatarUrl] = useState(null);
+
   useEffect(() => {
-    if (session !== null && !loading) {
-      setUsername(data?.profiles?.username);
-      setFull_name(data?.profiles?.fullname);
-      setAvatarUrl(data?.profiles?.avatarUrl);
-    }
+    getProfile();
   }, [session]);
 
-  // async function getProfile() {
-  //   try {
-  //     setLoading(true);
+  async function getProfile() {
+    try {
+      setLoading(true);
 
-  //     let { data, error, status } = await supabase
-  //       .from("profiles")
-  //       .select(`username, full_name, avatar_url`)
-  //       .eq("id", user?.id)
-  //       .single();
-  //     const originalAvatarOnInitialRender = useRef(avatar_url);
-  //     if (error && status !== 406) {
-  //       throw error;
-  //     }
+      let { data, error, status } = await supabase
+        .from("profiles")
+        .select(`username, full_name, avatar_url`)
+        .eq("id", user.id)
+        .single();
 
-  //     if (data) {
-  //       setUsername(data.username);
-  //       setFull_name(data.full_name);
-  //       setAvatarUrl(data.avatar_url);
-  //     }
-  //   } catch (error) {
-  //     alert("Error loading user data!", error);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // }
+      if (error && status !== 406) {
+        throw error;
+      }
+
+      if (data) {
+        setUsername(data.username);
+        setFull_name(data.full_name);
+        setAvatarUrl(data.avatar_url);
+      }
+    } catch (error) {
+      alert("Error loading user data!");
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   async function updateProfile({ username, full_name, avatar_url }) {
     try {
       setLoading(true);
+
       const updates = {
         id: user.id,
         username,
@@ -82,20 +59,17 @@ export default function Account({ session }) {
 
       let { error } = await supabase.from("profiles").upsert(updates);
       if (error) throw error;
-
-      alert(
-        "Sorry,we found an exceptional erro while uploading!, you could try again BUT if the picture changes on your profile."
-      );
+      alert("Profile updated!");
     } catch (error) {
-      alert("Error updating the user data!", error);
-      console.error(error);
+      alert("Error updating the data!");
+      console.log(error);
     } finally {
       setLoading(false);
     }
   }
 
   return (
-    <div id={styles.main} className="py-2">
+    <div id={styles.main} className="py-2 px-4 min-h-fit">
       <h1 className="font-sans font-bold text-xl border-b-2 border-gray-400 w-full text-center text-gray-300 mb-1 pb-1">
         Edit Account Details
       </h1>
@@ -125,18 +99,8 @@ export default function Account({ session }) {
           type="text"
           value={username || ""}
           onChange={(e) => setUsername(e.target.value)}
-          disabled={!updateUserNameEnabled}
         />
-        {!loading && (
-          <EditIcon
-            fontSize="small"
-            color="primary"
-            onClick={(e) => {
-              setUpdateUserNameEnabled(!updateUserNameEnabled);
-            }}
-            className="cursor-pointer hover:text-white hover:bg-blue-light focus:outline-none active:shadow-none"
-          />
-        )}
+        <EditIcon fontSize="small" color="primary" />
       </div>
       <div className="my-2">
         <label htmlFor="full_name" className="mr-2">
@@ -147,18 +111,8 @@ export default function Account({ session }) {
           type="full_name"
           value={full_name || ""}
           onChange={(e) => setFull_name(e.target.value)}
-          disabled={!updateFullNameEnabled}
         />
-        {!loading && (
-          <EditIcon
-            fontSize="small"
-            color="primary"
-            onClick={(e) => {
-              setUpdateFullNameEnabled(!updateFullNameEnabled);
-            }}
-            className="cursor-pointer hover:text-white hover:bg-blue-light focus:outline-none active:shadow-none"
-          />
-        )}
+        <EditIcon fontSize="small" color="primary" />
       </div>
 
       <div className="my-2">
@@ -169,7 +123,7 @@ export default function Account({ session }) {
             onClick={() => updateProfile({ username, full_name, avatar_url })}
             disabled={loading}
           >
-            {buttonText()}
+            {loading ? "Loading ..." : "Update"}
           </button>
         </Link>
       </div>

@@ -16,12 +16,12 @@ const EditPlaylist = () => {
   const playlistId = router.query.playlist_id;
   const [playlistName, setPlaylistName] = useState("loading");
   const [playlistVisibility, setPlaylistVisibility] = useState();
-  const { data, loading, error } = useQuery(GET_PLAYLIST_BY_ID, {
-    variables: { id: playlistId },
-  });
-  const [deletePlaylistVideo] = useMutation(DELETE_PLAYLIST_VIDEO, {
-    refetchQueries: [GET_PLAYLIST_BY_ID],
-  });
+  // const { data, loading, error } = useQuery(GET_PLAYLIST_BY_ID, {
+  //   variables: { id: playlistId },
+  // });
+  // const [deletePlaylistVideo] = useMutation(DELETE_PLAYLIST_VIDEO, {
+  //   refetchQueries: [GET_PLAYLIST_BY_ID],
+  // });
   const user = useUser();
   console.log(data);
   useEffect(() => {

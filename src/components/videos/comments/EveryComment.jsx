@@ -22,14 +22,15 @@ import uuid from "../../uuid";
 const roboto = Roboto({ weight: "700", subsets: ["latin"] });
 const r = Roboto({ weight: "500", subsets: ["latin"] });
 const EveryComment = ({ comment, user }) => {
+  console.log("EveryComment loaded with comment:", comment);
   const [editCall, setEditCall] = useState(false);
   const [textForEdit, setTextForEdit] = useState(comment.text);
-  const [updateComment] = useMutation(UPDATE_COMMENT, {
-    refetchQueries: [GET_VIDEO_BY_ID],
-  });
-  const [deleteComment] = useMutation(DELETE_COMMENT, {
-    refetchQueries: [GET_VIDEO_BY_ID],
-  });
+  // const [updateComment] = useMutation(UPDATE_COMMENT, {
+  //   refetchQueries: [GET_VIDEO_BY_ID],
+  // });
+  // const [deleteComment] = useMutation(DELETE_COMMENT, {
+  //   refetchQueries: [GET_VIDEO_BY_ID],
+  // });
   const [like, setLike] = useState();
   const [likeId, setLikeId] = useState();
   // const { data, loading, error } = useQuery(
@@ -60,105 +61,105 @@ const EveryComment = ({ comment, user }) => {
   //     "likedCommentsUsingLikedComments_comment_id_fkey",
   //   ],
   // });
-  const upVote = async (typeOfLike) => {
-    if (!user) {
-      toast("Hey, You need to sign in to be able to vote!");
-      return;
-    }
-    // UpVote exists , again hitting upvote removes your vote, thereby deleting it
-    else if (like && typeOfLike) {
-      toast("Removing your Like!");
-      const {
-        data: { deleteLikedComments: oldLike },
-      } = await deleteLikedComments({
-        variables: {
-          id: likeId,
-        },
-      });
-      toast("Your like was successfully removed!");
+  // const upVote = async (typeOfLike) => {
+  //   if (!user) {
+  //     toast("Hey, You need to sign in to be able to vote!");
+  //     return;
+  //   }
+  //   // UpVote exists , again hitting upvote removes your vote, thereby deleting it
+  //   else if (like && typeOfLike) {
+  //     toast("Removing your Like!");
+  //     const {
+  //       data: { deleteLikedComments: oldLike },
+  //     } = await deleteLikedComments({
+  //       variables: {
+  //         id: likeId,
+  //       },
+  //     });
+  //     toast("Your like was successfully removed!");
 
-      return;
-    }
-    // DownVote exists, again hitting downvote removes your vote,thereby deleting it
-    else if (like === false && !typeOfLike) {
-      toast("Removing your Unlike");
-      const {
-        data: { deleteLikedComments: oldLike },
-      } = await deleteLikedComments({
-        variables: {
-          id: likeId,
-        },
-      });
-      toast("Your unlike was removed successfully!");
+  //     return;
+  //   }
+  //   // DownVote exists, again hitting downvote removes your vote,thereby deleting it
+  //   else if (like === false && !typeOfLike) {
+  //     toast("Removing your Unlike");
+  //     const {
+  //       data: { deleteLikedComments: oldLike },
+  //     } = await deleteLikedComments({
+  //       variables: {
+  //         id: likeId,
+  //       },
+  //     });
+  //     toast("Your unlike was removed successfully!");
 
-      return;
-    }
-    // upvote exists, but the user want to downvote ...  so we modify the existing row in the votes table
-    else if (like === true && typeOfLike === false) {
-      toast("Changing your Like to Unlike");
-      await updateLikedComments({
-        variables: {
-          id: likeId,
-          like: typeOfLike,
-        },
-      });
-      toast("Changed to Unlike!");
-    }
-    // vote exists as a downvote but the user wants to change to upvote , so modify the row in the vote table
-    else if (like === false && typeOfLike === true) {
-      toast("Changing your Unlike to Like!");
-      await updateLikedComments({
-        variables: {
-          id: likeId,
-          like: typeOfLike,
-        },
-      });
-      toast("Changed to Like!");
-    } else {
-      toast("Inserting your Like!");
-      const toInsertID = uuid();
-      const {
-        data: { addLike: newLike },
-      } = await insertLikedComments({
-        variables: {
-          id: toInsertID,
-          comment_id: comment?.id,
-          user_id: user.id,
-          like: typeOfLike,
-        },
-      });
-      toast("Your like was inserted!");
-    }
-  };
+  //     return;
+  //   }
+  //   // upvote exists, but the user want to downvote ...  so we modify the existing row in the votes table
+  //   else if (like === true && typeOfLike === false) {
+  //     toast("Changing your Like to Unlike");
+  //     await updateLikedComments({
+  //       variables: {
+  //         id: likeId,
+  //         like: typeOfLike,
+  //       },
+  //     });
+  //     toast("Changed to Unlike!");
+  //   }
+  //   // vote exists as a downvote but the user wants to change to upvote , so modify the row in the vote table
+  //   else if (like === false && typeOfLike === true) {
+  //     toast("Changing your Unlike to Like!");
+  //     await updateLikedComments({
+  //       variables: {
+  //         id: likeId,
+  //         like: typeOfLike,
+  //       },
+  //     });
+  //     toast("Changed to Like!");
+  //   } else {
+  //     toast("Inserting your Like!");
+  //     const toInsertID = uuid();
+  //     const {
+  //       data: { addLike: newLike },
+  //     } = await insertLikedComments({
+  //       variables: {
+  //         id: toInsertID,
+  //         comment_id: comment?.id,
+  //         user_id: user.id,
+  //         like: typeOfLike,
+  //       },
+  //     });
+  //     toast("Your like was inserted!");
+  //   }
+  // };
 
-  const displayLikes = (data) => {
-    const likes = data?.likedCommentsUsingLikedComments_comment_id_fkey;
-    const displayNumber = likes?.reduce(
-      (total, vote) => (vote.like ? (total += 1) : total),
-      0
-    );
+  // const displayLikes = (data) => {
+  //   const likes = data?.likedCommentsUsingLikedComments_comment_id_fkey;
+  //   const displayNumber = likes?.reduce(
+  //     (total, vote) => (vote.like ? (total += 1) : total),
+  //     0
+  //   );
 
-    if (likes?.length === 0) return 0;
-    return displayNumber;
-  };
-  const displayUnlikes = (data) => {
-    const likes = data?.likedCommentsUsingLikedComments_comment_id_fkey;
-    const displayNumber = likes?.reduce(
-      (total, vote) => (vote.like === false ? (total += 1) : total),
-      0
-    );
+  //   if (likes?.length === 0) return 0;
+  //   return displayNumber;
+  // };
+  // const displayUnlikes = (data) => {
+  //   const likes = data?.likedCommentsUsingLikedComments_comment_id_fkey;
+  //   const displayNumber = likes?.reduce(
+  //     (total, vote) => (vote.like === false ? (total += 1) : total),
+  //     0
+  //   );
 
-    if (likes?.length === 0) return 0;
-    return displayNumber;
-  };
-  useEffect(() => {
-    console.log(data);
-    const likes = data?.likedCommentsUsingLikedComments_comment_id_fkey;
-    const like = likes?.find((vote) => vote.user_id === user?.id)?.like;
-    const likeId = likes?.find((vote) => vote.user_id === user?.id)?.id;
-    setLike(like);
-    setLikeId(likeId);
-  }, [data]);
+  //   if (likes?.length === 0) return 0;
+  //   return displayNumber;
+  // };
+  // useEffect(() => {
+  //   console.log(data);
+  //   const likes = data?.likedCommentsUsingLikedComments_comment_id_fkey;
+  //   const like = likes?.find((vote) => vote.user_id === user?.id)?.like;
+  //   const likeId = likes?.find((vote) => vote.user_id === user?.id)?.id;
+  //   setLike(like);
+  //   setLikeId(likeId);
+  // }, [data]);
   const editSubmit = async () => {
     const notification = toast.loading("Saving your comment...");
     try {
@@ -279,7 +280,7 @@ const EveryComment = ({ comment, user }) => {
                 upVote(true);
               }}
             />
-            {displayLikes(data)}
+            {/* {displayLikes(data)} */}
           </div>
           <div>
             <ThumbDownAltOutlined
@@ -290,7 +291,7 @@ const EveryComment = ({ comment, user }) => {
                 upVote(false);
               }}
             />
-            {displayUnlikes(data)}
+            {/* {displayUnlikes(data)} */}
           </div>
           <button className="py-2 px-4 mr-2 ml-2 shadow-md no-underline rounded-full text-white font-sans font-semibold text-sm border-red hover:bg-gray-900 hover:bg-red-light focus:outline-none active:shadow-none">
             Reply
