@@ -2,7 +2,7 @@ import { useUser } from "@supabase/auth-helpers-react";
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 import styles from "./[text].module.css";
-import VideoSearch from "../../src/components/VideoSearch";
+import VideoSearch from "../../src/components/videos/VideoSearch";
 import ProfileSearch from "../../src/components/ProfileSearch";
 
 function searchResults() {

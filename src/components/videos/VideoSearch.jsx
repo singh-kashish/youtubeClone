@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import VideoIcon from "./VideoIcon";
 import Shimmer from '../Shimmer';
 import { useRouter } from "next/router";
-import styles from "./styles/VideoSearch.module.css";
+import styles from "../styles/VideoSearch.module.css";
 import useVideoSearchHook from "../../hooks/useVideoSearchHook";
 
 function VideoSearch({ text }) {

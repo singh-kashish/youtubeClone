@@ -43,18 +43,15 @@ const VideoIcon: React.FC<VideoIconProps> = ({ video, where, allowHover }) => {
       let lastDotIndx = toUseUrl.lastIndexOf(".") + 1;
       let toUseType = toUseUrl.substr(lastDotIndx);
       return (
-        <div>
           <video
             controls
             autoStart="0"
-            width="415px"
-            height="240px"
+            className="rounded-lg w-10 h-60"
             id={styles.video}
             src={video.videoUrl}
           >
             {/* // <source src={video.videoUrl} type={`video/${toUseType}`} /> */}
           </video>
-        </div>
       );
     } else {
       return (
