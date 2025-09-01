@@ -1,4 +1,4 @@
-import { Maybe, Playlist, PlaylistVideos, Video } from "../gql/graphql";
+//import { Maybe, Playlist, PlaylistVideos, Video } from "../gql/graphql";
 import VideoIcon from "./videos/VideoIcon";
 import { PlaylistVideo } from "../types/Playlist";
 import useAllPlaylist from "../hooks/useAllPlaylist";

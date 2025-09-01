@@ -1,29 +1,22 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import styles from "./[video_id].module.css";
-import ReactPlayer from "react-player/lazy";
 import { Roboto } from "next/font/google";
 import Avatar from "../../src/components/Avatar";
 import MusicNote from "@mui/icons-material/MusicNote";
 import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ThumbDownOffAltIcon from "@mui/icons-material/ThumbDownOffAlt";
-import ReplySharpIcon from "@mui/icons-material/ReplySharp";
-import DownloadIcon from "@mui/icons-material/Download";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import Link from "next/link";
-import Comment from "../../src/components/videos/comments/Comment.jsx";
 import SuggestedVideo from "../../src/components/SuggestedVideos";
 import toast from "react-hot-toast";
-import Modal from "@mui/material/Modal";
-import Box from "@mui/material/Box";
-import CloseIcon from "@mui/icons-material/Close";
-import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import CurrentQueue from "../../src/components/CurrentQueue";
-import VideoShimmer from "../../src/components/shimmers/VideoShimmer.jsx";
-import useVideoHook from "../../src/hooks/useVideoHook";
+import VideoShimmer from "../../src/components/shimmers/VideoShimmer";
+import { useVideoById } from "../../src/hooks/useVideoByIdHook";
 import { usePathname } from "next/navigation";
 import { useUser } from "@supabase/auth-helpers-react";
 import { useRouter } from "next/router";
+import VideoPlayerWithPersistence from "../../src/components/videos/VideoPlayerWithPersistance";
+import CommentSection from "../../src/components/videos/comments/CommentSection";
 
 const roboto = Roboto({ weight: "700", subsets: ["latin"] });
 const r = Roboto({ weight: "500", subsets: ["latin"] });
@@ -39,13 +32,29 @@ const style = {
   padding: 2,
 };
 
-/**
- * Video component to display a single video with related actions and metadata.
- */
 const Video: React.FC = () => {
   const suggestProps = { where: "Video" };
   const router = useRouter();
   const { video_id } = router.query;
+  const user = useUser();
+  const pathname = usePathname();
+
+  const {
+    video,
+    comments,
+    likes,
+    subscriberCount,
+    subscribed,
+    toggleLike,
+    toggleSubscribe,
+    setComments,
+    loading,
+    error,
+  } = useVideoById(video_id as string, user ? { id: user.id } : undefined);
+
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   useEffect(() => {
     if (video_id) {
@@ -53,73 +62,20 @@ const Video: React.FC = () => {
     }
   }, [video_id]);
 
-  const user = useUser();
-  const {
-    video,
-    loading,
-    error,
-    liked,
-    subscribed,
-    likeData,
-    useUpVote,
-    subscribe,
-    refreshVideo,
-    addCommentOptimistically,
-    displayLikes,
-    displayUnlikes,
-    onVideoEnd,
-  } = useVideoHook(user, video_id);
+  const handleAddComment = useCallback((newComment: any) => {
+    setComments((prev) => [...prev, newComment]);
+    toast.success("Comment added!");
+  }, []);
 
-  const pathname = usePathname();
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-
-  const player = () => {
-    if (!video || !video.videoUrl) return null;
-
-    if (video.videoUrl.includes("supabase")) {
-      const toUseUrl = video.videoUrl;
-      const lastDotIndx = toUseUrl.lastIndexOf(".") + 1;
-      const toUseType = toUseUrl.substr(lastDotIndx);
-      return (
-        <div id={styles.video}>
-          <video
-            controls
-            src={video.videoUrl}
-            style={{ minWidth: "100%", height: "70vh" }}
-            onEnded={onVideoEnd}
-          >
-            <source src={video.videoUrl} type={`video/${toUseType}`} />
-          </video>
-        </div>
-      );
-    }
-
-    return (
-      <div id={styles.video}>
-        <ReactPlayer
-          url={video.videoUrl}
-          playing={true}
-          controls={true}
-          loop={false}
-          onEnded={onVideoEnd}
-          width="100%"
-          height="100%"
-        />
-      </div>
-    );
-  };
-
-  if (loading) {
-    return <VideoShimmer />;
-  }
+  if (loading) return <VideoShimmer />;
 
   if (error || !video || video.videoStatus !== true) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center">
         <h1 className="text-2xl font-bold text-white">Video Not Found</h1>
-        <h6 className="text-red-600 mt-2">ERROR: {error?.message || "Unknown error"}</h6>
+        <h6 className="text-red-600 mt-2">
+          ERROR: {error?.message || "Unknown error"}
+        </h6>
         <button
           onClick={() => router.push("/")}
           className="mt-4 py-2 px-4 bg-blue-600 text-white rounded hover:bg-blue-700"
@@ -130,23 +86,55 @@ const Video: React.FC = () => {
     );
   }
 
-  const accountUrl = `/profiles/${video.user_id}`;
-  console.log("Video data loaded:", video.comment);
+  const accountUrl = `/profiles/${video?.user_id}`;
+
+  const handleLike = (liked: boolean) => {
+    if (!user) {
+      toast.error("Please log in to like or dislike.");
+      return;
+    }
+
+    toast.promise(toggleLike(liked), {
+      loading: liked ? "Liking..." : "Disliking...",
+      success: liked ? "Liked!" : "Disliked!",
+      error: "Failed to update like.",
+    });
+  };
+
+  const handleSubscribe = () => {
+    if (!user) {
+      toast.error("Please log in to subscribe.");
+      return;
+    }
+
+    toast.promise(toggleSubscribe(), {
+      loading: subscribed ? "Unsubscribing..." : "Subscribing...",
+      success: subscribed ? "Unsubscribed!" : "Subscribed!",
+      error: "Subscription failed.",
+    });
+  };
+
   return (
     <div className="min-h-screen md:pl-3 pt-5 lg:dvw" id={styles.main}>
       <div className="w-[100vw]">
-        <div>{player()}</div>
+        <div id={styles.video}>
+          <VideoPlayerWithPersistence
+            videoUrl={video.videoUrl || ""}
+            videoId={video.id || ""}
+          />
+        </div>
         <div className="mb-1">
           <h1 id={styles.title} className={roboto.className}>
             {video.title}
           </h1>
         </div>
+
         <div id={styles.belowVideo}>
           <div id={styles.row_icons}>
             <div id={styles.left}>
               <Link href={accountUrl}>
                 <Avatar
-                  uid={video.user_id}
+                  uid={video.user_id || ""}
                   url={video.profiles?.avatar_url || "/default-avatar.png"}
                   size={55}
                   where="video"
@@ -161,7 +149,7 @@ const Video: React.FC = () => {
                   </h1>
                 </Link>
                 <div className="text-gray-300 font-extralight">
-                  {`${video.profiles?.subscribers?.length ?? "N/A"} subscribers`}
+                  {subscriberCount} subscribers
                 </div>
               </div>
               <div>
@@ -170,7 +158,7 @@ const Video: React.FC = () => {
                   className="py-2 px-4 mr-2 shadow-md no-underline rounded-full text-white font-sans font-semibold text-sm border-red hover:bg-gray-900 hover:bg-red-light focus:outline-none active:shadow-none"
                   onClick={(e) => {
                     e.preventDefault();
-                    subscribe();
+                    handleSubscribe();
                   }}
                 >
                   {subscribed ? "Subscribed" : "Subscribe"}
@@ -187,127 +175,59 @@ const Video: React.FC = () => {
                   className="md:mr-2 shadow-md no-underline rounded-full text-white font-sans font-semibold text-sm border-red hover:bg-gray-900 hover:bg-red-light focus:outline-none active:shadow-none"
                 >
                   <div
-                    id={liked === true ? styles.likeD : styles.like}
+                    id={
+                      likes.userVote?.liked === true
+                        ? styles.likeD
+                        : styles.like
+                    }
                     className="md:px-2 md:py-1"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleLike(true);
+                    }}
                   >
-                    <ThumbUpIcon
-                      className="pr-2"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        useUpVote(true);
-                      }}
-                    />
-                    {displayLikes(likeData)}
+                    <ThumbUpIcon className="pr-2" />
+                    {likes.totalLikes}
                   </div>
                   <p className="text-gray-800" id={styles.diwaar}>
                     |
                   </p>
                   <div
-                    id={liked === false ? styles.likeD : styles.like}
+                    id={
+                      likes.userVote?.liked === false
+                        ? styles.likeD
+                        : styles.like
+                    }
                     className="px-2 py-1"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleLike(false);
+                    }}
                   >
-                    <ThumbDownOffAltIcon
-                      className="pr-2"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        useUpVote(false);
-                      }}
-                    />
-                    {displayUnlikes(likeData)}
+                    <ThumbDownOffAltIcon className="pr-2" />
+                    {likes.totalDislikes}
                   </div>
                 </button>
-              </div>
-              <div className="hidden ml-2 md:inline-block">
-                <button
-                  id={styles.share}
-                  onClick={handleOpen}
-                  className="py-2 px-4 mr-2 shadow-md no-underline rounded-full text-white font-sans font-semibold text-sm border-red hover:bg-gray-900 hover:bg-red-light focus:outline-none active:shadow-none"
-                >
-                  <ReplySharpIcon />
-                  Share
-                </button>
-                <Modal
-                  open={open}
-                  onClose={handleClose}
-                  aria-labelledby="parent-modal-title"
-                  aria-describedby="parent-modal-description"
-                >
-                  <Box sx={{ ...style, width: 600 }}>
-                    <div id={styles.modal}>
-                      <div id={styles.modalFirstLine}>
-                        <div id={styles.shareText} className={r.className}>
-                          Share
-                        </div>
-                        <div>
-                          <CloseIcon
-                            onClick={handleClose}
-                            id={styles.closeIcon}
-                          />
-                        </div>
-                      </div>
-                      <div>
-                        <input
-                          value={`https://youtube-clone-singh-kashish.vercel.app${pathname}`}
-                          id={styles.showInput}
-                          readOnly
-                        />
-                        <button
-                          onClick={() => {
-                            navigator.clipboard.writeText(
-                              `https://youtube-clone-singh-kashish.vercel.app${pathname}`
-                            );
-                            toast.success("Link copied to clipboard");
-                            handleClose();
-                          }}
-                          className="py-2 px-4 shadow-md no-underline rounded-full bg-blue text-white font-sans font-semibold text-sm border-blue btn-primary hover:text-white hover:bg-blue-light focus:outline-none active:shadow-none mr-2"
-                          id={styles.copyButton}
-                        >
-                          Copy
-                        </button>
-                      </div>
-                      <div onClick={handleClose}>
-                        <a
-                          href={`https://api.whatsapp.com/send?text=https://youtube-clone-singh-kashish.vercel.app${pathname}`}
-                          data-action="share/whatsapp/share"
-                          target="_blank"
-                        >
-                          <WhatsAppIcon />
-                          Share via WhatsApp
-                        </a>
-                      </div>
-                    </div>
-                  </Box>
-                </Modal>
-              </div>
-              <div>
-                <button
-                  id={styles.download}
-                  className="hidden ml-2 md:inline-block py-2 px-4 mr-2 shadow-md no-underline rounded-full text-white font-sans font-semibold text-sm border-red hover:bg-gray-900 hover:bg-red-light focus:outline-none active:shadow-none"
-                >
-                  <DownloadIcon />
-                  Download
-                </button>
-              </div>
-              <div className="hidden md:inline-block p-2 cursor-pointer shadow-md no-underline rounded-full text-white font-sans font-semibold text-sm hover:bg-gray-900 focus:outline-none active:shadow-none">
-                <MoreHorizIcon />
               </div>
             </div>
           </div>
         </div>
+
         <div className="" id={styles.description}>
           <div className={roboto.className}>
             <h1 className="text-lg">{video.viewCount} views</h1>
           </div>
           <div>{video.description}</div>
         </div>
-        
-        <Comment
-          comments={video?.comment || []}
+
+        <CommentSection
+          user={user}
+          comments={comments}
           video={video}
-          refreshVideo={refreshVideo}
-          addCommentOptimistically={addCommentOptimistically}
+          addCommentOptimistically={handleAddComment}
         />
       </div>
+
       <div className="">
         <CurrentQueue />
         <SuggestedVideo {...suggestProps} />

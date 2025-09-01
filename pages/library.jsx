@@ -1,8 +1,8 @@
 import { useUser } from "@supabase/auth-helpers-react";
 import React from "react";
-import { GET_PROFILE } from "../graphql/queries";
+// import { GET_PROFILE } from "../graphql/queries";
 import styles from "./styles/library.module.css";
-import VideoIcon from "../src/components/VideoIcon";
+import VideoIcon from "../src/components/videos/VideoIcon";
 import Link from "next/link";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";

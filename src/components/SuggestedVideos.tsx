@@ -60,7 +60,7 @@ const SuggestedVideos:React.FC<SuggestedVideoProps> = ({where}) => {
               <VideoIcon
                 video={pie}
                 where="home"
-                className="mt-1 max-w-fit"
+                allowHover={true}
                 key={pie?.id}
               />
             ))}

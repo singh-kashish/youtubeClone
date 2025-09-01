@@ -9,6 +9,7 @@ import useVideoSearchHook from "../../hooks/useVideoSearchHook";
 function VideoSearch({ text }) {
   const user = useUser();
   let data= useVideoSearchHook(text);
+  console.log("Data in VideoSearch:", data);
   const videosFound = () => {
     if (!data) {
       return (

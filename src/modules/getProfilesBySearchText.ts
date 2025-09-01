@@ -22,15 +22,6 @@ export async function getProfilesBySearchText(text: string): Promise<GetProfiles
         username,
         avatar_url,
         full_name,
-        likedVideos (
-          id,
-          user_id,
-          liked
-        ),
-        subscribersUsingSubscribers_subscribed_to_id_fkey (
-          id,
-          user_id
-        )
       `)
       .or(`username.ilike.${searchPattern},full_name.ilike.${searchPattern}`);
 
@@ -40,7 +31,7 @@ export async function getProfilesBySearchText(text: string): Promise<GetProfiles
     }
 
     console.log("Fetched Profiles:", data);
-    return { Profiles: data as ProfileWithSubscribers[], loading: false, error: null };
+    
   } catch (error: unknown) {
     console.error("Unexpected error loading profiles:", error);
     return {

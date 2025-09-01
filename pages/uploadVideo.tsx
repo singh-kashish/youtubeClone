@@ -18,7 +18,7 @@ type FormData = {
 function uploadVideo() {
   const Router = useRouter();
   const user = useUser();
-  const [insertVideo] = useMutation(ADD_VIDEO);
+  //const [insertVideo] = useMutation(ADD_VIDEO);
   const {
     register,
     setValue,

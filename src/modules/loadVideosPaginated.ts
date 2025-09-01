@@ -1,6 +1,7 @@
 import { supabase } from "../components/utils/supabase";
 import { LoadVideosResponse, typeOfList } from "../types/VideoLoadTypes";
-
+import { PostgrestError } from "@supabase/supabase-js";
+// Paginated video loader
 export async function loadVideosPaginated({
   index,
   offset,
@@ -12,12 +13,11 @@ export async function loadVideosPaginated({
   order: boolean;
   displayListType: typeOfList;
 }): Promise<LoadVideosResponse> {
-  let loading: boolean = true;
+  let loading = true;
   try {
     const { data: video, error, status } = await supabase
       .from("video")
-      .select(
-        `
+      .select(`
         id,
         created_at,
         description,
@@ -30,23 +30,16 @@ export async function loadVideosPaginated({
         viewCount,
         user_id,
         profiles(*)
-      `
-      )
+      `)
       .order(displayListType, { nullsFirst: false, ascending: order })
       .range(index, offset);
 
+    loading = false;
     if (error || status !== 200) {
       throw new Error(error?.message || "Error fetching videos");
-    } else {
-      loading = false;
-      console.log(
-        "jh",order
-      );
-      return { video, loading, error };
     }
-  } catch (error: unknown) {
-    throw new Error("Error fetching videos");
-  } finally {
-    loading = false;
+    return { video, loading, error };
+  } catch (error: any) {
+    return { video: null, loading: false, error: { message: error.message } as PostgrestError };
   }
 }

@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import { Playlist, PlaylistVideos } from "../gql/graphql";
+//import { Playlist, PlaylistVideos } from "../gql/graphql";
 import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutlined";
 import ArrowForwardIosOutlinedIcon from "@mui/icons-material/ArrowForwardIosOutlined";
 import { playPlaylist } from "../../reduxReducers/playlistSlice";
@@ -13,7 +13,7 @@ import {
 } from "../../graphql/mutations";
 import { useMutation } from "@apollo/client";
 import toast from "react-hot-toast";
-import { GET_PLAYLIST_FOR_USER } from "../../graphql/queries";
+//import { GET_PLAYLIST_FOR_USER } from "../../graphql/queries";
 import { useUser } from "@supabase/auth-helpers-react";
 import { PlaylistVideo } from "../types/Playlist";
 function ShowPlaylist({ playlist }) {

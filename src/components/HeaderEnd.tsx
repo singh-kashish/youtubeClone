@@ -1,8 +1,10 @@
+// src/components/HeaderEnd.tsx
 import React, { useEffect, useState } from "react";
 import {
   useSession,
   useSupabaseClient,
   useUser,
+  User,
 } from "@supabase/auth-helpers-react";
 import styles from "./styles/Header.module.css";
 import MoreVertRoundedIcon from "@mui/icons-material/MoreVertRounded";
@@ -11,29 +13,26 @@ import Link from "next/link";
 import VideoCallOutlinedIcon from "@mui/icons-material/VideoCallOutlined";
 import Avatar from "./Avatar";
 
-const HeaderEnd = () => {
+const HeaderEnd: React.FC = () => {
   const session = useSession();
   const supabase = useSupabaseClient();
-  const user = useUser();
-  const [avatar_url, setAvatarUrl] = useState(null);
-  const [username, setUsername] = useState(null);
-  const [full_name, setFull_name] = useState(null);
+  const user = useUser() as User | null;
+  const [avatar_url, setAvatarUrl] = useState<string | null>(null);
+  const [username, setUsername] = useState<string | null>(null);
+  const [full_name, setFull_name] = useState<string | null>(null);
+
   useEffect(() => {
-    if (session !== null) getProfile();
-  }, [session]);
+    if (session !== null && user) getProfile();
+  }, [session, user]);
 
   async function getProfile() {
     try {
-      let { data, error, status } = await supabase
+      const { data, error, status } = await supabase
         .from("profiles")
         .select(`username, full_name, avatar_url`)
         .eq("id", user?.id)
         .single();
-
-      if (error && status !== 406) {
-        throw error;
-      }
-
+      if (error && status !== 406) throw error;
       if (data) {
         setUsername(data.username);
         setFull_name(data.full_name);
@@ -41,24 +40,19 @@ const HeaderEnd = () => {
       }
     } catch (error) {}
   }
+
   return (
     <div>
       {!session ? (
         <div id={styles.headerEnd}>
           <Link href="/uploadVideo">
-            <VideoCallOutlinedIcon
-              fontSize="large"
-              className={styles.addVideo}
-            />
+            <VideoCallOutlinedIcon fontSize="large" className={styles.addVideo} />
           </Link>
           <div>
             <MoreVertRoundedIcon />
           </div>
           <Link href="/login">
-            <div
-              className="py-2 px-4 shadow-md no-underline rounded-full"
-              id={styles.signIn}
-            >
+            <div className="py-2 px-4 shadow-md no-underline rounded-full" id={styles.signIn}>
               <AccountCircleRoundedIcon />
               Sign in
             </div>
@@ -67,19 +61,13 @@ const HeaderEnd = () => {
       ) : (
         <div className="hidden md:flex space-x-2" id={styles.headerEnd}>
           <Link href="/uploadVideo">
-            <VideoCallOutlinedIcon
-              fontSize="large"
-              className={styles.addVideo}
-            />
+            <VideoCallOutlinedIcon fontSize="large" className={styles.addVideo} />
           </Link>
           <Avatar
-            uid={user?.id}
+            uid={user?.id || ""}
             url={avatar_url}
             size={30}
             where="header"
-            onUpload={() => {
-              console.log("so many errors");
-            }}
           />
           <Link href="/">
             <button

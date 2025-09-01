@@ -1,15 +1,177 @@
+// // src/modules/video.ts
+// import { supabase } from "../components/utils/supabase";
+// import { TablesInsert, TablesUpdate } from "../../lib/database.types";
+// import { VideoWithProfile, LoadVideoResponse } from "../types/VideoLoadTypes";
+// import { PostgrestError } from "@supabase/supabase-js";
+
+// export async function loadVideoById(video_id: string): Promise<LoadVideoResponse> {
+//   try {
+//     const { data, error } = await supabase
+//       .from("video")
+//       .select(`
+//         id,
+//         created_at,
+//         description,
+//         dislikes,
+//         likes,
+//         thumbnailUrl,
+//         title,
+//         videoStatus,
+//         videoUrl,
+//         viewCount,
+//         user_id,
+//         profiles (
+//           id,
+//           username,
+//           avatar_url,
+//           full_name,
+//           updated_at
+//         ),
+//         comment (
+//           *,
+//           profiles (
+//             id,
+//             username,
+//             avatar_url,
+//             full_name,
+//             updated_at
+//           ),
+//           likedComments (
+//             id,
+//             user_id,
+//             like
+//           )
+//         )
+//       `)
+//       .eq("id", video_id)
+//       .single();
+
+//     if (error || !data) {
+//       return { VideoWithProfile: null, loading: false, error };
+//     }
+//     return { VideoWithProfile: data as VideoWithProfile, loading: false, error: null };
+//   } catch (error: any) {
+//     return { VideoWithProfile: null, loading: false, error: { message: error.message } as PostgrestError };
+//   }
+// }
+
+// export async function incrementVideoViewCount(video_id: string, currentViewCount: number) {
+//   const { error } = await supabase
+//     .from("video")
+//     .update({ viewCount: currentViewCount + 1 })
+//     .eq("id", video_id);
+//   if (error) throw error;
+// }
+
+// export async function addVideo(video: TablesInsert<"video">) {
+//   const { data, error } = await supabase
+//     .from("video")
+//     .insert([video])
+//     .select()
+//     .single();
+//   if (error) throw error;
+//   return data;
+// }
+
+// export async function updateVideo(id: string, updates: TablesUpdate<"video">) {
+//   const { data, error } = await supabase
+//     .from("video")
+//     .update(updates)
+//     .eq("id", id)
+//     .select()
+//     .single();
+//   if (error) throw error;
+//   return data;
+// }
+
+// chatgpt code below:-
+// import { supabase } from "../components/utils/supabase";
+// import { Video, VideoWithProfile, LoadVideosResponse, LoadVideoResponse } from "../types/VideoLoadTypes";
+
+// export const loadVideoById = {
+//   // Fetch multiple videos with profiles
+//   async fetchVideos(orderBy: keyof Video = "created_at", ascending = false): Promise<LoadVideosResponse> {
+//     const { data, error } = await supabase
+//       .from("video")
+//       .select(`
+//         *,
+//         profiles:profiles!video_user_id_fkey (*)
+//       `)
+//       .order(orderBy, { ascending });
+
+//     return {
+//       video: data as (Video & { profiles: VideoWithProfile["profiles"] })[] | null,
+//       error,
+//       loading: false,
+//     };
+//   },
+
+//   // Fetch single video with profile and comments (and their profiles)
+//   async fetchVideoById(id: string): Promise<LoadVideoResponse> {
+//     const { data, error } = await supabase
+//       .from("video")
+//       .select(`
+//         *,
+//         profiles:profiles!video_user_id_fkey (*),
+//         comment:comment (
+//           *,
+//           profiles:profiles!comment_user_id_fkey (*)
+//         )
+//       `)
+//       .eq("id", id)
+//       .single();
+
+//     return {
+//       VideoWithProfile: data as VideoWithProfile | null,
+//       error,
+//       loading: false,
+//     };
+//   },
+// };
+//src/modules/videoService.ts
+// import { supabase } from "../components/utils/supabase";
+// import { Video, LoadVideoResponse, VideoWithProfile } from "../types/VideoLoadTypes";
+
+// export const videoService = {
+//   async fetchVideos(orderBy: keyof Video = "created_at", ascending = false): Promise<LoadVideoResponse> {
+//     const { data, error } = await supabase
+//       .from("video")
+//       .select("*, profiles(*)")
+//       .order(orderBy, { ascending });
+//     return {
+//      data as (Video & { profiles: any })[] | null,
+//       error,
+//       loading: false,
+//     };
+//   },
+
+//   async fetchVideoById(id: string): Promise<LoadVideoResponse> {
+//     const { data, error } = await supabase
+//       .from("video")
+//       .select("*, profiles(*), comment(*, profiles(*))")
+//       .eq("id", id)
+//       .single();
+
+//     return {
+//       VideoWithProfile: data as VideoWithProfile | null,
+//       error,
+//       loading: false,
+//     };
+//   },
+// };
+
+// src/modules/video.ts
 import { supabase } from "../components/utils/supabase";
-import { LoadVideoResponse, VideoWithProfile } from "../types/VideoLoadTypes";
-import { PostgrestSingleResponse } from "@supabase/supabase-js";
+import { TablesInsert, TablesUpdate } from "../../lib/database.types";
+import { VideoWithProfile, LoadVideoResponse } from "../types/VideoLoadTypes";
+import { PostgrestError } from "@supabase/supabase-js";
 
 export async function loadVideoById(video_id: string): Promise<LoadVideoResponse> {
   try {
-    console.log("Loading video with ID:", video_id);
-    const { error, data, status } = await supabase
+    const { data, error } = await supabase
       .from("video")
-      .select(
-        `
-          id,
+      .select(`
+        id,
         created_at,
         description,
         dislikes,
@@ -20,89 +182,52 @@ export async function loadVideoById(video_id: string): Promise<LoadVideoResponse
         videoUrl,
         viewCount,
         user_id,
-        profiles (
-          id,
-          username,
-          avatar_url,
-          full_name
-        ),
+        profiles (id, username, avatar_url, full_name, updated_at),
         comment (
-          id,
-          text,
-          created_at,
-          user_id,
-          likeCount,
-          dislikeCount,
-          profiles (
-            id,
-            username,
-            avatar_url
-          ),
-          likedComments (
-            id,
-            user_id,
-            like
-          )
-        ),
-        likedVideos (
-          id,
-          user_id,
-          liked
+          *,
+          profiles (id, username, avatar_url, full_name, updated_at),
+          likedComments (*)
         )
-        `
-      )
+      `)
       .eq("id", video_id)
       .single();
 
-    if (error || status !== 200) {
-      console.error("Error loading video:", error);
-      return { VideoWithProfile: null, loading: false, error };
+    if (error || !data) {
+      return { VideoWithProfile: null, loading: false, error: error ?? { message: "Error fetching video" } as PostgrestError };
     }
 
-    console.log("Fetched video:", data);
     return { VideoWithProfile: data as VideoWithProfile, loading: false, error: null };
-  } catch (error: unknown) {
-    console.error("Unexpected error loading video:", error);
-    return { VideoWithProfile: null, loading: false, error: { message: (error as Error).message } as any };
+  } catch (error: any) {
+    return { VideoWithProfile: null, loading: false, error: { message: error.message } as PostgrestError };
   }
 }
 
+export async function incrementVideoViewCount(video_id: string, currentViewCount: number) {
+  const { error } = await supabase
+    .from("video")
+    .update({ viewCount: currentViewCount + 1 })
+    .eq("id", video_id);
 
-// Get the current user's ID from Supabase Auth
-// const {
-//   data: { user },
-//   error: authError
-// } = await supabase.auth.getUser();
+  if (error) throw error;
+}
 
-// if (authError) throw authError;
-// const currentUserId = user.id;
+export async function addVideo(video: TablesInsert<"video">) {
+  const { data, error } = await supabase
+    .from("video")
+    .insert([video])
+    .select()
+    .single();
+  if (error) throw error;
+  return data;
+}
 
-// // 1️⃣ Primary query: fetch video + all nested data
-// const { data: videoData, error: videoError } = await supabase
-//   .from("video")
-//   .select(`
-    
-//   `)
-//   .eq("id", video_id)
-//   .single();
-
-// if (videoError) throw videoError;
-
-// 2️⃣ Separate query: check if current user subscribed to uploader
-// const { data: subscriptionData, error: subscriptionError } = await supabase
-//   .from("subscribers")
-//   .select("id")
-//   .eq("user_id", currentUserId)
-//   .eq("subscribed_to_id", videoData.user_id)
-//   .maybeSingle();
-
-// if (subscriptionError) throw subscriptionError;
-
-// // 🔍 Add `isSubscribed` field to final result
-// videoData.isSubscribed = Boolean(subscriptionData);
-
-// // 🔄 Optional post-processing: flatten likes on frontend
-// videoData.userHasLiked = videoData.likedVideos?.some(
-//   lv => lv.user_id === currentUserId && lv.liked === true
-// );
-// videoData.userHasDisliked = videoData.likedV
+export async function updateVideo(id: string, updates: TablesUpdate<"video">) {
+  const { data, error } = await supabase
+    .from("video")
+    .update(updates)
+    .eq("id", id)
+    .select()
+    .single();
+  if (error) throw error;
+  return data;
+}

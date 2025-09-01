@@ -1,530 +1,421 @@
+// import React, { useState } from "react";
+// import { Roboto } from "next/font/google";
+// import Link from "next/link";
+// import Avatar from "../Avatar";
+// import ReactPlayer from "react-player";
+// import MoreVertRoundedIcon from "@mui/icons-material/MoreVertRounded";
+// import { useDispatch } from "react-redux";
+// import { addToPlaylist, deleteFromPlaylist } from "../../../reduxReducers/playlistSlice";
+// import PlaylistModal from "../PlaylistModal";
+// import { VideoWithProfile } from "../../types/VideoRedux";
+// import styles from "../styles/VideoIcon.module.css";
+
+// const roboto = Roboto({ weight: "700", subsets: ["latin"] });
+// const r = Roboto({ weight: "500", subsets: ["latin"] });
+
+// interface VideoIconProps {
+//   video: VideoWithProfile;
+//   where: string;
+//   allowHover: boolean;
+// }
+
+// const VideoIcon: React.FC<VideoIconProps> = ({ video, where, allowHover }) => {
+//   const [isHovering, setIsHovering] = useState<boolean>(false);
+//   const [moreClicked, setMoreClicked] = useState<boolean>(false);
+//   const dispatch = useDispatch();
+
+//   const handleMouseOver = (e: React.MouseEvent<HTMLDivElement>) => setIsHovering(true);
+//   const handleMouseOut = (e: React.MouseEvent<HTMLDivElement>) => setIsHovering(false);
+
+//   const player = () => {
+//     if (video.videoUrl?.includes("supabase")) {
+//       const type = video.videoUrl.split('.').pop() ?? "";
+//       return (
+//         <video controls className="rounded-lg w-10 h-60" id={styles.video} src={video.videoUrl} />
+//       );
+//     }
+//     return (
+//       <div id={styles.reactPlayer}>
+//         <ReactPlayer url={video.videoUrl || ""} loop={false} height="240px" width="415px" light />
+//       </div>
+//     );
+//   };
+
+//   const playerAtVideo = () => {
+//     if (video.videoUrl?.includes("supabase")) {
+//       const type = video.videoUrl.split('.').pop() ?? "";
+//       return (
+//         <div>
+//           <video controls id={styles.videoAtVideo} width="150px" height="150px">
+//             <source src={video.videoUrl} type={`video/${type}`} />
+//           </video>
+//         </div>
+//       );
+//     }
+//     return (
+//       <div id={styles.reactPlayerAtVideo}>
+//         <ReactPlayer
+//           url={video.videoUrl || ""}
+//           playing={false}
+//           loop={false}
+//           controls
+//           width="150px"
+//           height="150px"
+//           light
+//         />
+//       </div>
+//     );
+//   };
+
+//   if (!video.videoStatus) return null;
+
+//   const content = (
+//     <div
+//       id={styles.main}
+//       className="mt-2"
+//       onMouseOver={handleMouseOver}
+//       onMouseOut={handleMouseOut}
+//     >
+//       {isHovering ? playerAtVideo() : (
+//         <img
+//           loading="lazy"
+//           src={video.thumbnailUrl || "/default-thumbnail.png"}
+//           height="150px"
+//           width="150px"
+//           id={styles.imageAtVideo}
+//         />
+//       )}
+//       <div className="ml-1">
+//         <h6 className={roboto.className} style={{ color: "#f9f6ee", whiteSpace: "pre-wrap", overflowWrap: "break-word", width: "80%" }}>
+//           {video.title}
+//         </h6>
+//         <h1 className={r.className} id={styles.text} style={{ display: "flex", alignItems: "center" }}>
+//           <span style={{ fontSize: "10px", fontWeight: "900" }}>@</span> {video?.profiles?.username}
+//         </h1>
+//         <h1 className={r.className} id={styles.text}>{video.viewCount} Views</h1>
+//         <div id={styles.moreAtVideoIcon} className="absolute right-2">
+//           <MoreVertRoundedIcon
+//             onClick={(e) => {
+//               e.preventDefault();
+//               setMoreClicked((prev) => !prev);
+//               setTimeout(() => setMoreClicked(false), 8000);
+//             }}
+//             id={styles.moreButtonForIconVideo}
+//             className="bg-gray-500 rounded-full shadow-lg"
+//           />
+//           {moreClicked && (
+//             <div className="relative bottom-2 right-30">
+//               <h1
+//                 onClick={(e) => {
+//                   e.preventDefault();
+//                   dispatch(addToPlaylist(video));
+//                   setMoreClicked(false);
+//                 }}
+//                 id={styles.addToPlaylist}
+//               >
+//                 Add to Queue
+//               </h1>
+//             </div>
+//           )}
+//         </div>
+//       </div>
+//     </div>
+//   );
+
+//   return <Link href={`/video/${video.id}`}>{content}</Link>;
+// };
+
+// export default VideoIcon;
+
+// src/components/videos/VideoIcon.tsx
+// src/components/videos/VideoIcon.tsx
+// import React, { useState } from "react";
+// import { Roboto } from "next/font/google";
+// import Link from "next/link";
+// import Avatar from "../Avatar";
+// import ReactPlayer from "react-player";
+// import MoreVertRoundedIcon from "@mui/icons-material/MoreVertRounded";
+// import { useDispatch } from "react-redux";
+// import { addToPlaylist } from "../../../reduxReducers/playlistSlice";
+// import { VideoWithProfile } from "../../types/VideoRedux";
+// import styles from "../styles/VideoIcon.module.css";
+
+// const roboto = Roboto({ weight: "700", subsets: ["latin"] });
+// const r = Roboto({ weight: "500", subsets: ["latin"] });
+
+// export interface VideoIconProps {
+//   video: VideoWithProfile;
+//   where: string;
+//   allowHover: boolean;
+// }
+
+// const VideoIcon: React.FC<VideoIconProps> = ({ video, where, allowHover }) => {
+//   const [isHovering, setIsHovering] = useState<boolean>(false);
+//   const [moreClicked, setMoreClicked] = useState<boolean>(false);
+//   const dispatch = useDispatch();
+
+//   const handleMouseOver = (e: React.MouseEvent<HTMLDivElement>) => setIsHovering(true);
+//   const handleMouseOut = (e: React.MouseEvent<HTMLDivElement>) => setIsHovering(false);
+
+//   const player = () => {
+//     if (video.videoUrl?.includes("supabase")) {
+//       const type = video.videoUrl.split('.').pop() ?? "";
+//       return (
+//         <video controls className="rounded-lg w-10 h-60" id={styles.video} src={video.videoUrl} />
+//       );
+//     }
+//     return (
+//       <div id={styles.reactPlayer}>
+//         <ReactPlayer url={video.videoUrl || ""} loop={false} height="240px" width="415px" light />
+//       </div>
+//     );
+//   };
+
+//   const playerAtVideo = () => {
+//     if (video.videoUrl?.includes("supabase")) {
+//       const type = video.videoUrl.split('.').pop() ?? "";
+//       return (
+//         <div>
+//           <video controls id={styles.videoAtVideo} width="150px" height="150px">
+//             <source src={video.videoUrl} type={`video/${type}`} />
+//           </video>
+//         </div>
+//       );
+//     }
+//     return (
+//       <div id={styles.reactPlayerAtVideo}>
+//         <ReactPlayer
+//           url={video.videoUrl || ""}
+//           playing={false}
+//           loop={false}
+//           controls
+//           width="150px"
+//           height="150px"
+//           light
+//         />
+//       </div>
+//     );
+//   };
+
+//   if (!video.videoStatus) return null;
+
+//   const content = (
+//     <div
+//       id={styles.main}
+//       className="mt-2"
+//       onMouseOver={handleMouseOver}
+//       onMouseOut={handleMouseOut}
+//     >
+//       {/* Creator's Avatar */}
+//       <div style={{ display: "flex", alignItems: "center", marginBottom: "8px" }}>
+//         <Avatar
+//           uid={video.profiles?.id || ""}
+//           url={video.profiles?.avatar_url || "/default-avatar.png"}
+//           size={40}
+//           where="video"
+//         />
+//         <span className={r.className} style={{ marginLeft: "8px", color: "#f9f6ee" }}>
+//           {video.profiles?.username || "Unknown"}
+//         </span>
+//       </div>
+//       {isHovering ? playerAtVideo() : (
+//         <img
+//           loading="lazy"
+//           src={video.thumbnailUrl || "/default-thumbnail.png"}
+//           height="150px"
+//           width="150px"
+//           id={styles.imageAtVideo}
+//         />
+//       )}
+//       <div className="ml-1">
+//         <h6 className={roboto.className} style={{ color: "#f9f6ee", whiteSpace: "pre-wrap", overflowWrap: "break-word", width: "80%" }}>
+//           {video.title}
+//         </h6>
+//         <h1 className={r.className} id={styles.text} style={{ display: "flex", alignItems: "center" }}>
+//           <span style={{ fontSize: "10px", fontWeight: "900" }}>@</span> {video?.profiles?.username}
+//         </h1>
+//         <h1 className={r.className} id={styles.text}>{video.viewCount} Views</h1>
+//         <div id={styles.moreAtVideoIcon} className="absolute right-2">
+//           <MoreVertRoundedIcon
+//             onClick={(e) => {
+//               e.preventDefault();
+//               setMoreClicked((prev) => !prev);
+//               setTimeout(() => setMoreClicked(false), 8000);
+//             }}
+//             id={styles.moreButtonForIconVideo}
+//             className="bg-gray-500 rounded-full shadow-lg"
+//           />
+//           {moreClicked && (
+//             <div className="relative bottom-2 right-30">
+//               <h1
+//                 onClick={(e) => {
+//                   e.preventDefault();
+//                   dispatch(addToPlaylist(video));
+//                   setMoreClicked(false);
+//                 }}
+//                 id={styles.addToPlaylist}
+//               >
+//                 Add to Queue
+//               </h1>
+//             </div>
+//           )}
+//         </div>
+//       </div>
+//     </div>
+//   );
+
+//   return <Link href={`/video/${video.id}`}>{content}</Link>;
+// };
+
+// export default VideoIcon;
+
+
+// src/components/videos/VideoIcon.tsx
+import BrokenImageIcon from "@mui/icons-material/BrokenImage";
 import React, { useState } from "react";
-import styles from "../styles/VideoIcon.module.css";
 import { Roboto } from "next/font/google";
 import Link from "next/link";
 import Avatar from "../Avatar";
 import ReactPlayer from "react-player";
 import MoreVertRoundedIcon from "@mui/icons-material/MoreVertRounded";
-import { useSelector, useDispatch } from "react-redux";
-import {
-  addToPlaylist,
-  deleteFromPlaylist,
-} from "../../../reduxReducers/playlistSlice";
-import PlaylistModal from "../PlaylistModal";
-import { VideosWithProfile, VideoWithProfile } from "../../types/VideoRedux";
+import { useDispatch } from "react-redux";
+import { addToPlaylist } from "../../../reduxReducers/playlistSlice";
+import { VideoWithProfile } from "../../types/VideoRedux";
+import styles from "../styles/VideoIcon.module.css";
 
 const roboto = Roboto({ weight: "700", subsets: ["latin"] });
 const r = Roboto({ weight: "500", subsets: ["latin"] });
-const rb = Roboto({ weight: "300", subsets: ["latin"] });
-const rt = Roboto({ weight: "100", subsets: ["latin"] });
-interface VideoIconProps{
-  video:VideoWithProfile;
-  where:string;
-  allowHover:boolean;
+
+export interface VideoIconProps {
+  video: VideoWithProfile;
+  where: string;
+  allowHover: boolean;
 }
+
 const VideoIcon: React.FC<VideoIconProps> = ({ video, where, allowHover }) => {
-  let linkUrl = `/video/${video.id}`;
-  const [isHovering, setIsHovering] = useState(false);
-  const handleMouseOver = (e) => {
-    e.preventDefault();
-    setIsHovering(true);
-  };
-  const handleMouseOut = (e) => {
-    e.preventDefault();
-    setIsHovering(false);
-  };
-  const playlist = useSelector((state) => state.playlist.value);
+  const [isHovering, setIsHovering] = useState<boolean>(false);
+  const [moreClicked, setMoreClicked] = useState<boolean>(false);
   const dispatch = useDispatch();
-  const [moreClicked, setMoreClicked] = useState(false);
+
+  const handleMouseOver = (e: React.MouseEvent<HTMLDivElement>) => setIsHovering(true);
+  const handleMouseOut = (e: React.MouseEvent<HTMLDivElement>) => setIsHovering(false);
+
   const player = () => {
-    let pidth = window.screen.availWidth > 390 ? 940 : window.screen.availWidth;
-    if (video.videoUrl.includes("supabase")) {
-      let toUseUrl = video.videoUrl;
-      let lastDotIndx = toUseUrl.lastIndexOf(".") + 1;
-      let toUseType = toUseUrl.substr(lastDotIndx);
+    if (video.videoUrl?.includes("supabase")) {
+      const type = video.videoUrl.split('.').pop() ?? "";
       return (
-          <video
-            controls
-            autoStart="0"
-            className="rounded-lg w-10 h-60"
-            id={styles.video}
-            src={video.videoUrl}
-          >
-            {/* // <source src={video.videoUrl} type={`video/${toUseType}`} /> */}
-          </video>
-      );
-    } else {
-      return (
-        <div id={styles.reactPlayer}>
-          <ReactPlayer
-            url={video.videoUrl}
-            loop={false}
-            height="240px"
-            width="415px"
-            light={true}
-          />
-        </div>
+        <video controls className="rounded-lg w-10 h-60" id={styles.video} src={video?.videoUrl} />
       );
     }
+    return (
+      <div id={styles.reactPlayer}>
+        <ReactPlayer url={video?.videoUrl || ""} loop={false} height="250px" width="250px" light />
+      </div>
+    );
   };
+
   const playerAtVideo = () => {
-    let pidth = window.screen.availWidth > 390 ? 940 : window.screen.availWidth;
-    if (video.videoUrl.includes("supabase")) {
-      let toUseUrl = video.videoUrl;
-      let lastDotIndx = toUseUrl.lastIndexOf(".") + 1;
-      let toUseType = toUseUrl.substr(lastDotIndx);
+    if (video.videoUrl?.includes("supabase")) {
+      const type = video.videoUrl.split('.').pop() ?? "";
       return (
         <div>
-          <video
-            controls
-            autoStart="0"
-            width="150px"
-            height="150px"
-            id={styles.videoAtVideo}
-            src={video.videoUrl}
-          >
-            {/* // <source src={video.videoUrl} type={`video/${toUseType}`} /> */}
+          <video controls id={styles.videoAtVideo} width="250px" height="150px">
+            <source src={video?.videoUrl} type={`video/${type}`} />
           </video>
         </div>
       );
-    } else {
-      return (
-        <div id={styles.reactPlayerAtVideo}>
-          <ReactPlayer
-            url={video.videoUrl}
-            playing={false}
-            loop={false}
-            controls={true}
-            width="150px"
-            height="150px"
-            light={true}
-          />
-        </div>
-      );
     }
-  };
-  if (video.videoStatus == true && where === "video") {
     return (
-      <Link href={linkUrl}>
-        <div
-          id={styles.main}
-          className="mt-2"
-          onMouseOver={handleMouseOver}
-          onMouseOut={handleMouseOut}
-        >
-          {isHovering ? (
-            playerAtVideo()
-          ) : (
-            <img
-              loading="lazy"
-              src={video.thumbnailUrl}
-              height="150px"
-              width="150px"
-              id={styles.imageAtVideo}
-            />
-          )}
-          <div className="ml-1">
-            <h6
-              className={roboto.className}
-              style={{
-                color: "#f9f6ee",
-                whiteSpace: "pre-wrap",
-                overflowWrap: "break-word",
-                width: "80%",
-              }}
-            >
-              {video.title}
-            </h6>
-            <h1
-              className={r.className}
-              id={styles.text}
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-              }}
-            >
-              <span style={{ fontSize: "10px", fontWeight: "900" }}>@</span>{" "}
-              {video.profiles.username}
-            </h1>
-            <h1 className={r.className} id={styles.text}>
-              {video.viewCount} Views
-            </h1>
-            <div id={styles.moreAtVideoIcon} className="absolute right-2">
-              <MoreVertRoundedIcon
-                onClick={(e) => {
-                  e.preventDefault();
-                  setMoreClicked(!moreClicked);
-                  setTimeout(() => {
-                    setMoreClicked(false);
-                  }, 8000);
-                }}
-                id={styles.moreButtonForIconVideo}
-                className="bg-gray-500 rounded-full shadow-lg"
-              />
-              <div hidden={!moreClicked} className="relative bottom-2 right-30">
-                <h1
-                  onClick={(e) => {
-                    e.preventDefault();
-                    dispatch(addToPlaylist(video));
-                    setMoreClicked(!moreClicked);
-                  }}
-                  id={styles.addToPlaylist}
-                >
-                  Add to Queue
-                </h1>
-              </div>
-            </div>
-          </div>
-        </div>
-      </Link>
+      <div id={styles.reactPlayerAtVideo}>
+        <ReactPlayer
+          url={video?.videoUrl || ""}
+          playing={true}
+          loop={false}
+          controls={true}
+          width="250px"
+          height="250px"
+          light
+        />
+      </div>
     );
-  } else if (video.videoStatus == true && where === "home") {
-    return (
-      <div
-        id={styles.home}
-        onMouseOver={handleMouseOver}
-        onMouseOut={handleMouseOut}
-      >
-        {isHovering ? (
-          player()
+  };
+
+  if (!video?.videoStatus) return <></>;
+
+  const content = (
+    <div
+      id={where==="video"?styles.main:styles.home}
+      className="mt-2"
+      onMouseOver={handleMouseOver}
+      onMouseOut={handleMouseOut}
+    >
+      {isHovering ? playerAtVideo() : (
+        video.thumbnailUrl ? (
+          <img
+            loading="lazy"
+            src={video.thumbnailUrl}
+            id={styles.imageAtVideo}
+            alt="Video thumbnail"
+          />
         ) : (
-          <Link href={linkUrl}>
-            <img
-              loading="lazy"
-              src={video.thumbnailUrl}
-              width="250px"
-              height="150px"
-              id={styles.image}
-            />
-          </Link>
-        )}
-        <div className="mt-2 ml-0.5" id={styles.row}>
+          <div className={styles.brokenThumbnailContainer}>
+            <BrokenImageIcon style={{ fontSize: 64, color: "#888" }} />
+            <span className={styles.brokenText}>Video unavailable</span>
+          </div>
+        )
+      )}
+      <div className="ml-1">
+        <Link href={`/video/${video.id}`} style={{ textDecoration: "none" }}>
+        <h6 className={roboto.className} style={{ color: "#f9f6ee", whiteSpace: "pre-wrap", overflowWrap: "break-word", width: "80%" }}>
+          {video?.title}
+        </h6>
+        </Link>
+        <Link href={`/profiles/${video.profiles?.id || `/video/${video?.id}`}`} style={{ display: "flex", alignItems: "center", textDecoration: "none" }}>
+        <div style={{ display: "flex", alignItems: "center", margin: "2px 0" }}>
           <Avatar
-            uid={video?.user_id}
-            url={video?.profiles.avatar_url}
-            size={45}
+            uid={video.profiles?.id || ""}
+            url={video.profiles?.avatar_url || "/default-avatar.png"}
+            size={30}
             where="video"
           />
-          <div style={{ marginLeft: "5px" }}>
-            <Link href={linkUrl}>
-              <h6 className={roboto.className} style={{ color: "#f9f6ee" }}>
-                {video.title}
-              </h6>
-            </Link>
-            <div className="flex justify-start">
-              <div className="flex flex-col mr-16">
-                <h1
-                  className={r.className}
-                  id={styles.text}
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    alignItems: "center",
-                  }}
-                >
-                  <span style={{ fontSize: "10px", fontWeight: "900" }}>@</span>
-                  {video.profiles.username}
-                </h1>
-                <h1 className={r.className} id={styles.text}>
-                  {video.viewCount} views
-                </h1>
-              </div>
-              <div id={styles.moreAtVideoIcon}>
-                <MoreVertRoundedIcon
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setMoreClicked(!moreClicked);
-                    setTimeout(() => {
-                      setMoreClicked(false);
-                    }, 8000);
-                  }}
-                  id={styles.moreButtonAtVideoIcon}
-                />
-                <div hidden={!moreClicked}>
-                  <h1
-                    onClick={(e) => {
-                      e.preventDefault();
-                      dispatch(addToPlaylist(video));
-                      setMoreClicked(!moreClicked);
-                    }}
-                    id={styles.addToPlaylist}
-                  >
-                    Add to queue
-                  </h1>
-                  <PlaylistModal
-                    why="Add video to playlist"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      setMoreClicked(!moreClicked);
-                    }}
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
+          <span className={r.className} id={styles.text} style={{ marginLeft: "8px" }}>
+            <span style={{ fontSize: "10px", fontWeight: "900" }}>@</span> {video?.profiles?.username}
+          </span>
         </div>
-      </div>
-    );
-  } else if (video.videoStatus && where == "subs") {
-    return (
-      <Link href={linkUrl}>
-        <div
-          id={styles.home}
-          onMouseOver={handleMouseOver}
-          onMouseOut={handleMouseOut}
-        >
-          {isHovering ? (
-            player()
-          ) : (
-            <img
-              loading="lazy"
-              src={video.thumbnailUrl}
-              width="250px"
-              height="150px"
-              id={styles.image}
-            />
-          )}
-          <div className="mt-2">
-            <div id={styles.row}>
-              <Avatar
-                uid={video?.profiles?.user_id}
-                url={video?.profiles?.avatar_url}
-                size={45}
-                where="video"
-              />
-              <div id={styles.col}>
-                <h6 className={roboto.className}>{video.title}</h6>
-                <h1 className={r.className} id={styles.text}>
-                  {video?.profiles?.username}
-                </h1>
-                <h1 className={r.className} id={styles.text}>
-                  {video.viewCount} views
-                </h1>
-              </div>
-            </div>
-          </div>
-        </div>
-      </Link>
-    );
-  } else if (where === "library") {
-    return (
-      <Link href={linkUrl}>
-        <div
-          id={styles.home}
-          onMouseOver={handleMouseOver}
-          onMouseOut={handleMouseOut}
-        >
-          {isHovering ? (
-            player()
-          ) : (
-            <img
-              src={video.thumbnailUrl}
-              width="250px"
-              height="150px"
-              id={styles.image}
-            />
-          )}
-          <div className="mt-2">
-            <div id={styles.row}>
-              <Avatar
-                uid={video?.user_id}
-                url={video?.profiles.avatar_url}
-                size={45}
-                where="video"
-              />
-              <div id={styles.col}>
-                <h6 className={roboto.className}>{video.title}</h6>
-                <h1 className={r.className} id={styles.text}>
-                  {video.profiles.username}
-                </h1>
-                <h1 className={r.className} id={styles.text}>
-                  {video.viewCount} views
-                </h1>
-              </div>
-            </div>
-          </div>
-        </div>
-      </Link>
-    );
-  } else if (video.videoStatus && where === "profile") {
-    return (
-      <Link href={linkUrl}>
-        <div id={styles.home}>
-          <img
-            src={video.thumbnailUrl}
-            width="250px"
-            height="150px"
-            id={styles.image}
-          />
-          <div className="mt-2">
-            <div id={styles.row}>
-              <Avatar
-                uid={video?.user_id}
-                url={video?.profiles.avatar_url}
-                size={35}
-                where="video"
-                onUpload={(e) => {
-                  return 0;
-                }}
-              />
-              <h6 className={roboto.className}>{video.title}</h6>
-            </div>
-            <h1 className={r.className} id={styles.text}>
-              {video.profiles.username}
-            </h1>
-            <h1 className={r.className} id={styles.text}>
-              {video.viewCount} views
-            </h1>
-          </div>
-        </div>
-      </Link>
-    );
-  } else if (video.videoStatus && where === "search") {
-    return (
-      <div id={styles.searchHome} className="mt-1 w-full">
-        <Link href={linkUrl}>
-          <img
-            src={video.thumbnailUrl}
-            width="370px"
-            height="230px"
-            id={styles.searchImage}
-          />
         </Link>
-        <div className="mt-2 ml-2 w-2/3">
-          <Link href={linkUrl}>
-            <h6 className={r.className} id={styles.searchVideoTitle}>
-              {video.title}
-            </h6>
-          </Link>
-          <h1 className={rb.className} id={styles.text}>
-            {video.viewCount} views
-          </h1>
-          <Link href={`/profiles/${video.profiles.id}`}>
-            <div id={styles.row}>
-              <Avatar
-                uid={video?.user_id}
-                url={video?.profiles.avatar_url}
-                size={35}
-                where="video"
-                onUpload={(e) => {
-                  return 0;
-                }}
-              />
-              <h1 className={rb.className} id={styles.text}>
-                {video.profiles.username}
-              </h1>
-            </div>
-          </Link>
-          <h1 id={styles.text} className={rt.className}>
-            {video.description.substring(0, 400)}
-          </h1>
-        </div>
-      </div>
-    );
-  } else if (video.videoStatus == true && where === "playlist") {
-    return (
-      <Link href={linkUrl}>
-        <div
-          id={styles.home_play}
-          onMouseOver={handleMouseOver}
-          onMouseOut={handleMouseOut}
-        >
-          {isHovering && allowHover ? (
-            player()
-          ) : (
-            <img
-              src={video.thumbnailUrl}
-              width="150px"
-              height="150px"
-              id={styles.imageAtVideo}
-            />
-          )}
-          <div className="mt-2 ml-0.5" id={styles.row_play}>
-            <div style={{ marginLeft: "5px" }}>
-              <h6
-                className={roboto.className}
-                style={{
-                  color: "#f9f6ee",
-                  whiteSpace: "pre-wrap",
-                  overflowWrap: "break-word",
-                  width: "80%",
-                }}
-              >
-                {video.title}
-              </h6>
+        <Link href={`/video/${video.id}`} style={{ textDecoration: "none" }}>
+        <h1 className={r.className} id={styles.text}>{video.viewCount} Views</h1>
+        </Link>
+        <div id={styles.moreAtVideoIcon} className="absolute right-2">
+          <MoreVertRoundedIcon
+            onClick={(e) => {
+              e.preventDefault();
+              setMoreClicked((prev) => !prev);
+              setTimeout(() => setMoreClicked(false), 8000);
+            }}
+            id={styles.moreButtonForIconVideo}
+            className="bg-gray-500 rounded-full shadow-lg"
+          />
+          {moreClicked && (
+            <div className="relative bottom-2 right-30">
               <h1
-                className={r.className}
-                id={styles.text}
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  alignItems: "center",
+                onClick={(e) => {
+                  e.preventDefault();
+                  dispatch(addToPlaylist(video));
+                  setMoreClicked(false);
                 }}
+                id={styles.addToPlaylist}
               >
-                <Avatar
-                  uid={video?.user_id}
-                  url={video?.profiles.avatar_url}
-                  size={45}
-                  where="video"
-                />
-                <span style={{ fontSize: "10px", fontWeight: "900" }}>@</span>
-                {video.profiles.username}
+                Add to Queue
               </h1>
-              <h1 className={r.className} id={styles.text}>
-                {video.viewCount} views
-              </h1>
-              <div id={styles.moreAtVideoIcon}>
-                <MoreVertRoundedIcon
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setMoreClicked(!moreClicked);
-                    setTimeout(() => {
-                      setMoreClicked(false);
-                    }, 8000);
-                  }}
-                  id={styles.moreButtonAtVideoIcon}
-                />
-                <div hidden={!moreClicked}>
-                  <h1
-                    onClick={(e) => {
-                      e.preventDefault();
-                      dispatch(addToPlaylist(video));
-                      setMoreClicked(!moreClicked);
-                    }}
-                    id={styles.addToPlaylist}
-                  >
-                    Add to Queue
-                  </h1>
-                  <h1
-                    onClick={(e) => {
-                      e.preventDefault();
-                      dispatch(deleteFromPlaylist(video));
-                      setMoreClicked(!moreClicked);
-                    }}
-                    id={styles.addToPlaylist}
-                  >
-                    Remove from Queue
-                  </h1>
-                </div>
-              </div>
             </div>
-          </div>
+          )}
         </div>
-      </Link>
-    );
-  } else {
-    return (
-      <div className="hidden">
-        <h1>
-          I had to created because jsx was saying you can't return empty,
-          although it's the same shit... bas pakad dusre taraf se rakha hai
-          resolution ke liye
-        </h1>
       </div>
-    );
-  }
-}
+    </div>
+  );
+
+  return <>{content}</>;
+};
 
 export default VideoIcon;

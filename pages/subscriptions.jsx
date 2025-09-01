@@ -1,8 +1,8 @@
 import { useUser } from "@supabase/auth-helpers-react";
 import React from "react";
-import { GET_SUBSCRIBERS_USING_USER_ID } from "../graphql/queries";
+// import { GET_SUBSCRIBERS_USING_USER_ID } from "../graphql/queries";
 import styles from "./styles/subscriptions.module.css";
-import VideoIcon from "../src/components/VideoIcon";
+import VideoIcon from "../src/components/videos/VideoIcon";
 import Shimmer from "../src/components/Shimmer";
 import Link from "next/link";
 

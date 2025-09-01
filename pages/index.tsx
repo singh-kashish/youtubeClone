@@ -17,7 +17,7 @@ export default function Home() {
   return (
     <div className={roboto.className} style={{minHeight: "100vh",maxWidth:"100wh"}}>
       <Head>
-        <title>VidShare</title>
+        <title>FlixPlay</title>
       </Head>
       <SuggestedVideos where="Home" />
     </div>

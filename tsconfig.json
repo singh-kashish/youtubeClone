@@ -15,6 +15,6 @@
     "jsx": "preserve",
     "incremental": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/hooks/useVideoLoadHook.ts", "src/components/videos/VideoIcon.tsx", "src/components/SuggestedVideos.tsx", "src/components/videos/comments/CommentBox.jsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/hooks/useVideoLoadHook.ts", "src/components/videos/VideoIcon.tsx", "src/components/SuggestedVideos.tsx", "src/components/videos/comments/CommentBox.tsx", "src/components/Account.jsx"],
   "exclude": ["node_modules"]
 }

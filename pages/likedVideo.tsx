@@ -1,7 +1,6 @@
-import { useQuery } from "@apollo/client";
 import { useUser } from "@supabase/auth-helpers-react";
 import React from "react";
-import { GET_LIKED_VIDEOS_BY_USER_ID } from "../graphql/queries";
+// import { GET_LIKED_VIDEOS_BY_USER_ID } from "../graphql/queries";
 import styles from "./styles/likedVideo.module.css";
 import VideoIcon from "../src/components/videos/VideoIcon";
 import Link from "next/link";

@@ -1,41 +1,54 @@
-// import { GET_ALL_PLAYLISTS } from "../../graphql/queries";
-// import { useQuery } from "@apollo/client";
-// import { usePlaylistListQuery } from "../gql/graphql";
+// src/hooks/useAllPlaylist.ts
 import { useUser } from "@supabase/auth-helpers-react";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { loadAllPlaylists } from "../modules/playlistService";
+
 const useAllPlaylist = () => {
-  const { data, loading, error } = usePlaylistListQuery();
   const user = useUser();
-  // Returns 'loading' when loading ,when user isn't signed in returns [], else an array of playlists by signed in user
+  const [data, setData] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<any>(null);
+
+  useEffect(() => {
+    setLoading(true);
+    loadAllPlaylists()
+      .then((res) => {
+        setData(res.playlists);
+        setLoading(false);
+        setError(res.error);
+      })
+      .catch((err) => {
+        setError(err);
+        setLoading(false);
+      });
+  }, []);
+
   const userPlaylists = useMemo(() => {
     return user
       ? data
-        ? data?.playlistList?.filter((p) => {
-            return user && p?.user === user?.id;
-          })
+        ? data.filter((p: any) => p?.user === user?.id)
         : "loading"
       : "User Not Found";
   }, [user, data]);
-  // Returns [] if no other public playlists are present and while loading returns 'loading', else list of public playlists except user's own
+
   const publicPlaylists = useMemo(() => {
     return data
-      ? data?.playlistList?.filter((p) => {
-          return user===null || p?.user !== user?.id;
-        })
-      : 'loading';
+      ? data.filter((p: any) => !user || p?.user !== user?.id)
+      : "loading";
   }, [user, data]);
-  if(loading){
+
+  if (loading) {
     return {
       userPlaylists: "loading",
       publicPlaylists: "loading",
       user,
       loading,
     };
-  } else if(!error){
-    return {userPlaylists,publicPlaylists,user,loading};
-  } else{
-    const errorMessage = new Error(error?.message);
-    return errorMessage;
+  } else if (!error) {
+    return { userPlaylists, publicPlaylists, user, loading };
+  } else {
+    return { userPlaylists: [], publicPlaylists: [], user, loading, error };
   }
 };
+
 export default useAllPlaylist;
