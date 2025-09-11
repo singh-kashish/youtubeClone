@@ -11,12 +11,12 @@ const roboto = Roboto({
   subsets: ["latin"],
 });
 function Profile() {
-  const Router = useRouter();
-  // const { loading, error, data } = useQuery(GET_PROFILE, {
-  //   variables: {
-  //     id: Router.query.user_id,
-  //   },
-  // });
+  const router = useRouter();
+  const [userId,setUserId] = React.useState<string | null>(null);
+  if(router.isReady){
+    setUserId(router.query.user_id as string);
+  }
+  
   console.log(data);
   //const profile: Profiles = data?.profiles;
   const returnVideos = () => {
