@@ -15,6 +15,7 @@
 #col {
   display: flex;
   flex-direction: column;
+  border: 2px solid #1d1d1d;
 }
 #row {
   display: flex;
@@ -45,6 +46,7 @@
   #col {
     display: flex;
     flex-direction: column;
+    border: 2px solid #1d1d1d;
   }
   #row {
     display: flex;
