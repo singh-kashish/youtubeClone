@@ -1,61 +1,48 @@
-import { useUser } from "@supabase/auth-helpers-react";
 import React from "react";
-// import { GET_SUBSCRIBERS_USING_USER_ID } from "../graphql/queries";
-import styles from "./styles/subscriptions.module.css";
-import VideoIcon from "../src/components/videos/VideoIcon";
-import Shimmer from "../src/components/Shimmer";
-import Link from "next/link";
+import useSubscribedToHook from "../src/hooks/useSubscribedToHook";
+import { useUser } from "@supabase/auth-helpers-react";
 
-function subscriptions() {
+export default function Subscriptions() {
   const user = useUser();
-  // const { loading, error, data } = useQuery(GET_SUBSCRIBERS_USING_USER_ID, {
-  //   variables: {
-  //     id: user?.id,
-  //   },
-  // });
-  const videosFound = () => {
-    if (!user) {
-      return (
-        <Link href="/login">
-        <h6 className="font-sans font-bold text-xl text-center text-blue-700 mb-1 pb-1 ml-[10%] mt-4">
-          Login First!
-        </h6></Link>
-      );
-    } else if (data?.subscribersUsingSubscribers_user_id_fkey?.length == 0) {
-      return (
-        <h6 className="font-sans font-bold text-xl text-center text-red-400 mb-1 pb-1 ml-[15%]">
-          You haven't subscribed to any creator yet
-        </h6>
-      );
-    } else if (!data) {
-      return (
-        <div className="flex flex-row basis-80 flex-wrap ml-[250px] w-full">
-          <Shimmer />
+  console.log(user?.id); 
+  const { videos, error, loading } = useSubscribedToHook(user?.id);
+
+  // ✅ Clean structured logging
+  console.log("[Subscriptions] videos:", videos);
+  console.log("[Subscriptions] error:", error);
+  console.log("[Subscriptions] loading:", loading);
+
+  if (loading) return <div className="text-white">Loading...</div>;
+  if (error) return <div className="text-red-500">Error: {error.message}</div>;
+
+  return (<>
+    <h1>You've {`${videos?.length}`} Videos from your subscriptions</h1>
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
+      {videos?.map((video) => (
+        <div
+          key={video.id}
+          className="bg-zinc-800 rounded-lg overflow-hidden shadow-md"
+        >
+          <img
+            src={video.thumbnailUrl || "/placeholder.png"}
+            alt={video.title}
+            className="w-full h-48 object-cover"
+          />
+          <div className="p-3">
+            <h3 className="text-white font-semibold truncate">
+              {video.title}
+            </h3>
+            <p className="text-gray-400 text-sm line-clamp-2">
+              {video.description}
+            </p>
+            <div className="flex items-center justify-between mt-2 text-gray-400 text-xs">
+              <span>{video.profiles?.username}</span>
+              <span>{video.viewCount} views</span>
+            </div>
+          </div>
         </div>
-      );
-    } else {
-      return (
-        <div id={styles.main}>
-          {data?.subscribersUsingSubscribers_user_id_fkey.map((pie) =>
-            pie.profilesUsingSubscribers_subscribed_to_id_fkey?.video.map(
-              (e) => <VideoIcon video={e} where="subs" key={e?.id} />
-            )
-          )}
-        </div>
-      );
-    }
-  };
-  const returnVideos = () => {
-    return videosFound();
-  };
-  return (
-    <div className="min-h-screen">
-      <h6 className="font-sans font-bold text-xl border-b-2 border-gray-400 w-full text-center text-gray-300 mb-1 pb-1">
-        Videos from your Subscriptions
-      </h6>
-      {returnVideos()}
+      ))}
     </div>
+    </>
   );
 }
-
-export default subscriptions;

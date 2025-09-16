@@ -1,30 +1,54 @@
-// src/hooks/useLikedComments.ts
-import { useState, useEffect } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { likedVideosService } from "../modules/likedVideoService";
-import { LikedVideo } from "../types/VideoLoadTypes";
+import { LikedVideoWithVideo } from "../types/VideoLoadTypes";
 import { PostgrestError } from "@supabase/supabase-js";
 
 interface UseLikedVideoReturn {
-  likedVideo: LikedVideo | null;
+  likedVideos: LikedVideoWithVideo[];
   loading: boolean;
   error: PostgrestError | null;
+  refetch: () => Promise<void>;
 }
 
-export function useLikedVideo(user_id: string, video_id: string): UseLikedVideoReturn {
-  const [likedVideo, setLikedVideo] = useState<LikedVideo | null>(null);
-  const [loading, setLoading] = useState(true);
+export function useLikedVideos(user_id?: string): UseLikedVideoReturn {
+  const [likedVideos, setLikedVideos] = useState<LikedVideoWithVideo[]>([]);
+  const [loading, setLoading] = useState<boolean>(!!user_id);
   const [error, setError] = useState<PostgrestError | null>(null);
 
-  useEffect(() => {
-    async function fetch() {
-      setLoading(true);
-      const res = await likedVideosService.getLikedVideo(user_id, video_id);
-      setLikedVideo(res.likedVideo);
-      setError(res.error);
+  const fetchLiked = useCallback(async () => {
+    if (!user_id) {
+      setLikedVideos([]);
+      setError(null);
+      setLoading(false);
+      return;
+    }
+
+    setLoading(true);
+    setError(null);
+
+    try {
+      const { data, error } = await likedVideosService.getLikedVideos(user_id);
+
+      if (error) setError(error);
+      setLikedVideos(data ?? []);
+    } catch (err) {
+      setError({
+        message: (err as Error)?.message || "Unknown error",
+        details: "",
+        hint: "",
+        code: "unknown",
+      });
+      setLikedVideos([]);
+    } finally {
       setLoading(false);
     }
-    if (user_id && video_id) fetch();
-  }, [user_id, video_id]);
+  }, [user_id]);
 
-  return { likedVideo, loading, error };
+  useEffect(() => {
+    void fetchLiked();
+  }, [fetchLiked]);
+
+  return { likedVideos, loading, error, refetch: fetchLiked };
 }
+
+export default useLikedVideos;

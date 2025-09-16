@@ -15,36 +15,59 @@ export function useProfile(user_id: string): UseProfileReturn {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<PostgrestError | null>(null);
   const [subscriberCount, setSubscriberCount] = useState<number>(0);
+
   useEffect(() => {
-    // Guard: don’t fetch until we have a non-empty id
     if (!user_id) {
       setProfileWithVideos(null);
       setError(null);
       setLoading(false);
+      setSubscriberCount(0);
       return;
     }
 
     let cancelled = false;
+
     (async () => {
       setLoading(true);
       setError(null);
-      const profileRes = await profileService.fetchProfileById(user_id);
-      const subCount = await profileService.fetchSubscriberCount(user_id);
-      if(subCount.error ){
-        setError(subCount.error);
-      } else{
 
+      try {
+        const [profileRes, subCount] = await Promise.all([
+          profileService.fetchProfileById(user_id),
+          profileService.fetchSubscriberCount(user_id),
+        ]);
+
+        if (cancelled) return;
+
+        if (profileRes.error || subCount.error) {
+          setError(profileRes.error || subCount.error);
+        } else {
+          setError(null);
+        }
+
+        setProfileWithVideos(profileRes.profileWithVideos);
+        setSubscriberCount(subCount.count ?? 0);
+      } catch (err) {
+        if (cancelled) return;
+        setError(
+          (err as PostgrestError) ??
+          ({
+            message: (err as Error)?.message || "Unknown error",
+            details: "",
+            hint: "",
+            code: "unknown",
+          } as PostgrestError)
+        );
+        setProfileWithVideos(null);
+        setSubscriberCount(0);
+      } finally {
+        if (!cancelled) setLoading(false);
       }
-      if (cancelled) return;
-      setProfileWithVideos(profileRes.profileWithVideos);
-      setError(profileRes.error || subCount.error);
-      if(!profileRes.error && !subCount.error){
-        setSubscriberCount(subCount.count || 0);
-      }
-      setLoading(false);
     })();
 
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, [user_id]);
 
   return { profileWithVideos, loading, error, subscriberCount };

@@ -37,4 +37,21 @@ export const videoService = {
       loading: false,
     };
   },
+  // Fetch video by uploader id
+  async fetchVideosByUploaderId(orderBy: keyof Video = "created_at", ascending = true,user_id:string): Promise<LoadVideosResponse>{
+    const {data, error} = await supabase
+    .from("video")
+    .select("*, profiles(*)")
+    .eq(user_id, user_id);
+    
+    return {
+      video: data ? data.map((video) => ({
+        ...video,
+        profiles: video.profiles || null, // Adding profiles to each video item
+      })) : null,
+      error,
+      loading: false,
+    };
+    
+}
 };
