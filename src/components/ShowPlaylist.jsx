@@ -7,23 +7,25 @@ import PlayCircleFilledIcon from "@mui/icons-material/PlayCircleFilled";
 import VideoIcon from "./videos/VideoIcon";
 import { useRouter } from "next/router";
 import DeleteIcon from "@mui/icons-material/Delete";
-import {
-  DELETE_PLAYLIST,
-  DELETE_PLAYLIST_VIDEO,
-} from "../../graphql/mutations";
-import { useMutation } from "@apollo/client";
+// import {
+//   DELETE_PLAYLIST,
+//   DELETE_PLAYLIST_VIDEO,
+// } from "../../graphql/mutations";
+
 import toast from "react-hot-toast";
 //import { GET_PLAYLIST_FOR_USER } from "../../graphql/queries";
 import { useUser } from "@supabase/auth-helpers-react";
 import { PlaylistVideo } from "../types/Playlist";
+import { PlaylistPlayButton } from "./PlaylistPlayButton";
 function ShowPlaylist({ playlist }) {
+  console.log('at playlist level',playlist);
   const dispatch = useDispatch();
   const router = useRouter();
   const user = useUser();
-  const [deletePlaylist] = useMutation(DELETE_PLAYLIST, {
-    refetchQueries: [GET_PLAYLIST_FOR_USER],
-  });
-  const [deletePlaylistVideo] = useMutation(DELETE_PLAYLIST_VIDEO);
+  // const [deletePlaylist] = useMutation(DELETE_PLAYLIST, {
+  //   refetchQueries: [GET_PLAYLIST_FOR_USER],
+  // });
+  // const [deletePlaylistVideo] = useMutation(DELETE_PLAYLIST_VIDEO);
   const sliderLeft = () => {
     let slider = document.getElementById("slider");
     slider.scrollLeft = slider.scrollLeft - 500;
@@ -38,27 +40,33 @@ function ShowPlaylist({ playlist }) {
         <div key={p?.id}>
           <div className="flex justify-start items-center space-x-3">
             <div className=" flex-col justify-start items-start">
-              <h3 className="text-xl font-bold">{p?.playlist_name}</h3>
-              <h1 className="text-lg font-semibold">{`@${p?.profiles?.username}`}</h1>
+              <h3 className="text-lg font-bold">{p?.playlist_name}</h3>
+              {user?.id !== p?.profiles?.id && p?.profiles?.id && (
+                <h1 className="text-md font-semibold">{`@${p.profiles.username}`}</h1>
+              )}
             </div>
             <div
-              className="flex justify-start items-center shadow-gray-800 shadow-md rounded-md hover:cursor-pointer hover:text-green-500 hover:shadow-xl hover:shadow-gray-700"
-              onClick={(e) => {
-                e.preventDefault();
-                dispatch(playPlaylist(p?.playlistVideos));
-                if (p && p?.playlistVideos && p?.playlistVideos?.length > 0) {
-                  router.push(`/video/${p?.playlistVideos[0]?.video_id}`);
-                }
-              }}
+            className="flex justify-start items-center shadow-gray-800 shadow-md rounded-md hover:shadow-lg hover:shadow-gray-700"
+            onClick={(e) => {
+              e.preventDefault();
+              // Only pass array of Video objects to playPlaylist
+              dispatch(
+                playPlaylist(
+                  p?.playlistVideos
+                    ?.slice()
+                    ?.sort((a, b) => (a.positionInPlaylist ?? 0) - (b.positionInPlaylist ?? 0))
+                    ?.map((pv) => pv.video)
+                    ?.filter(Boolean)
+                )
+              );
+              if (p && p?.playlistVideos && p?.playlistVideos?.length > 0) {
+                // Go to the first video in the playlist
+                router.push(`/video/${p?.playlistVideos[0]?.video_id}`);
+              }
+            }}
             >
-              <PlayCircleFilledIcon
-                fontSize="large"
-                className="text-green-500 cursor-pointer hover:text-green-600"
-              />
-              <h6 className="text-lg font-medium">
-                Play {`${p?.playlistVideos?.length} videos`}
-              </h6>
-            </div>
+            <PlaylistPlayButton playlistVideos={p?.playlistVideos} />
+          </div>
             {user != null && p.user === user?.id && (
               <DeleteIcon
                 className="text-red-500 hover:shadow-lg hover:shadow-black cursor-pointer"
@@ -91,11 +99,11 @@ function ShowPlaylist({ playlist }) {
             )}
           </div>
           <div className="flex relative items-center py-2">
-            <ArrowBackIosNewOutlinedIcon
+            {p?.playlistVideos?.length>1?(<ArrowBackIosNewOutlinedIcon
               fontSize="large"
               onClick={sliderLeft}
               className="opacity-50 cursor-pointer hover:opacity-100 mr-2 z-50"
-            />
+            />):(<></>)}
             <div
               className="flex max-w-fit h-full overflow-x-scroll scroll whitespace-nowrap scroll-smooth space-x-4 no-scrollbar"
               id="slider"
@@ -109,11 +117,11 @@ function ShowPlaylist({ playlist }) {
                 />
               ))}
             </div>
-            <ArrowForwardIosOutlinedIcon
+            {p?.playlistVideos.length>1?(<ArrowForwardIosOutlinedIcon
               fontSize="large"
               onClick={sliderRight}
               className="opacity-50 cursor-pointer hover:opacity-100 ml-2 z-50"
-            />
+            />):(<></>)}
           </div>
         </div>
       ))}

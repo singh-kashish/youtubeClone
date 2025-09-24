@@ -1,12 +1,10 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styles from "./styles/playlists.module.css";
-import useAllPlaylist from "../src/hooks/useAllPlaylist";
 import AllPlaylists from "../src/components/AllPlaylists";
 import CurrentQueue from "../src/components/CurrentQueue";
 function Playlists() {
   const p = useSelector((state) => state.playlist.value);
-  const allPlaylistDataObject = useAllPlaylist();
   return (
     <div
       className="bg-[#181818] min-h-screen md:pl-3 lg:dvw"
@@ -23,7 +21,7 @@ function Playlists() {
             queue to manage queue here or create a playlist from it.
           </h1>
         )}
-        <AllPlaylists playlists={allPlaylistDataObject} />
+        <AllPlaylists />
       </div>
     </div>
   );

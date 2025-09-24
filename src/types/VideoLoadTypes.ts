@@ -127,7 +127,6 @@ export interface Profile {
   email?: string | null; // Assuming email is required in the Profile
 }
 
- import AllPlaylistsType from "./AllPlaylistsType";
 
 export interface LoadVideoResponse {
   VideoWithProfile: VideoWithProfile | null;
@@ -147,11 +146,6 @@ export interface LoadCommentsResponse {
   loading: boolean;
 }
 
-export interface LoadPlaylistsResponse {
-  playlists: AllPlaylistsType[] | null;
-  error: PostgrestError | null;
-  loading: boolean;
-}
 
 export interface Video {
   id: string;
