@@ -29,11 +29,12 @@ export async function loadVideosPaginated({
         videoUrl,
         viewCount,
         user_id,
-        profiles(*)
+        profiles(*),
+        comment(*, profiles(*))
       `)
       .order(displayListType, { nullsFirst: false, ascending: order })
       .range(index, offset);
-
+      console.log(video);
     loading = false;
     if (error || status !== 200) {
       throw new Error(error?.message || "Error fetching videos");

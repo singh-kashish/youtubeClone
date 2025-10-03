@@ -1,6 +1,6 @@
 import { Database } from "../../lib/database.types";
 import { PostgrestError } from "@supabase/supabase-js";
-
+import { Profile, VideoWithProfileAndCommentsWithProfiles } from "./models";
 export type typeOfList =
   | "created_at"
   | "id"
@@ -77,10 +77,14 @@ export interface LikedVideoWithVideo extends LikedVideo {
 }
 
 export interface VideoWithProfile extends Video {
-  profiles?: Profile | null;
-  comment?: Comment[]; // Assuming 'comment' is an array
+  profiles: {
+    id: string;
+    avatar_url: string | null;
+    full_name: string | null;
+    username: string | null;
+    updated_at: string | null;
+  } | null;
 }
-
 export interface VideoLoadTypes {
   // This can include all possible video-related fields
   id: string;
@@ -117,15 +121,6 @@ export interface CommentWithProfile extends Comment {
 }
 
 
-// Profile type
-export interface Profile {
-  id: string;
-  username?: string | null;
-  avatar_url?: string | null;
-  full_name?: string | null;
-  updated_at?: string | null;
-  email?: string | null; // Assuming email is required in the Profile
-}
 
 
 export interface LoadVideoResponse {
@@ -133,9 +128,12 @@ export interface LoadVideoResponse {
   error: PostgrestError | null;
   loading: boolean;
 }
+export interface CommentWithProfileForVideos extends Comment {
+  profiles: Profile | null;
+}
 
 export interface LoadVideosResponse {
-  video: (Video & { profiles: Profile | null })[] | null | undefined | [];
+  video: (Video & { profiles: Profile | null } & {comment:CommentWithProfileForVideos[] | []}) | null | undefined | [];
   error: PostgrestError | null;
   loading: boolean;
 }

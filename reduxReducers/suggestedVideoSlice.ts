@@ -1,6 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Video, SuggestedVideoState, VideosWithProfile, VideoWithProfile } from "../src/types/VideoRedux";
+import { Video, SuggestedVideoState, VideosWithProfile } from "../src/types/VideoRedux";
 import { typeOfList } from "../src/types/VideoLoadTypes";
+// In your hook, Redux slice, API modules:
+import { Profile, LoadVideosResponse } from "../src/types/models";
+import { VideoWithProfile } from "../src/types/VideoLoadTypes";
 
 // Define the initial state for suggested videos
 const initialState: SuggestedVideoState = {

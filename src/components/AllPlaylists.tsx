@@ -25,7 +25,7 @@ function AllPlaylists() {
     <LoadingPlaylists />
   ) : (
     <div className="flex-col items-start justify-start w-full">
-      <h1 className="text-white text-xl border-b-4 border-blue-500 font-bold w-fit rounded-sm">
+      <h1 className="text-slate-300 text-xl border-b-4 border-blue-500 font-bold w-fit rounded-sm">
         Your Playlists
       </h1>
       {user===null ? (
@@ -33,15 +33,15 @@ function AllPlaylists() {
       ) : userPublicPlaylist &&
         userPublicPlaylist?.length > 0 ? (
         <div>
-          <h4 className="text-xl font-semibold border-b-2 border-green-300 w-fit rounded-md">Your Public Playlists</h4>
+          <h4 className="text-xl font-semibold border-b-2 border-green-300 w-fit rounded-md text-gray-500">Your Public Playlists</h4>
         <ShowPlaylist playlist={userPublicPlaylist} />
-        <h4 className="text-xl font-semibold border-b-2 border-green-300 w-fit rounded-md">Your Private Playlists</h4>
+        <h4 className="text-xl font-semibold border-b-2 border-green-300 w-fit rounded-md text-gray-500">Your Private Playlists</h4>
         <ShowPlaylist playlist={privatePlaylists}/>
         </div>
       ) : (
         <p>No playlists saved by you</p>
       )}
-      <h1 className="text-white text-xl border-b-2 border-blue-500 font-bold rounded-md w-fit">
+      <h1 className="text-slate-300 text-xl border-b-2 border-blue-500 font-bold rounded-md w-fit">
         Playlists by other Users
       </h1>
       { publicPlaylists && publicPlaylists?.length > 0 ? (

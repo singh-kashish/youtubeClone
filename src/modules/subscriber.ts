@@ -83,6 +83,21 @@
 // };
 import { supabase } from "../components/utils/supabase";
 import { PostgrestError } from "@supabase/supabase-js";
+import { Subscriber } from '../types/models';
+
+export async function addSubscriber(payload: {
+  user_id: string;
+  subscribed_to_id: string;
+}): Promise<Subscriber> {
+  const { data, error } = await supabase
+    .from("subscribers")
+    .insert([payload])
+    .select()
+    .single();
+
+  if (error) throw error;
+  return data;
+}
 
 export const getTotalSubscriberCountByProfile = async (profileId: string): Promise<number> => {
   const { data, error } = await supabase.from("subscribers").select("*").eq("subscribed_to_id", profileId);
@@ -90,11 +105,6 @@ export const getTotalSubscriberCountByProfile = async (profileId: string): Promi
   return data?.length ?? 0;
 };
 
-export const addSubscriber = async (dto: { user_id: string; subscribed_to_id: string }) => {
-  const { data, error } = await supabase.from("subscribers").insert([dto]).single();
-  if (error) throw error;
-  return data;
-};
 
 export const deleteSubscriber = async (id: string) => {
   const { error } = await supabase.from("subscribers").delete().eq("id", id);

@@ -1,10 +1,11 @@
 // src/hooks/useVideoLoadHook.ts
+
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { loadVideos, appendVideos } from "../../reduxReducers/suggestedVideoSlice";
-import { LoadVideosResponse, typeOfList } from "../types/VideoLoadTypes";
+import { LoadVideosResponse, typeOfList } from "..//types/models";
 import { PostgrestError } from "@supabase/supabase-js";
-import { loadVideosPaginated } from "../modules/loadVideosPaginated";
+import { loadVideosPaginated } from "..//modules/loadVideosPaginated";
 import { rootState } from "../../store";
 
 const useVideoLoadHook = (
@@ -17,12 +18,17 @@ const useVideoLoadHook = (
     video: [],
     error: null,
   });
-  const displayListType: typeOfList = useSelector((store: rootState) => store.suggestedVideo.displayList);
+
+  const displayListType: typeOfList = useSelector(
+    (store: rootState) => store.suggestedVideo.displayList
+  );
+
   const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchVideos = async () => {
-      setVideoState((prevState) => ({ ...prevState, loading: true }));
+      setVideoState((prev) => ({ ...prev, loading: true }));
+
       try {
         const { video, error, loading } = await loadVideosPaginated({
           index,
@@ -30,12 +36,28 @@ const useVideoLoadHook = (
           order,
           displayListType,
         });
+
         setVideoState({ video, error, loading });
 
+        // If successful load
         if (!loading && video && error === null) {
-          dispatch(loadVideos({ listType: displayListType, videos: video, type: "LOAD_VIDEOS" }));
-        } else if (video && video.length > index + offset + 2) {
-          dispatch(appendVideos({ listType: displayListType, videos: video, type: "LOAD_MORE_VIDEOS" }));
+          dispatch(
+            loadVideos({
+              listType: displayListType,
+              videos: video,
+              type: "LOAD_VIDEOS",
+            })
+          );
+        }
+        // If fetching more (scrolling)
+        else if (video && video.length > index + offset + 2) {
+          dispatch(
+            appendVideos({
+              listType: displayListType,
+              videos: video,
+              type: "LOAD_MORE_VIDEOS",
+            })
+          );
         }
       } catch (error: any) {
         setVideoState({

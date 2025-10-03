@@ -40,9 +40,9 @@ function ShowPlaylist({ playlist }) {
         <div key={p?.id}>
           <div className="flex justify-start items-center space-x-3">
             <div className=" flex-col justify-start items-start">
-              <h3 className="text-lg font-bold">{p?.playlist_name}</h3>
+              <h3 className="text-lg font-bold text-gray-400">{p?.playlist_name}</h3>
               {user?.id !== p?.profiles?.id && p?.profiles?.id && (
-                <h1 className="text-md font-semibold">{`@${p.profiles.username}`}</h1>
+                <h1 className="text-md font-semibold text-gray-400">{`@${p.profiles.username}`}</h1>
               )}
             </div>
             <div

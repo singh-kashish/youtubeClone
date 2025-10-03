@@ -7,6 +7,7 @@ import { Router, useRouter } from "next/router";
 import CustomizedStepper from "../src/components/CustomizedStepper";
 import MouseOverPopover from "../src/components/MouseOverPopover";
 import uuid from "../src/components/uuid";
+import { useAddVideo } from "../src/hooks/useAddVideo";
 type FormData = {
   videoTitle: string;
   videoDescription: string;
@@ -18,7 +19,7 @@ type FormData = {
 function uploadVideo() {
   const Router = useRouter();
   const user = useUser();
-  //const [insertVideo] = useMutation(ADD_VIDEO);
+  const { submitAuthenticated, loading, error, data } = useAddVideo();
   const {
     register,
     setValue,
@@ -26,54 +27,70 @@ function uploadVideo() {
     watch,
     formState: { errors },
   } = useForm<FormData>();
-  function isValidHttpUrl(string: any) {
-    let url: any;
+  function isValidHttpUrl(candidate?: string): boolean {
+    if (!candidate) return false;
     try {
-      url = new URL(string);
-    } catch (_) {
+      const u = new URL(candidate);
+      return u.protocol === "http:" || u.protocol === "https:";
+    } catch {
       return false;
     }
-    return url.protocol === "http:" || url.protocol === "https:";
   }
   const onSubmit = handleSubmit(async (formData) => {
-    const notification = toast.loading("Creating new video...");
+    const notificationId = toast.loading("Creating new video...");
     try {
+      if (!user?.id) {
+        throw new Error("You must be logged in to upload a video.");
+      }
+  
+      // Normalize URLs BEFORE calling submit
       formData.thumbnailUrl =
         isValidHttpUrl(formData.thumbnailUrl) === false
           ? ""
-          : formData.thumbnailUrl;
+          : formData.thumbnailUrl || "";
       formData.videoUrl =
-        isValidHttpUrl(formData.videoUrl) === false ? "" : formData.videoUrl;
-          const idToInsert = uuid();
-      const {
-        data: { insertVideo: newVideo },
-      } = await insertVideo({
-        variables: {
-          id:idToInsert,
-          user_id: user?.id,
-          video_status: formData.videoStatus,
-          videoUrl: formData.videoUrl,
-          thumbnailUrl: formData.thumbnailUrl,
-          title: formData.videoTitle,
-          videoStatus: formData.videoStatus,
-          description: formData.videoDescription,
-          likes: 0,
-          dislikes: 0,
-          viewCount: 0,
-        },
+        isValidHttpUrl(formData.videoUrl) === false
+          ? ""
+          : formData.videoUrl || "";
+  
+      const createdAtIso = new Date().toISOString();
+      console.log("Creating video at:", createdAtIso);
+  
+      // Create the video using the hook (returns inserted row)
+      const inserted = await submitAuthenticated(user.id, {
+        title: formData.videoTitle,
+        description: formData.videoDescription ?? null,
+        videoUrl: formData.videoUrl ?? "",
+        thumbnailUrl: formData.thumbnailUrl ?? "",
+        videoStatus: formData.videoStatus,
+        likes: 0,
+        dislikes: 0,
+        viewCount: 0,
+        // created_at is set inside the hook/service; if you want to set it here instead,
+        // include `created_at: createdAtIso` in the object and adjust the hook to not override it.
       });
-      toast.success("New Video Created!", {
-        id: notification,
-      });
-      toast.dismiss();
-      Router.push(`video/edit/${newVideo.id}`);
-    } catch (error) {
-      toast.error("Whoops something went wrong!", {
-        id: notification,
-      });
-      console.log(error);
+  
+      const newVideoId = inserted?.id ?? null;
+  
+      if (newVideoId) {
+        toast.success("New Video Created!", { id: notificationId });
+        console.log("New video ID:", newVideoId);
+        console.log("User ID:", user.id);
+        Router.push(`/video/edit/${newVideoId}`);
+      } else {
+        // Insert succeeded but no row returned (possible RLS). Fallback UX.
+        toast.success("Video created. Redirecting to your profile…", { id: notificationId });
+        Router.push(`/profiles/${user.id}`);
+      }
+    } catch (e: any) {
+      console.error("Create video failed:", e);
+      toast.error(e?.message || "Whoops, something went wrong!", { id: notificationId });
+    } finally {
+      // Ensure the loading toast is cleared in all cases
+      toast.dismiss(notificationId);
     }
   });
+  
   if (user) {
     return (
       <div className="mx-5 z-50" id={styles.main}>

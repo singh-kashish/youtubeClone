@@ -172,7 +172,7 @@ const Player: React.FC<Props> = ({ videoUrl, videoId, height = "70vh" }) => {
   if (videoUrl.includes("supabase")) {
     const mime = "video/" + videoUrl.split(".").pop();
     const vRef = useRef<HTMLVideoElement>(null);
-
+    console.log("Rendering native video for:", mime,videoUrl);
     useEffect(() => {
       const el = vRef.current;
       if (el && start) el.currentTime = start;
