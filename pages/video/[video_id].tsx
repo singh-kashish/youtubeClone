@@ -51,6 +51,7 @@ const Video: React.FC = () => {
     loading,
     error,
   } = useVideoById(video_id as string, user ? { id: user.id } : undefined);
+  console.log("Video data:", video, "likes:", likes, "comments:", comments,"likes:",likes,"subscriberCount:",subscriberCount,"subscribed:",subscribed,toggleLike,toggleSubscribe,setComments,loading,error);
 
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);

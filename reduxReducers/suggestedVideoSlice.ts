@@ -1,11 +1,17 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Video, SuggestedVideoState, VideosWithProfile } from "../src/types/VideoRedux";
-import { typeOfList } from "../src/types/VideoLoadTypes";
-// In your hook, Redux slice, API modules:
-import { Profile, LoadVideosResponse } from "../src/types/models";
-import { VideoWithProfile } from "../src/types/VideoLoadTypes";
+// reduxReducers/suggestedVideoSlice.ts
 
-// Define the initial state for suggested videos
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { typeOfList } from "../src/types/models";
+import { VideoWithProfileAndCommentsWithProfiles } from "../src/types/models";
+
+export interface SuggestedVideoState {
+  videos: Record<typeOfList, VideoWithProfileAndCommentsWithProfiles[]>;
+  cache: Record<string, any>;
+  displayList: typeOfList;
+  currentDisplayListIndex: number;
+  currentDisplayListOffset: number;
+}
+
 const initialState: SuggestedVideoState = {
   videos: {
     created_at: [],
@@ -23,51 +29,48 @@ const initialState: SuggestedVideoState = {
   cache: {},
   displayList: "id",
   currentDisplayListIndex: 0,
-  currentDisplayListOffset:10,
+  currentDisplayListOffset: 10,
 };
 
-// Redux slice for suggested videos
 const suggestedVideoSlice = createSlice({
   name: "suggestedVideo",
   initialState,
   reducers: {
     loadVideos: (
       state,
-      action: PayloadAction<{ listType: typeOfList; videos: VideosWithProfile; type: "LOAD_VIDEOS" }>
+      action: PayloadAction<{
+        listType: typeOfList;
+        videos: VideoWithProfileAndCommentsWithProfiles[];
+        type: "LOAD_VIDEOS";
+      }>
     ) => {
       const { listType, videos } = action.payload;
-
-      // Replace the videos array for the current listType
-      // Make sure videos is always an array or set it to an empty array if null
-      state.videos[listType] = videos || [];
+      state.videos[listType] = Array.isArray(videos) ? videos : [];
     },
-
     appendVideos: (
       state,
-      action: PayloadAction<{ listType: typeOfList; videos: VideosWithProfile; type: "LOAD_MORE_VIDEOS" }>
+      action: PayloadAction<{
+        listType: typeOfList;
+        videos: VideoWithProfileAndCommentsWithProfiles[];
+        type: "LOAD_MORE_VIDEOS";
+      }>
     ) => {
       const { listType, videos } = action.payload;
-
-      // Make sure that state.videos[listType] is an array before appending
       if (Array.isArray(videos)) {
         state.videos[listType] = [...(state.videos[listType] || []), ...videos];
       }
     },
-
     resetVideos: (state, action: PayloadAction<typeOfList>) => {
       const listType = action.payload;
-
-      // Reset the array for the given listType
       state.videos[listType] = [];
     },
-    // change displayListType
-    changeDisplayList:(state, action: PayloadAction<typeOfList>)=>{
+    changeDisplayList: (state, action: PayloadAction<typeOfList>) => {
       const listType = action.payload;
       state.displayList = listType;
-    }
+    },
   },
 });
 
-// Export actions and reducer
-export const { loadVideos, appendVideos, resetVideos, changeDisplayList } = suggestedVideoSlice.actions;
+export const { loadVideos, appendVideos, resetVideos, changeDisplayList } =
+  suggestedVideoSlice.actions;
 export default suggestedVideoSlice.reducer;

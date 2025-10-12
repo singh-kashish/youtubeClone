@@ -1,39 +1,57 @@
-// modules/subscriberService.ts
-import { LoadSubscribedToResponse, Subscriber } from "../types/Subscriber";
+// src/modules/subscriber.ts
+
 import { supabase } from "../components/utils/supabase";
-import { VideoWithProfile } from "../types/VideoLoadTypes";
+import { PostgrestError } from "@supabase/supabase-js";
+import { Subscriber } from "../types/Subscriber";
 
-export const subscriberService = {
-  async getSubscriptionsByUserId(userId: string): Promise<LoadSubscribedToResponse> {
-    // Step 1: Get all subscribed_to_id for this user
-    const { data: subscriptions, error: subError } = await supabase
-      .from("subscribers")
-      .select("subscribed_to_id")
-      .eq("user_id", userId);
+/**
+ * Add subscriber row; returns inserted row
+ */
+export async function addSubscriber(payload: {
+  user_id: string;
+  subscribed_to_id: string;
+}): Promise<Subscriber> {
+  const { data, error } = await supabase
+    .from("subscribers")
+    .insert([payload])
+    .select("*")
+    .single();
+  if (error) throw error;
+  return data as Subscriber;
+}
 
-    if (subError) {
-      return { videosFromSubscriptions: null, error: subError, loading: false };
-    }
+export const getTotalSubscriberCountByProfile = async (
+  profileId: string
+): Promise<number> => {
+  const { data, error } = await supabase
+    .from("subscribers")
+    .select("id")
+    .eq("subscribed_to_id", profileId);
+  if (error) throw error;
+  return data?.length ?? 0;
+};
 
-    // Filter out nulls to avoid type errors
-    const subscribedIds = (subscriptions ?? [])
-      .map((s: { subscribed_to_id: string | null }) => s.subscribed_to_id)
-      .filter((id): id is string => typeof id === "string" && id.length > 0);
+export const deleteSubscriber = async (id: string) => {
+  const { error } = await supabase.from("subscribers").delete().eq("id", id);
+  if (error) throw error;
+};
 
-    if (subscribedIds.length === 0) {
-      return { videosFromSubscriptions: [], error: null, loading: false };
-    }
+/**
+ * Check if current user is subscribed to profile; ignore "No rows found" error.
+ */
+export const currentUserSubscribedToProfile = async (
+  userId: string,
+  profileId: string
+): Promise<{ isSubscribed: boolean; subscribedId: string | null; error: PostgrestError | null }> => {
+  const { data: subscribers, error } = await supabase
+    .from("subscribers")
+    .select("id")
+    .eq("user_id", userId)
+    .eq("subscribed_to_id", profileId)
+    .maybeSingle(); // use maybeSingle to avoid throwing on 0 rows
 
-    // Step 2: Get all videos for those subscribed_to_id (i.e., channels the user is subscribed to)
-    const { data: videos, error: videoError } = await supabase
-      .from("video")
-      .select("*, profiles(*)")
-      .in("user_id", subscribedIds);
-
-    if (videoError) {
-      return { videosFromSubscriptions: null, error: videoError, loading: false };
-    }
-
-    return { videosFromSubscriptions: videos as VideoWithProfile[], error: null, loading: false };
-  },
+  if (error) {
+    return { isSubscribed: false, subscribedId: null, error };
+  }
+  return { isSubscribed: !!subscribers, subscribedId: subscribers?.id ?? null, error: null };
 };

@@ -83,7 +83,7 @@
 // };
 import { supabase } from "../components/utils/supabase";
 import { PostgrestError } from "@supabase/supabase-js";
-import { Subscriber } from '../types/models';
+import { Subscriber } from '../types/Subscriber';
 
 export async function addSubscriber(payload: {
   user_id: string;

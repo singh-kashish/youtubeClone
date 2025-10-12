@@ -1,15 +1,11 @@
-import { useState, useEffect } from 'react';
-import { loadVideoById, incrementVideoViewCount } from '../modules/loadVideoById';
-import { getLikesByVideo, addLikeOnVideo, modifyLikeOnVideo, removeLikeOnVideo } from '../modules/like';
-import {
-  getTotalSubscriberCountByProfile,
-  addSubscriber,
-  deleteSubscriber,
-  currentUserSubscribedToProfile
-} from '../modules/subscriber';
-import { CommentWithProfile, VideoWithProfile } from '../types/VideoLoadTypes';
-import { Subscriber } from '../types/Subscriber';
-import { toast } from 'react-hot-toast';
+// src/hooks/useVideoByIdHook.ts
+import { useState, useEffect } from "react";
+import { loadVideoById, incrementVideoViewCount } from "../modules/loadVideoById";
+import { getLikesByVideo, addLikeOnVideo, modifyLikeOnVideo, removeLikeOnVideo } from "../modules/like";
+import { getTotalSubscriberCountByProfile, addSubscriber, deleteSubscriber, currentUserSubscribedToProfile } from "../modules/subscriber";
+import { toast } from "react-hot-toast";
+import { CommentWithProfile, VideoWithProfile } from "../types/models";
+import { commentService } from "../modules/comment";
 
 interface LikesState {
   totalLikes: number;
@@ -55,23 +51,23 @@ export function useVideoById(videoId?: string, user?: { id: string }) {
         if (cancelled) return;
         setVideo(VideoWithProfile);
 
-        // Set comments
-        setComments(VideoWithProfile.comment || []);
+        // Load comments (await + correct prop name)
+        const { commentsWithProfile } = await commentService.fetchCommentsByVideoId(videoId);
+        if (cancelled) return;
+        setComments(commentsWithProfile ?? []);
 
         // Likes
         const likeRows = await getLikesByVideo(videoId);
         if (cancelled) return;
-        const totalLikes = likeRows.filter(v => v.liked === true).length;
-        const totalDislikes = likeRows.filter(v => v.liked === false).length;
-
-        let userVote: LikesState['userVote'] = null;
+        const totalLikes = likeRows.filter((v) => v.liked === true).length;
+        const totalDislikes = likeRows.filter((v) => v.liked === false).length;
+        let userVote: LikesState["userVote"] = null;
         if (user?.id) {
-          const uv = likeRows.find(v => v.user_id === user.id);
-          if (uv && typeof uv.liked === 'boolean') {
+          const uv = likeRows.find((v) => v.user_id === user.id);
+          if (uv && typeof uv.liked === "boolean") {
             userVote = { id: uv.id, liked: uv.liked };
           }
         }
-
         setLikes({ totalLikes, totalDislikes, userVote });
 
         // Subscribers
@@ -83,6 +79,7 @@ export function useVideoById(videoId?: string, user?: { id: string }) {
 
           if (user?.id) {
             const { isSubscribed, subscribedId } = await currentUserSubscribedToProfile(user.id, profileId);
+            console.log("Subscription status:", isSubscribed, subscribedId);
             if (cancelled) return;
             setSubscribed(isSubscribed);
             setSubscriberId(subscribedId);
@@ -92,9 +89,7 @@ export function useVideoById(videoId?: string, user?: { id: string }) {
         // Increment views
         await incrementVideoViewCount(videoId, VideoWithProfile.viewCount || 0);
         if (cancelled) return;
-        setVideo(prev =>
-          prev ? { ...prev, viewCount: (prev.viewCount || 0) + 1 } : prev
-        );
+        setVideo((prev) => (prev ? { ...prev, viewCount: (prev.viewCount || 0) + 1 } : prev));
       } catch (err: any) {
         if (!cancelled) setError(err instanceof Error ? err : new Error(String(err)));
       } finally {
@@ -118,22 +113,19 @@ export function useVideoById(videoId?: string, user?: { id: string }) {
       if (likes.userVote.liked === isLike) {
         try {
           await removeLikeOnVideo(likes.userVote.id);
-          setLikes(prev => {
-            if (!prev.userVote) return prev;
-            return {
-              ...prev,
-              totalLikes: isLike ? Math.max(0, prev.totalLikes - 1) : prev.totalLikes,
-              totalDislikes: !isLike ? Math.max(0, prev.totalDislikes - 1) : prev.totalDislikes,
-              userVote: null,
-            };
-          });
-          toast.success(`${isLike ? 'Like' : 'Dislike'} removed.`);
+          setLikes((prev) => ({
+            ...prev,
+            totalLikes: isLike ? Math.max(0, prev.totalLikes - 1) : prev.totalLikes,
+            totalDislikes: !isLike ? Math.max(0, prev.totalDislikes - 1) : prev.totalDislikes,
+            userVote: null,
+          }));
+          toast.success(`${isLike ? "Like" : "Dislike"} removed.`);
         } catch {
           toast.error("Failed to remove vote.");
         }
       } else {
         await modifyLikeOnVideo(likes.userVote.id, isLike);
-        setLikes(prev => {
+        setLikes((prev) => {
           let { totalLikes, totalDislikes } = prev;
           if (isLike) {
             totalLikes += 1;
@@ -142,17 +134,12 @@ export function useVideoById(videoId?: string, user?: { id: string }) {
             totalDislikes += 1;
             totalLikes = Math.max(0, totalLikes - 1);
           }
-          return {
-            ...prev,
-            totalLikes,
-            totalDislikes,
-            userVote: { id: prev.userVote!.id, liked: isLike },
-          };
+          return { ...prev, totalLikes, totalDislikes, userVote: { id: prev.userVote!.id, liked: isLike } };
         });
       }
     } else {
       const newEntry = await addLikeOnVideo({ video_id: videoId, user_id: user.id, liked: isLike });
-      setLikes(prev => ({
+      setLikes((prev) => ({
         totalLikes: prev.totalLikes + (isLike ? 1 : 0),
         totalDislikes: prev.totalDislikes + (!isLike ? 1 : 0),
         userVote: { id: newEntry.id, liked: isLike },
@@ -162,22 +149,18 @@ export function useVideoById(videoId?: string, user?: { id: string }) {
 
   const toggleSubscribe = async () => {
     if (!video?.profiles?.id || !user?.id) return;
-
     try {
       if (subscribed && subscriberId) {
         await deleteSubscriber(subscriberId);
         setSubscribed(false);
         setSubscriberId(null);
-        setSubscriberCount(c => Math.max(0, c - 1));
+        setSubscriberCount((c) => Math.max(0, c - 1));
         toast.success("You have unsubscribed.");
       } else {
-        const newSub: Subscriber = await addSubscriber({
-          user_id: user.id,
-          subscribed_to_id: video.profiles.id,
-        });
+        const newSub = await addSubscriber({ user_id: user.id, subscribed_to_id: video.profiles.id });
         setSubscribed(true);
         setSubscriberId(newSub.id);
-        setSubscriberCount(c => c + 1);
+        setSubscriberCount((c) => c + 1);
         toast.success("You are now subscribed.");
       }
     } catch {

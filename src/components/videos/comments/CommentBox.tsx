@@ -1,72 +1,143 @@
-// import React, { useState } from "react";
-// import styles from "../../styles/Comments.module.css";
-// import { addComment } from "../../../modules/comment";
-// import toast from "react-hot-toast";
-// import { VideoWithProfile } from "../../../types/VideoLoadTypes";
-// import { User } from "@supabase/auth-helpers-react";
+// // import React, { useState } from "react";
+// // import styles from "../../styles/Comments.module.css";
+// // import { addComment } from "../../../modules/comment";
+// // import toast from "react-hot-toast";
+// // import { VideoWithProfile } from "../../../types/VideoLoadTypes";
+// // import { User } from "@supabase/auth-helpers-react";
 
-// interface Props {
-//   video: VideoWithProfile;
-//   user: User | null;
-//   addCommentOptimistically: (comment: any) => void;
-// }
+// // interface Props {
+// //   video: VideoWithProfile;
+// //   user: User | null;
+// //   addCommentOptimistically: (comment: any) => void;
+// // }
 
-// const CommentBox: React.FC<Props> = ({ video, user, addCommentOptimistically }) => {
-//   const [content, setContent] = useState("");
+// // const CommentBox: React.FC<Props> = ({ video, user, addCommentOptimistically }) => {
+// //   const [content, setContent] = useState("");
 
-//   const handlePostComment = async () => {
-//     if (!user) {
-//       toast.error("Please log in to post a comment.");
-//       return;
-//     }
+// //   const handlePostComment = async () => {
+// //     if (!user) {
+// //       toast.error("Please log in to post a comment.");
+// //       return;
+// //     }
 
-//     if (!content.trim()) return;
+// //     if (!content.trim()) return;
 
-//     const optimisticComment = {
-//       user_id: user.id,
-//       video_id: video?.id,
-//       content,
-//       profiles: {
-//         username: user.user_metadata.full_name || "You",
-//         avatar_url: user.user_metadata.avatar_url || "/default-avatar.png",
-//       },
-//       created_at: new Date().toISOString(),
-//     };
+// //     const optimisticComment = {
+// //       user_id: user.id,
+// //       video_id: video?.id,
+// //       content,
+// //       profiles: {
+// //         username: user.user_metadata.full_name || "You",
+// //         avatar_url: user.user_metadata.avatar_url || "/default-avatar.png",
+// //       },
+// //       created_at: new Date().toISOString(),
+// //     };
 
-//     setContent("");
-//     addCommentOptimistically(optimisticComment as any);
+// //     setContent("");
+// //     addCommentOptimistically(optimisticComment as any);
 
-//     const toastId = toast.loading("Posting comment...");
-//     try {
-//       await addComment({ user_id: user.id, video_id: video?.id, text: content });
-//       toast.success("Comment posted!", { id: toastId });
-//     } catch (err) {
-//       toast.error("Failed to post comment.", { id: toastId });
-//     }
-//   };
+// //     const toastId = toast.loading("Posting comment...");
+// //     try {
+// //       await addComment({ user_id: user.id, video_id: video?.id, text: content });
+// //       toast.success("Comment posted!", { id: toastId });
+// //     } catch (err) {
+// //       toast.error("Failed to post comment.", { id: toastId });
+// //     }
+// //   };
 
-//   return (
-//     <div id={styles.commentBox}>
-//       <textarea
-//         className="w-full text-white bg-gray-800 p-2 rounded"
-//         placeholder="Add a public comment..."
-//         value={content}
-//         onChange={(e) => setContent(e.target.value)}
-//       />
-//       <div className="text-right mt-2">
-//         <button
-//           className="bg-blue-600 text-white py-1 px-3 rounded hover:bg-blue-700"
-//           onClick={handlePostComment}
-//         >
-//           Comment
-//         </button>
-//       </div>
-//     </div>
-//   );
-// };
+// //   return (
+// //     <div id={styles.commentBox}>
+// //       <textarea
+// //         className="w-full text-white bg-gray-800 p-2 rounded"
+// //         placeholder="Add a public comment..."
+// //         value={content}
+// //         onChange={(e) => setContent(e.target.value)}
+// //       />
+// //       <div className="text-right mt-2">
+// //         <button
+// //           className="bg-blue-600 text-white py-1 px-3 rounded hover:bg-blue-700"
+// //           onClick={handlePostComment}
+// //         >
+// //           Comment
+// //         </button>
+// //       </div>
+// //     </div>
+// //   );
+// // };
 
-// export default CommentBox;
+// // export default CommentBox;
 
+// // import React, { useState } from "react";
+// // import styles from "../../styles/Comments.module.css";
+// // import { addComment } from "../../../modules/comment";
+// // import toast from "react-hot-toast";
+// // import { VideoWithProfile, CommentWithProfile } from "../../../types/VideoLoadTypes";
+// // import { User } from "@supabase/auth-helpers-react";
+
+// // interface Props {
+// //   video: VideoWithProfile;
+// //   user: User | null;
+// //   addCommentOptimistically: (comment: CommentWithProfile) => void;
+// // }
+
+// // const CommentBox: React.FC<Props> = ({ video, user, addCommentOptimistically }) => {
+// //   const [content, setContent] = useState<string>("");
+
+// //   const handlePostComment = async () => {
+// //     if (!user) {
+// //       toast.error("Please log in to post a comment.");
+// //       return;
+// //     }
+// //     if (!content.trim()) return;
+
+// //     const toastId = toast.loading("Posting comment...");
+// //     try {
+// //       const newComment = await addComment({
+// //         user_id: user.id,
+// //         video_id: video?.id,
+// //         text: content,
+// //       });
+// //       setContent("");
+// //       addCommentOptimistically({
+// //         ...newComment,
+// //         profiles: {
+// //           id: user.id,
+// //           username: user.user_metadata.username || user.email,
+// //           full_name: user.user_metadata.full_name || "",
+// //           avatar_url: user.user_metadata.avatar_url || "/default-avatar.png",
+// //           updated_at: new Date().toISOString(),
+// //         },
+// //         likedComments: [],
+// //       });
+// //       toast.success("Comment posted!", { id: toastId });
+// //     } catch (err) {
+// //       toast.error("Failed to post comment.", { id: toastId });
+// //     }
+// //   };
+
+// //   return (
+// //     <div id={styles.commentBox}>
+// //       <textarea
+// //         className="w-full text-white bg-gray-800 p-2 rounded"
+// //         placeholder="Add a public comment..."
+// //         value={content}
+// //         onChange={(e) => setContent(e.target.value)}
+// //       />
+// //       <div className="text-right mt-2">
+// //         <button
+// //           className="bg-blue-600 text-white py-1 px-3 rounded hover:bg-blue-700"
+// //           onClick={handlePostComment}
+// //         >
+// //           Comment
+// //         </button>
+// //       </div>
+// //     </div>
+// //   );
+// // };
+
+// // export default CommentBox;
+
+// //new code
 // import React, { useState } from "react";
 // import styles from "../../styles/Comments.module.css";
 // import { addComment } from "../../../modules/comment";
@@ -102,7 +173,7 @@
 //         ...newComment,
 //         profiles: {
 //           id: user.id,
-//           username: user.user_metadata.username || user.email,
+//           username: user.user_metadata.username || user.user_metadata.full_name || user.email,
 //           full_name: user.user_metadata.full_name || "",
 //           avatar_url: user.user_metadata.avatar_url || "/default-avatar.png",
 //           updated_at: new Date().toISOString(),
@@ -137,13 +208,13 @@
 
 // export default CommentBox;
 
-//new code
+// src/components/video/comments/CommentBox.tsx
 import React, { useState } from "react";
 import styles from "../../styles/Comments.module.css";
-import { addComment } from "../../../modules/comment";
 import toast from "react-hot-toast";
-import { VideoWithProfile, CommentWithProfile } from "../../../types/VideoLoadTypes";
+import { VideoWithProfile, CommentWithProfile } from "../../../types/AppTypes";
 import { User } from "@supabase/auth-helpers-react";
+import { commentService } from "../../../modules/comment";
 
 interface Props {
   video: VideoWithProfile;
@@ -159,27 +230,19 @@ const CommentBox: React.FC<Props> = ({ video, user, addCommentOptimistically }) 
       toast.error("Please log in to post a comment.");
       return;
     }
-    if (!content.trim()) return;
+    const text = content.trim();
+    if (!text) return;
 
     const toastId = toast.loading("Posting comment...");
     try {
-      const newComment = await addComment({
+      const created = await commentService.addComment({
         user_id: user.id,
-        video_id: video?.id,
-        text: content,
+        video_id: video.id,
+        text,
       });
+
       setContent("");
-      addCommentOptimistically({
-        ...newComment,
-        profiles: {
-          id: user.id,
-          username: user.user_metadata.username || user.user_metadata.full_name || user.email,
-          full_name: user.user_metadata.full_name || "",
-          avatar_url: user.user_metadata.avatar_url || "/default-avatar.png",
-          updated_at: new Date().toISOString(),
-        },
-        likedComments: [],
-      });
+      addCommentOptimistically(created);
       toast.success("Comment posted!", { id: toastId });
     } catch (err) {
       toast.error("Failed to post comment.", { id: toastId });
@@ -207,5 +270,4 @@ const CommentBox: React.FC<Props> = ({ video, user, addCommentOptimistically }) 
 };
 
 export default CommentBox;
-
 

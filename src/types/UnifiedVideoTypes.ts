@@ -1,6 +1,8 @@
 // src/types/VideoUnifiedTypes.ts
 
 import { PostgrestError } from "@supabase/supabase-js";
+// src/types/models.ts
+export * from "./AppTypes";
 
 export interface Profile {
   id: string;

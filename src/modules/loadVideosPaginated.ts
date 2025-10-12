@@ -1,7 +1,17 @@
+// src/modules/loadVideosPaginated.ts
+
 import { supabase } from "../components/utils/supabase";
-import { LoadVideosResponse, typeOfList } from "../types/VideoLoadTypes";
+import {
+  LoadVideosResponse,
+  typeOfList,
+  VideoWithProfileAndCommentsWithProfiles,
+} from "../types/models";
 import { PostgrestError } from "@supabase/supabase-js";
-// Paginated video loader
+
+/**
+ * Paginated video loader
+ * Uses PostgREST select syntax and returns properly typed arrays.
+ */
 export async function loadVideosPaginated({
   index,
   offset,
@@ -13,11 +23,12 @@ export async function loadVideosPaginated({
   order: boolean;
   displayListType: typeOfList;
 }): Promise<LoadVideosResponse> {
-  let loading = true;
   try {
-    const { data: video, error, status } = await supabase
+    // Build select with nested joins using PostgREST column syntax
+    const { data, error, status } = await supabase
       .from("video")
-      .select(`
+      .select(
+        `
         id,
         created_at,
         description,
@@ -29,18 +40,54 @@ export async function loadVideosPaginated({
         videoUrl,
         viewCount,
         user_id,
-        profiles(*),
-        comment(*, profiles(*))
-      `)
+        profiles (
+          id,
+          username,
+          full_name,
+          avatar_url,
+          updated_at
+        ),
+        comment (
+          id,
+          text,
+          created_at,
+          user_id,
+          video_id,
+          likeCount,
+          dislikeCount,
+          profiles (
+            id,
+            username,
+            full_name,
+            avatar_url,
+            updated_at
+          )
+        )
+      `
+      )
       .order(displayListType, { nullsFirst: false, ascending: order })
       .range(index, offset);
-      console.log(video);
-    loading = false;
+
     if (error || status !== 200) {
-      throw new Error(error?.message || "Error fetching videos");
+      return {
+        video: null,
+        loading: false,
+        error: error ?? ({ message: "Error fetching videos" } as PostgrestError),
+      };
     }
-    return { video, loading, error };
-  } catch (error: any) {
-    return { video: null, loading: false, error: { message: error.message } as PostgrestError };
+
+    // Supabase returns data as any[] matching our shape; assert the type safely
+    const video = (data ?? []) as VideoWithProfileAndCommentsWithProfiles[];
+
+    // Optional: console for debugging
+    // console.log("Paginated videos:", video);
+
+    return { video, loading: false, error: null };
+  } catch (e: any) {
+    return {
+      video: null,
+      loading: false,
+      error: { message: e?.message ?? "Unknown error" } as PostgrestError,
+    };
   }
 }
