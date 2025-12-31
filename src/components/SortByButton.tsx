@@ -46,7 +46,7 @@ const SortByButton: React.FC<Props> = ({ setSortOrder }) => {
   }, [displayList]);
 
   return (
-    <select value={selectedValue} onChange={changeFunction}>
+    <select value={selectedValue} onChange={changeFunction} className="bg-slate-800 text-white w-1/6">
       <option value="id">Sort By</option>
       <option value="viewCount_desc">High to Low Views</option>
       <option value="viewCount_asc">Low to High Views</option>

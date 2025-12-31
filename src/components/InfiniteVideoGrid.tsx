@@ -50,8 +50,8 @@ const InfiniteVideoGrid: React.FC<Props> = ({ where }) => {
   }
 
   return (
-    <>
-      <SortByButton setSortOrder={() => {}} />
+    <main className="flex flex-col justify-end">
+      <SortByButton setSortOrder={() => {}}/>
 
       <div className={where === "home" ? styles.home : styles.video}>
         {video.map((v:Video_Icon) => (
@@ -67,7 +67,7 @@ const InfiniteVideoGrid: React.FC<Props> = ({ where }) => {
       )}
 
       <div ref={observerRef} className="h-10" />
-    </>
+    </main>
   );
 };
 
