@@ -1,59 +1,139 @@
-// // import { Database } from "../../lib/database.types";
-// // import { typeOfList } from "./VideoLoadTypes";
-// // export type Video = Database['public']['Tables']['video']['Row'];
-// // export type Profile = Database['public']['Tables']['profiles']['Row'];
-
-// // export type VideosWithProfile = Array<(Video | null & { profiles: Profile | null })> | [] | null; // Array of videos with profiles
-// // export type VideoWithProfile = (Video | null & { profiles: Profile | null });
-// // export interface CacheData {
-// //   videos: VideosWithProfile;
-// //   timestamp: number;  // timestamp when the data was fetched
-// // }
-// // // SuggestedVideoState structure
-// // export interface SuggestedVideoState {
-// //   videos: Record<typeOfList, VideosWithProfile | null>; // Allow null for listType
-// //   cache: Record<string, CacheData>;
-// //   displayList: typeOfList;
-// //   currentDisplayListIndex: number,
-// //   currentDisplayListOffset:10,
-// // }
-
-// // src/types/VideoRedux.ts
-// import { Database } from "../../lib/database.types";
-// import { typeOfList } from "./VideoLoadTypes";
-
-// export type Video = Database['public']['Tables']['video']['Row'];
-// export type Profile = Database['public']['Tables']['profiles']['Row'];
-
-// export type VideosWithProfile =
-//   | Array<Video & { profiles: Profile | null }>
-//   | [] 
-//   | null;
-
-// export type VideoWithProfile = Video & { profiles: Profile | null };
-
-// export interface CacheData {
-//   videos: VideosWithProfile;
-//   timestamp: number;
-// }
-
-// export interface SuggestedVideoState {
-//   videos: Record<typeOfList, VideosWithProfile | null>;
-//   cache: Record<string, CacheData>;
-//   displayList: typeOfList;
-//   currentDisplayListIndex: number;
-//   currentDisplayListOffset: number;
-// }
-
-// chatGpt generated code below:-
 import { Database } from "../../lib/database.types";
 import { typeOfList } from "./VideoLoadTypes";
 
-export type Video = Database["public"]["Tables"]["video"]["Row"];
-export type Profile = Database["public"]["Tables"]["profiles"]["Row"];
+// src/types/VideoRedux.ts
+export interface Profile {
+  id: string;
+  username: string | null;
+  avatar_url: string | null;
+  full_name: string | null;
+  updated_at?: string | null;
+  email?: string | null;
+}
 
-export type VideoWithProfile = Video & { profiles: Profile | null };
-export type VideosWithProfile = Array<VideoWithProfile> | null;
+export interface Video {
+  id: string;
+  created_at: string | null;
+  description: string | null;
+  dislikes: number | null;
+  likes: number | null;
+  thumbnailUrl: string | null;
+  title: string | null;
+  user_id: string | null;
+  videoStatus: boolean | null;
+  videoUrl: string | null;
+  viewCount: number | null;
+}
+
+
+
+/**
+ * Video row from the `video` table.
+ * Ensure your Supabase select includes all these columns.
+ */
+export interface Video {
+  id: string;
+  title: string | null;
+  description: string | null;
+  thumbnailUrl: string | null;
+  videoUrl: string | null;
+  viewCount: number | null;
+  likes: number | null;
+  dislikes: number | null;
+  created_at: string | null;
+  user_id: string | null;
+  videoStatus: boolean | null;
+}
+
+// src/types/VideoRedux.ts
+
+export interface Profile {
+  id: string;
+  username: string | null;
+  avatar_url: string | null;
+  full_name: string | null;
+}
+
+export interface Video {
+  id: string;
+  created_at: string | null;
+  description: string | null;
+  dislikes: number | null;
+  likes: number | null;
+  thumbnailUrl: string | null;
+  title: string | null;
+  user_id: string | null;
+  videoStatus: boolean | null;
+  videoUrl: string | null;
+  viewCount: number | null;
+}
+
+export interface Video {
+  id: string;
+  title: string | null;
+  description: string | null;
+  thumbnailUrl: string | null;
+  videoUrl: string | null;
+  viewCount: number | null;
+  likes: number | null;
+  dislikes: number | null;
+  created_at: string | null;
+  user_id: string | null;
+  videoStatus: boolean | null;
+}
+
+// filename: src/types/VideoRedux.ts
+
+export interface Profile {
+  id: string;
+  username: string | null;
+  avatar_url: string | null;
+  full_name: string | null;
+}
+
+/**
+ * Video row from the `video` table.
+ * Ensure your Supabase select includes all these columns.
+ */
+export interface Video {
+  id: string;
+  title: string | null;
+  description: string | null;
+  thumbnailUrl: string | null;
+  videoUrl: string | null;
+  viewCount: number | null;
+  likes: number | null;
+  dislikes: number | null;
+  created_at: string | null;
+  user_id: string | null;
+  videoStatus: boolean | null;
+}
+
+
+/**
+ * Joined shape: a Video plus a single Profile or null.
+ * We normalize Supabase responses to this in the fetch layer.
+ */
+import { Profile } from "./db";
+
+export interface VideoWithProfile {
+  id: string;
+  created_at: string;
+  title: string;
+  description: string;
+  likes: number;
+  dislikes: number;
+  viewCount: number;
+  videoUrl: string;
+  thumbnailUrl: string;
+  videoStatus: boolean;
+  user_id: string;
+
+  // IMPORTANT: Supabase returns ARRAY
+  profiles: Profile[];
+}
+
+export type VideosWithProfile = VideoWithProfile[];
 
 export interface CacheData {
   videos: VideosWithProfile;
@@ -67,3 +147,22 @@ export interface SuggestedVideoState {
   currentDisplayListIndex: number;
   currentDisplayListOffset: number;
 }
+// With comments included
+
+export interface Comment {
+  id: string;
+  text: string | null;
+  created_at: string | null;
+  user_id: string | null;
+  video_id: string | null;
+  likeCount: number | null;
+  dislikeCount: number | null;
+  profiles: Profile | null;
+}
+
+export type VideoWithProfileComments = Video & {
+  profiles: Profile | null;
+  comment: Comment[] | null;
+};
+
+export type VideosWithProfileComments = VideoWithProfileComments[];

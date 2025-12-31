@@ -12,15 +12,18 @@ import LeftHeader from "./LeftHeader";
 import {useRouter} from "next/router";
 import { toast } from "react-hot-toast";
 import Search from './Search';
-import { youtubeIconUrl } from "../utils/constants";
+import { useSelector, useDispatch } from "react-redux";
+import { changeHeaderDensity } from "../../reduxReducers/HeaderDensitySlice";
 import PlayIcon from '../../public/PlayIcon.png';
+import { rootState } from "../../store";
 const roboto = Roboto({
   weight: "900",
   subsets: ["latin"],
 });
 const Header = () => {
   const router = useRouter();
-  const [densityClicked, setDensityClicked] = useState<boolean>(false);
+  const dispatch = useDispatch();
+  const densityClicked = useSelector((state:rootState) => state.densityClicked.headerDensityClicked);
   const [searchText,setSearchText] = useState<string>('');
   const handleSubmit = (e:Event) =>{
     e.preventDefault();
@@ -40,7 +43,7 @@ const Header = () => {
           }}
           onClick={(e:any) => {
             e.preventDefault();
-            setDensityClicked(!densityClicked);
+            dispatch(changeHeaderDensity());
           }}
           className="w-[30px] h-[30px] hover:bg-[rgba(11,11,65,0.75)] hover:text-[rgba(11,11,65,1)] hover:cursor-pointer focus:outline-none  shadow-lg active:shadow-none no-underline rounded-full"
         />
@@ -65,6 +68,7 @@ const Header = () => {
           </div>
         </Link>
       </div>
+      
       <Search handleSubmit={handleSubmit} searchText={searchText} setSearchText={setSearchText} where="header"/>
       <HeaderEnd />
     </div>

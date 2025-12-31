@@ -74,12 +74,15 @@
 }
 #addToPlaylist {
   z-index: 22;
-  border-radius: 15px;
+  border-radius: 10px;
   background-color: #252424;
-  padding: 4px 8px;
+  padding: 2px 4px;
+  display: flex;
+  justify-content: center;
 }
 #addToPlaylist:hover {
-  background-color: rgb(227, 206, 206) !important;
+  background-color: rgb(202, 14, 14) !important;
+  cursor: pointer;
 }
 #home_play {
   display: flex;
@@ -225,13 +228,16 @@
   }
   #addToPlaylist {
     z-index: 22;
-    border-radius: 15px;
+    border-radius: 10px;
     background-color: #252424;
-    padding: 4px 8px;
+    padding: 2px 4px;
+    display: flex;
+    justify-content: center;
   }
   #addToPlaylist:hover {
-    background-color: rgb(227, 206, 206) !important;
-  }
+  background-color: rgb(202, 14, 14) !important;
+  cursor: pointer;
+}
   #moreButtonAtVideoIcon {
     background-color: #252424;
     border-radius: 20px;

@@ -139,7 +139,7 @@
 // src/components/Account.tsx
 import React, { useEffect, useState } from "react";
 import { useUser, User } from "@supabase/auth-helpers-react";
-import { supabase } from "./utils/supabase";
+import { supabase } from "../utils/supabase";
 import styles from "./styles/Account.module.css";
 import EditIcon from "@mui/icons-material/Edit";
 import EditOffIcon from "@mui/icons-material/EditOff";

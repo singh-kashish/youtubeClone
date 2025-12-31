@@ -352,9 +352,7 @@ function LeftHeader({
     );
   } else {
     return (
-      <div className="hidden">
-        I had to add since , empty JSX return was prohibited for some cases.
-      </div>
+      <></>
     );
   }
 }

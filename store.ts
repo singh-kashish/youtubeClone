@@ -9,6 +9,7 @@ import storage from "redux-persist/lib/storage";
 import { PersistGate } from 'redux-persist/integration/react';
 import suggestedVideoReducer from "./reduxReducers/suggestedVideoSlice";
 import playlistReducer from "./reduxReducers/playlistSlice";
+import headerDensityReducer from "./reduxReducers/HeaderDensitySlice";
 import { createTransform } from "redux-persist";
 import { SuggestedVideoState } from "./src/types/VideoRedux";
 
@@ -45,6 +46,7 @@ const store = configureStore({
   reducer: {
     suggestedVideo: persistedReducer,
     playlist: playlistReducer,
+    densityClicked: headerDensityReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

@@ -38,7 +38,7 @@ function ProfileSearch({ text }) {
       return (
         <div id={styles.main}>
           {profiles?.map((pie) => (
-            <Link href={`/profiles/${pie?.id}`} key={pie?.id}>
+            <Link href={`/${pie?.id}`} key={pie?.id}>
               <div id={styles.user}>
                 <Avatar
                   uid={pie?.id}

@@ -1,70 +1,93 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Video, SuggestedVideoState, VideosWithProfile, VideoWithProfile } from "../src/types/VideoRedux";
+import { VideosWithProfile } from "../src/types/VideoRedux";
 import { typeOfList } from "../src/types/VideoLoadTypes";
 
-// Define the initial state for suggested videos
-const initialState: SuggestedVideoState = {
-  videos: {
-    created_at: [],
-    id: [],
-    user_id: [],
-    description: [],
-    dislikes: [],
-    likes: [],
-    thumbnailUrl: [],
-    title: [],
-    videoStatus: [],
-    videoUrl: [],
-    viewCount: [],
-  },
-  cache: {},
-  displayList: "id",
-  currentDisplayListIndex: 0,
-  currentDisplayListOffset:10,
+type PaginationState = {
+  offset: number;
+  hasMore: boolean;
 };
 
-// Redux slice for suggested videos
+type SuggestedVideoState = {
+  videos: Record<typeOfList, VideosWithProfile>;
+  pagination: Record<typeOfList, PaginationState>;
+  displayList: typeOfList;
+};
+
+const initialPagination = (): PaginationState => ({
+  offset: 0,
+  hasMore: true,
+});
+
+const initialState: SuggestedVideoState = {
+  videos: {
+    id: [],
+    viewCount_desc: [],
+    viewCount_asc: [],
+    likes_desc: [],
+    created_at_desc: [],
+    created_at_asc: [],
+  },
+  pagination: {
+    id: initialPagination(),
+    viewCount_desc: initialPagination(),
+    viewCount_asc: initialPagination(),
+    likes_desc: initialPagination(),
+    created_at_desc: initialPagination(),
+    created_at_asc: initialPagination(),
+  },
+  displayList: "id",
+};
+
 const suggestedVideoSlice = createSlice({
   name: "suggestedVideo",
   initialState,
   reducers: {
-    loadVideos: (
-      state,
-      action: PayloadAction<{ listType: typeOfList; videos: VideosWithProfile; type: "LOAD_VIDEOS" }>
-    ) => {
-      const { listType, videos } = action.payload;
-
-      // Replace the videos array for the current listType
-      // Make sure videos is always an array or set it to an empty array if null
-      state.videos[listType] = videos || [];
+    changeDisplayList: (state, action: PayloadAction<typeOfList>) => {
+      state.displayList = action.payload;
     },
 
     appendVideos: (
       state,
-      action: PayloadAction<{ listType: typeOfList; videos: VideosWithProfile; type: "LOAD_MORE_VIDEOS" }>
+      action: PayloadAction<{ listType: typeOfList; videos: VideosWithProfile }>
     ) => {
       const { listType, videos } = action.payload;
+      state.videos[listType].push(...videos);
+    },
+    
+    advanceOffset: (
+    state,
+    action: PayloadAction<{ listType: typeOfList; pageSize: number }>
+  ) => {
+    const { listType, pageSize } = action.payload;
+    state.pagination[listType].offset += pageSize;
+  },
 
-      // Make sure that state.videos[listType] is an array before appending
-      if (Array.isArray(videos)) {
-        state.videos[listType] = [...(state.videos[listType] || []), ...videos];
-      }
+    updatePagination: (
+      state,
+      action: PayloadAction<{
+        listType: typeOfList;
+        offset: number;
+        hasMore: boolean;
+      }>
+    ) => {
+      const { listType, offset, hasMore } = action.payload;
+      state.pagination[listType] = { offset, hasMore };
     },
 
-    resetVideos: (state, action: PayloadAction<typeOfList>) => {
-      const listType = action.payload;
-
-      // Reset the array for the given listType
-      state.videos[listType] = [];
+    resetPagination: (state, action: PayloadAction<typeOfList>) => {
+      state.videos[action.payload] = [];
+      state.pagination[action.payload] = initialPagination();
     },
-    // change displayListType
-    changeDisplayList:(state, action: PayloadAction<typeOfList>)=>{
-      const listType = action.payload;
-      state.displayList = listType;
-    }
   },
 });
 
-// Export actions and reducer
-export const { loadVideos, appendVideos, resetVideos, changeDisplayList } = suggestedVideoSlice.actions;
+export const {
+  appendVideos,
+  updatePagination,
+  advanceOffset,
+  changeDisplayList,
+  resetPagination,
+} = suggestedVideoSlice.actions;
+
+
 export default suggestedVideoSlice.reducer;

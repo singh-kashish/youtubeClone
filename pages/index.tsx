@@ -19,7 +19,7 @@ export default function Home() {
       <Head>
         <title>FlixPlay</title>
       </Head>
-      <SuggestedVideos where="Home" />
+      <SuggestedVideos where="Home"/>
     </div>
   );
 }

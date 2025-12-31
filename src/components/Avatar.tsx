@@ -361,7 +361,7 @@
 
 // export default Avatar;
 import React, { useMemo, useRef, useState } from "react";
-import { supabase } from "./utils/supabase";
+import { supabase } from "../utils/supabase";
 import styles from "./styles/Avatar.module.css";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 
