@@ -46,7 +46,7 @@ const store = configureStore({
   reducer: {
     suggestedVideo: persistedReducer,
     playlist: playlistReducer,
-    densityClicked: headerDensityReducer,
+    headerDensity: headerDensityReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
@@ -58,4 +58,5 @@ const store = configureStore({
 
 const persistor = persistStore(store);
 export type rootState = ReturnType<typeof store.getState>;
-export {persistor, store}; 
+export {persistor, store};
+export type AppDispatch = typeof store.dispatch; 

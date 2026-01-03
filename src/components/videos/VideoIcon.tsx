@@ -16,8 +16,8 @@ const r = Roboto({ weight: "500", subsets: ["latin"] });
 
 export interface VideoIconProps {
   video: Video_Icon;
-  where: string;
-  allowHover: boolean;
+  where?: string;
+  allowHover?: boolean;
 }
 
 const VideoIcon: React.FC<VideoIconProps> = ({ video, where, allowHover }) => {

@@ -1,77 +1,74 @@
+// src/components/Header.tsx
 import Image from "next/image";
-import React, { useState } from "react";
+import React from "react";
 import styles from "./styles/Header.module.css";
 import { Roboto } from "next/font/google";
 import DensityMediumRoundedIcon from "@mui/icons-material/DensityMediumRounded";
-import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
-import MicRoundedIcon from "@mui/icons-material/MicRounded";
-import { TextField } from "@mui/material";
 import Link from "next/link";
 import HeaderEnd from "./HeaderEnd";
-import LeftHeader from "./LeftHeader";
-import {useRouter} from "next/router";
-import { toast } from "react-hot-toast";
-import Search from './Search';
+import Search from "./Search";
 import { useSelector, useDispatch } from "react-redux";
 import { changeHeaderDensity } from "../../reduxReducers/HeaderDensitySlice";
-import PlayIcon from '../../public/PlayIcon.png';
+import PlayIcon from "../../public/PlayIcon.png";
 import { rootState } from "../../store";
-const roboto = Roboto({
-  weight: "900",
-  subsets: ["latin"],
-});
-const Header = () => {
-  const router = useRouter();
+
+const roboto = Roboto({ weight: "900", subsets: ["latin"] });
+
+/* ===================== TYPES ===================== */
+
+export type HeaderProps = {
+  searchText: string;
+  setSearchText: React.Dispatch<React.SetStateAction<string>>;
+  handleSubmit: (e: React.FormEvent) => void;
+};
+
+/* ===================== COMPONENT ===================== */
+
+const Header: React.FC<HeaderProps> = ({
+  searchText,
+  setSearchText,
+  handleSubmit,
+}) => {
   const dispatch = useDispatch();
-  const densityClicked = useSelector((state:rootState) => state.densityClicked.headerDensityClicked);
-  const [searchText,setSearchText] = useState<string>('');
-  const handleSubmit = (e:Event) =>{
-    e.preventDefault();
-    if(searchText.length>0){
-      router.push(`/search/${searchText}`);
-    } else{
-      toast.error('Please enter some text to search!');
-    }
-  }
+
+  const densityClicked = useSelector(
+  (state: rootState) => state.headerDensity.headerDensityClicked
+);
+
+
   return (
-    <div className={styles.main}>
+    <header className={styles.main}>
+      {/* LEFT */}
       <div className={styles.headerStart}>
         <DensityMediumRoundedIcon
-          style={{
-            marginRight: "-10px",
-            marginLeft: "10px",
-          }}
-          onClick={(e:any) => {
-            e.preventDefault();
-            dispatch(changeHeaderDensity());
-          }}
-          className="w-[30px] h-[30px] hover:bg-[rgba(11,11,65,0.75)] hover:text-[rgba(11,11,65,1)] hover:cursor-pointer focus:outline-none  shadow-lg active:shadow-none no-underline rounded-full"
+          onClick={() => dispatch(changeHeaderDensity())}
+          className="h-10 w-10 hover:cursor-pointer hover:bg-slate-700 rounded-lg"
         />
-        <LeftHeader densityClicked={densityClicked} handleSubmit={handleSubmit} searchText={searchText} setSearchText={setSearchText}/>
+
         <Link href="/">
           <div className={styles.logoDiv}>
-            <div className="relative h-10 w-20 flex-shrink-0 cursor-pointer">
-              <Image
-                src={PlayIcon}
-                fill={true}
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                alt="1083486789"
-                className="object-contain"
-              />
-            </div>
-            <div
-              className="text-xl flex-shrink-0 cursor-pointer"
-              id={styles.text}
-            >
-              <span className={roboto.className}>FlixPlay</span>
-            </div>
+            <Image
+              src={PlayIcon}
+              alt="logo"
+              className="w-16 h-16 mx-2 object-contain"
+              priority
+            />
+            <span className={roboto.className}>FlixPlay</span>
           </div>
         </Link>
       </div>
-      
-      <Search handleSubmit={handleSubmit} searchText={searchText} setSearchText={setSearchText} where="header"/>
+
+      {/* CENTER SEARCH */}
+      <Search
+        where="header"
+        handleSubmit={handleSubmit}
+        searchText={searchText}
+        setSearchText={setSearchText}
+      />
+
+      {/* RIGHT */}
       <HeaderEnd />
-    </div>
+    </header>
   );
 };
 

@@ -115,7 +115,7 @@ export async function getProfileById(userId: string) {
       username,
       full_name,
       avatar_url,
-      subscribers (
+      subscribers!subscribers_user_id_fkey (
         id,
         user_id,
         subscribed_to_id

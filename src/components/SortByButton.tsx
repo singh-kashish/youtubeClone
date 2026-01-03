@@ -1,58 +1,32 @@
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { typeOfList } from "../types/VideoLoadTypes";
-import { changeDisplayList } from "../../reduxReducers/suggestedVideoSlice";
+import {
+  resetPagination,
+  setSortBy,
+} from "../../reduxReducers/suggestedVideoSlice";
 import { rootState } from "../../store";
-import { useState, useEffect } from "react";
 
-interface Props {
-  setSortOrder: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-const SortByButton: React.FC<Props> = ({ setSortOrder }) => {
+const SortByButton = () => {
   const dispatch = useDispatch();
-  const displayList = useSelector(
-    (state: rootState) => state.suggestedVideo.displayList
+  const sortBy = useSelector(
+    (state: rootState) => state.suggestedVideo.sortBy
   );
 
-  const [selectedValue, setSelectedValue] = useState(displayList);
-
-  const changeFunction = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const value = e.target.value as typeOfList;
-    setSelectedValue(value);
-
-    switch (value) {
-      case "viewCount_desc":
-        setSortOrder(false);
-        break;
-      case "viewCount_asc":
-        setSortOrder(true);
-        break;
-      case "created_at_desc":
-        setSortOrder(false);
-        break;
-      case "created_at_asc":
-        setSortOrder(true);
-        break;
-      case "likes_desc":
-        setSortOrder(false);
-        break;
-    }
-
-    dispatch(changeDisplayList(value));
+  const handleChange = (value: any) => {
+    dispatch(resetPagination());
+    dispatch(setSortBy(value));
   };
 
-  useEffect(() => {
-    setSelectedValue(displayList);
-  }, [displayList]);
-
   return (
-    <select value={selectedValue} onChange={changeFunction} className="bg-slate-800 text-white w-1/6">
-      <option value="id">Sort By</option>
-      <option value="viewCount_desc">High to Low Views</option>
-      <option value="viewCount_asc">Low to High Views</option>
-      <option value="created_at_desc">Recent</option>
-      <option value="created_at_asc">Older</option>
-      <option value="likes_desc">More Likes</option>
+    <select
+      value={sortBy}
+      onChange={(e) => handleChange(e.target.value)}
+      className="bg-black text-white px-3 py-1 rounded"
+    >
+      <option value="recent">Recent</option>
+      <option value="older">Older</option>
+      <option value="high">High → Low</option>
+      <option value="low">Low → High</option>
     </select>
   );
 };

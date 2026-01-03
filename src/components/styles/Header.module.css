@@ -8,6 +8,9 @@
   top: 0;
   z-index: 50;
   padding: 10px;
+  margin-top: 0px;
+  max-height: 100%;
+
 }
 .headerStart {
   display: flex;
@@ -15,11 +18,16 @@
   align-items: center;
   justify-content: flex-start;
 }
+.headerStart:hover{
+  cursor: pointer;
+}
 .logoDiv {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: flex-start;
+  max-height: 30px !important;
+  max-width: 30px !important;
 }
 #text {
   margin-left: -15px;
@@ -68,9 +76,18 @@
     align-items: center;
     justify-content: space-between;
   }
-  .main{
-    padding:5px;
+  .logoDiv{
+    max-height: 30px !important;
+    max-width: 30px !important;
   }
+  .main{
+    padding:10px;
+    margin-top: 0px;
+    max-height: 100;
+  }
+}
+.headerStart:hover{
+  cursor: pointer;
 }
 #headerEnd {
   display: none;

@@ -11,19 +11,27 @@
   margin: 0px;
 }
 
-.home,
-.video {
+.home{
   display: grid;
   grid-template-columns: repeat(1, minmax(0, 1fr));
   gap: 12px;
 }
+.video {
+  display: flex;
+  flex-direction: column;
+  margin-left: 5px;
+}
 
 @media screen and (min-width: 600px) {
-  .home,
-.video {
+.home{
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 12px;
+}
+.video {
+  display: flex;
+  flex-direction: column;
+  margin-left: 5px;
 }
   #wobble {
     min-height: 100vh;
@@ -32,7 +40,7 @@
   }
   #home {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 10px;
     grid-auto-rows: minmax(100px, auto);
     margin: 8px 0px 0px 250px !important;
@@ -53,11 +61,15 @@
 }
 
 @media screen and (min-width: 950px) {
-.home,
-.video {
+.home{
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 12px;
+}
+.video {
+  display: flex;
+  flex-direction: column;
+  margin-left: 5px;
 }
 
   #wobble {

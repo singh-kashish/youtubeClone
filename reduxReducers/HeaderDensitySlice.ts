@@ -1,29 +1,27 @@
-// reduxReducers/suggestedVideoSlice.ts
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
 type HeaderDensityState = {
-  cache: Record<string, unknown>;
   headerDensityClicked: boolean;
 };
 
 const initialState: HeaderDensityState = {
-  headerDensityClicked:false,
-  cache: {},
+  headerDensityClicked: false,
 };
 
-const headerDensity = createSlice({
-  name: "headerdensity",
+const headerDensitySlice = createSlice({
+  name: "headerDensity",
   initialState,
   reducers: {
-    changeHeaderDensity: (state) => {
+    changeHeaderDensity(state) {
       state.headerDensityClicked = !state.headerDensityClicked;
     },
-    resetHeaderDensity: (state) => {
-      state.headerDensityClicked = true;
+    resetHeaderDensity(state) {
+      state.headerDensityClicked = false;
     },
   },
 });
 
+export const { changeHeaderDensity, resetHeaderDensity } =
+  headerDensitySlice.actions;
 
-export const { changeHeaderDensity, resetHeaderDensity } = headerDensity.actions;
-export default headerDensity.reducer;
+export default headerDensitySlice.reducer;

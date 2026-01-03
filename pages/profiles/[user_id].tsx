@@ -5,7 +5,7 @@ import styles from "./[user_id].module.css";
 import { Roboto } from "next/font/google";
 import VideoIcon from "../../src/components/videos/VideoIcon";
 import ProfileShimmer from "../../src/components/shimmers/ProfileShimmer";
-import { useProfiles } from "../../src/hooks/useProfile";
+import useProfileById from "../../src/hooks/useProfileById";
 
 const roboto = Roboto({
   weight: "700",
@@ -14,12 +14,15 @@ const roboto = Roboto({
 function Profile() {
   const router = useRouter();
   const [userId,setUserId] = React.useState<string | null>(null);
+  const [profile,setProfile] = React.useState<any>(null);
   if(router.isReady){
     setUserId(router.query.user_id as string);
+    
+    console.log(profile);
+    setProfile(profile);
   }
-  const profile = useProfiles(userId as string);
-  console.log(profile);
-  
+  const d = useProfileById(userId as string);
+  console.log(d);
   //const profile: Profiles = data?.profiles;
   const returnVideos = () => {
     if (!profile) {

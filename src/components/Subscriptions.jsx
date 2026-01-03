@@ -9,12 +9,12 @@ function Subscriptions() {
 
   const videosFound = () => {
     if (!user) {
-      return <h1>Login to see your subscriptions</h1>;
+      return <h1 className="mt-2 border-t border-slate-700">Login to see your subscriptions</h1>;
     } else if (data?.subscribersUsingSubscribers_user_id_fkey?.length == 0) {
-      return <h1>No subscriptions found</h1>;
+      return <h1 className="mt-2 border-t border-slate-700">No subscriptions found</h1>;
     } else {
       return (
-        <div>
+        <div className="mt-2 border-t border-slate-700">
           {data?.subscribersUsingSubscribers_user_id_fkey.map((pie) => (
             <Link href={`/${pie.subscribed_to_id}`} key={pie.id}>
               <div id={styles.row}>
@@ -38,7 +38,7 @@ function Subscriptions() {
     }
   };
   return (
-    <div id={styles.main}>
+    <div id={styles.main} className="mt-2 border-t border-slate-700">
       <h6 className="font-sans font-medium text-lg border-b-2 border-gray-400 w-full text-center text-gray-300 mb-1 pb-1">
         Subscriptions
       </h6>

@@ -1,93 +1,72 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { VideosWithProfile } from "../src/types/VideoRedux";
-import { typeOfList } from "../src/types/VideoLoadTypes";
+import { Video_Icon } from "../src/types/interaces";
 
-type PaginationState = {
-  offset: number;
-  hasMore: boolean;
-};
+type SortBy = "recent" | "older" | "high" | "low";
 
 type SuggestedVideoState = {
-  videos: Record<typeOfList, VideosWithProfile>;
-  pagination: Record<typeOfList, PaginationState>;
-  displayList: typeOfList;
+  videos: Video_Icon[];
+  offset: number;
+  pageSize: number;
+  hasMore: boolean;
+  loading: boolean;
+  sortBy: SortBy;
 };
 
-const initialPagination = (): PaginationState => ({
-  offset: 0,
-  hasMore: true,
-});
-
 const initialState: SuggestedVideoState = {
-  videos: {
-    id: [],
-    viewCount_desc: [],
-    viewCount_asc: [],
-    likes_desc: [],
-    created_at_desc: [],
-    created_at_asc: [],
-  },
-  pagination: {
-    id: initialPagination(),
-    viewCount_desc: initialPagination(),
-    viewCount_asc: initialPagination(),
-    likes_desc: initialPagination(),
-    created_at_desc: initialPagination(),
-    created_at_asc: initialPagination(),
-  },
-  displayList: "id",
+  videos: [],
+  offset: 0,
+  pageSize: 12,
+  hasMore: true,
+  loading: false,
+  sortBy: "recent",
 };
 
 const suggestedVideoSlice = createSlice({
   name: "suggestedVideo",
   initialState,
   reducers: {
-    changeDisplayList: (state, action: PayloadAction<typeOfList>) => {
-      state.displayList = action.payload;
+    startLoading(state) {
+      state.loading = true;
     },
 
-    appendVideos: (
-      state,
-      action: PayloadAction<{ listType: typeOfList; videos: VideosWithProfile }>
-    ) => {
-      const { listType, videos } = action.payload;
-      state.videos[listType].push(...videos);
-    },
-    
-    advanceOffset: (
-    state,
-    action: PayloadAction<{ listType: typeOfList; pageSize: number }>
-  ) => {
-    const { listType, pageSize } = action.payload;
-    state.pagination[listType].offset += pageSize;
-  },
+    appendVideos(state, action: PayloadAction<Video_Icon[]>) {
+      const existingIds = new Set(state.videos.map(v => v.id));
 
-    updatePagination: (
-      state,
-      action: PayloadAction<{
-        listType: typeOfList;
-        offset: number;
-        hasMore: boolean;
-      }>
-    ) => {
-      const { listType, offset, hasMore } = action.payload;
-      state.pagination[listType] = { offset, hasMore };
+      const uniqueIncoming = action.payload.filter(
+        v => !existingIds.has(v.id)
+      );
+
+      state.videos.push(...uniqueIncoming);
+      state.loading = false;
+
+      if (uniqueIncoming.length < state.pageSize) {
+        state.hasMore = false;
+      }
     },
 
-    resetPagination: (state, action: PayloadAction<typeOfList>) => {
-      state.videos[action.payload] = [];
-      state.pagination[action.payload] = initialPagination();
+    advanceOffset(state) {
+      state.offset += state.pageSize;
+    },
+
+    resetPagination(state) {
+      state.videos = [];
+      state.offset = 0;
+      state.hasMore = true;
+      state.loading = false;
+    },
+
+    setSortBy(state, action: PayloadAction<SortBy>) {
+      state.sortBy = action.payload;
     },
   },
 });
 
 export const {
+  startLoading,
   appendVideos,
-  updatePagination,
   advanceOffset,
-  changeDisplayList,
   resetPagination,
+  setSortBy,
 } = suggestedVideoSlice.actions;
-
 
 export default suggestedVideoSlice.reducer;
