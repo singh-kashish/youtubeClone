@@ -24,7 +24,7 @@ const VideoIcon: React.FC<VideoIconProps> = ({ video, where, allowHover }) => {
   const [isHovering, setIsHovering] = useState<boolean>(false);
   const [moreClicked, setMoreClicked] = useState<boolean>(false);
   const dispatch = useDispatch();
-
+  console.log(video);
   const handleMouseOver = (e: React.MouseEvent<HTMLDivElement>) => setIsHovering(true);
   const handleMouseOut = (e: React.MouseEvent<HTMLDivElement>) => setIsHovering(false);
 
@@ -104,7 +104,7 @@ const VideoIcon: React.FC<VideoIconProps> = ({ video, where, allowHover }) => {
           {video?.title}
         </h6>
         </Link>
-        <Link href={`/profiles/${video.user_id || `/video/${video?.id}`}`} style={{ display: "flex", alignItems: "center", textDecoration: "none" }}>
+        <Link href={`/profiles/${video?.profiles?.id}`} style={{ display: "flex", alignItems: "center", textDecoration: "none" }}>
         <div style={{ display: "flex", alignItems: "center", margin: "2px 0" }}>
           <Avatar
             uid={video.profiles?.id || ""}

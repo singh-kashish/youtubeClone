@@ -106,7 +106,7 @@ export async function getLikedVideosByUserId(userId: string) {
 }
 
 /* -------------------------------- PROFILES -------------------------------- */
-
+// Subscribers is array of profiles which have subscribed to profile userId
 export async function getProfileById(userId: string) {
   return supabase
     .from("profiles")
@@ -115,7 +115,7 @@ export async function getProfileById(userId: string) {
       username,
       full_name,
       avatar_url,
-      subscribers!subscribers_user_id_fkey (
+      subscribers!subscribers_subscribed_to_id_fkey (
         id,
         user_id,
         subscribed_to_id

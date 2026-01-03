@@ -22,6 +22,8 @@ import { useVideo } from "../../src/hooks/video/useVideo";
 import { useComments } from "../../src/hooks/comment/useComments";
 import { useLikes } from "../../src/hooks/likes/useLikes";
 
+import { getProfileById } from "../../src/supabase/queries";
+
 const robotoBold = Roboto({ weight: "700", subsets: ["latin"] });
 const roboto = Roboto({ weight: "500", subsets: ["latin"] });
 
@@ -93,7 +95,8 @@ const Video: React.FC = () => {
   }
 
   const accountUrl = `/profiles/${video?.user_id}`;
-
+  const t = getProfileById(video?.user_id);
+  console.log(t);
   /* ----------------------------- RENDER ----------------------------- */
 
   return (
