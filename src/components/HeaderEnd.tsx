@@ -63,12 +63,14 @@ const HeaderEnd: React.FC = () => {
           <Link href="/uploadVideo">
             <VideoCallOutlinedIcon fontSize="large" className={styles.addVideo} />
           </Link>
+          <Link href="/login/">
           <Avatar
             uid={user?.id || ""}
             url={avatar_url}
             size={30}
             where="header"
           />
+          </Link>
           <Link href="/">
             <button
               className="py-2 px-4 shadow-md no-underline rounded-full bg-red text-white font-sans font-semibold text-sm border-red btn-primary hover:text-white hover:bg-red-light focus:outline-none active:shadow-none"

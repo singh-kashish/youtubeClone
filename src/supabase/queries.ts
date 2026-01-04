@@ -22,6 +22,7 @@ export async function getVideos() {
         username,
         full_name,
         avatar_url
+        )
     `)
     .eq("videoStatus", true);
 }
@@ -60,6 +61,31 @@ export async function getVideoById(videoId: string) {
     .single();
 }
 
+export async function getVideosByUserId(userId:string){
+  return supabase.
+      from("video")
+      .select(`
+          id,
+          title,
+          description,
+          videoUrl,
+          thumbnailUrl,
+          viewCount,
+          likes,
+          dislikes,
+          videoStatus,
+          created_at,
+          user_id,
+          profiles:profiles!video_user_id_fkey (
+            id,
+            username,
+            full_name,
+            avatar_url
+          )
+        `).
+        eq("user_id",userId);  
+}
+
 /* -------------------------------- COMMENTS -------------------------------- */
 
 export async function getLikedCommentsByCommentId(commentId: string) {
@@ -85,6 +111,7 @@ export async function getLikedVideosByUserId(userId: string) {
     .select(`
       liked,
       video_id,
+      liked,
       video (
         id,
         title,
@@ -188,7 +215,7 @@ export async function getSubscribersByUserId(userId: string) {
       id,
       user_id,
       subscribed_to_id,
-      profiles (
+      profiles!subscribers_subscribed_to_id_fkey (
         id,
         username,
         avatar_url,
@@ -209,4 +236,32 @@ export async function getSubscribersByUserId(userId: string) {
       )
     `)
     .eq("user_id", userId);
+}
+
+export async function GetVideoBySubscriptions(userId:string) {
+  return supabase.
+          from("subscribers").
+          select(`
+            user_id,
+            subscribed_to_id,
+            video_user_id_fkey(
+              id,
+              title,
+              description,
+              videoUrl,
+              thumbnailUrl,
+              viewCount,
+              likes,
+              dislikes,
+              videoStatus,
+              created_at,
+              user_id,
+              profiles!subscribers_user_id_fkey (
+                id,
+                username,
+                full_name,
+                avatar_url
+                )
+          `)
+          .eq("user_id",userId);
 }

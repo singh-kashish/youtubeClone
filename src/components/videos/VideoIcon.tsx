@@ -46,15 +46,15 @@ const VideoIcon: React.FC<VideoIconProps> = ({ video, where, allowHover }) => {
     if (video.videoUrl?.includes("supabase")) {
       const type = video.videoUrl.split('.').pop() ?? "";
       return (
-        <div>
-          <video controls id={styles.videoAtVideo} width="250px" height="150px">
+        <div className="w-full">
+          <video controls id={styles.videoAtVideo} width="full" height="">
             <source src={video?.videoUrl} type={`video/${type}`} />
           </video>
         </div>
       );
     }
     return (
-      <div id={styles.reactPlayerAtVideo}>
+      <div id={styles.reactPlayerAtVideo} className="w-full">
         <ReactPlayer
           url={video?.videoUrl || ""}
           playing={true}

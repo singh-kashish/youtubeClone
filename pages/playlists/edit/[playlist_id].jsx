@@ -23,7 +23,6 @@ const EditPlaylist = () => {
   //   refetchQueries: [GET_PLAYLIST_BY_ID],
   // });
   const user = useUser();
-  console.log(data);
   useEffect(() => {
     if (!loading) {
       setPlaylistName(data?.playlist?.playlist_name);

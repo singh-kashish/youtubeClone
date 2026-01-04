@@ -71,7 +71,6 @@ function uploadVideo() {
       toast.error("Whoops something went wrong!", {
         id: notification,
       });
-      console.log(error);
     }
   });
   if (user) {

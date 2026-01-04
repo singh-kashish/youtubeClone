@@ -66,7 +66,9 @@ const LeftHeaderEnd = () => {
               style={{color:'#527DBA'}}
             />
           </Link>
+          <Link href="/login">
           <Avatar uid={user.id} url={avatar_url} size={30} where="header" />
+          </Link>
           <Link href="/">
             <button
               className="py-2 px-4 shadow-md no-underline rounded-full bg-red text-white font-sans font-semibold text-sm border-red btn-primary hover:text-white hover:bg-red-light focus:outline-none active:shadow-none"
