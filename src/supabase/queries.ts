@@ -111,7 +111,7 @@ export async function getLikedVideosByUserId(userId: string) {
     .select(`
       liked,
       video_id,
-      liked,
+      user_id,
       video (
         id,
         title,
@@ -265,3 +265,5 @@ export async function GetVideoBySubscriptions(userId:string) {
           `)
           .eq("user_id",userId);
 }
+
+// ===== 

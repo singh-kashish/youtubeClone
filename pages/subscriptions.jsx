@@ -1,46 +1,48 @@
 import { useUser } from "@supabase/auth-helpers-react";
 import React from "react";
-// import { GET_SUBSCRIBERS_USING_USER_ID } from "../graphql/queries";
 import styles from "./styles/subscriptions.module.css";
 import VideoIcon from "../src/components/videos/VideoIcon";
 import Shimmer from "../src/components/Shimmer";
 import Link from "next/link";
-
+import {useVideosBySubscriptions} from '../src/hooks/useVideosBySubscriptions';
 function subscriptions() {
   const user = useUser();
-  // const { loading, error, data } = useQuery(GET_SUBSCRIBERS_USING_USER_ID, {
-  //   variables: {
-  //     id: user?.id,
-  //   },
-  // });
+const userId =
+  user && typeof user?.id === "string"
+    ? user?.id
+    : undefined;
+
+const { videos } = useVideosBySubscriptions(userId);
   const videosFound = () => {
     if (!user) {
       return (
         <Link href="/login">
-        <h6 className="font-sans font-bold text-xl text-center text-blue-700 mb-1 pb-1 ml-[10%] mt-4">
+        <h6 className="font-sans font-bold text-xl text-center text-blue-700 mb-1 pb-1 ml-[10px] mt-4">
           Login First!
         </h6></Link>
       );
-    } else if (data?.subscribersUsingSubscribers_user_id_fkey?.length == 0) {
+    } else if (videos.length == 0) {
       return (
-        <h6 className="font-sans font-bold text-xl text-center text-red-400 mb-1 pb-1 ml-[15%]">
+        <h6 className="font-sans font-bold text-xl text-center text-red-400 mb-1 pb-1 ml-[10px]">
           You haven't subscribed to any creator yet
         </h6>
       );
-    } else if (!data) {
+    } else if (!videos) {
       return (
-        <div className="flex flex-row basis-80 flex-wrap ml-[250px] w-full">
+        <div className="flex flex-row basis-80 flex-wrap ml-[10px] w-full">
           <Shimmer />
         </div>
       );
     } else {
       return (
         <div id={styles.main}>
-          {data?.subscribersUsingSubscribers_user_id_fkey.map((pie) =>
-            pie.profilesUsingSubscribers_subscribed_to_id_fkey?.video.map(
-              (e) => <VideoIcon video={e} where="subs" key={e?.id} />
-            )
-          )}
+          {videos.map((video) => (
+            <VideoIcon
+              key={video.id}
+              video={video}
+              where="subs"
+            />
+          ))}
         </div>
       );
     }

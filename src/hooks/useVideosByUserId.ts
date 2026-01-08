@@ -1,28 +1,29 @@
 // src/hooks/useVideosByUserId.ts
-import { useEffect, useState } from "react";
-import { getVideosByUserId } from "../api/queries";
-import { Video_Icon } from "../types/interfaces";
+import { useState } from "react";
+import { useSafeEffect } from "./useSafeEffect";
+import { getVideosByUserId } from "../supabase/queries/videos";
+import { Video } from "../types/db";
 
-export function useVideosByUserId(userId?: string) {
-  const [videos, setVideos] = useState<Video_Icon[]>([]);
+export function useVideosByUserId(
+  userId?: string,
+  enabled = true
+) {
+  const [videos, setVideos] = useState<Video[]>([]);
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    if (!userId) return;
+  useSafeEffect(
+    () => {
+      if (!userId) return;
 
-    let mounted = true;
-    setLoading(true);
-
-    getVideosByUserId(userId)
-      .then(({ data }) => {
-        if (mounted) setVideos(data ?? []);
-      })
-      .finally(() => mounted && setLoading(false));
-
-    return () => {
-      mounted = false;
-    };
-  }, [userId]);
+      setLoading(true);
+      getVideosByUserId(userId).then(({ data }) => {
+        setVideos(data ?? []);
+        setLoading(false);
+      });
+    },
+    [userId],
+    enabled && !!userId
+  );
 
   return { videos, loading };
 }

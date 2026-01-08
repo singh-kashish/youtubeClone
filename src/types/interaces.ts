@@ -86,5 +86,31 @@ export interface likedVideo extends Video_Icon{
   liked: boolean;
 } 
 export interface likedVideos{[
-    data:
+    data:likedVideo[]
 ]} 
+
+/* ===================== LIKED VIDEO ROW ===================== */
+
+export interface LikedVideoRow {
+  liked: boolean;
+  video_id: string;
+  video: Video_Icon;
+}
+export type LikedVideoList = LikedVideoRow[];
+export type LikedVideoSingle = LikedVideoRow | null;
+/* ===================== PROFILE ===================== */
+
+export interface Profile {
+  id: string;
+  username: string;
+  full_name?: string | null;
+  avatar_url?: string | null;
+}
+
+/* ===================== SUBSCRIBER ===================== */
+
+export interface Subscriber {
+  id: string;
+  user_id: string;
+  subscribed_to_id: string;
+}

@@ -95,15 +95,6 @@ const Video: React.FC = () => {
   }
 
   const accountUrl = `/profiles/${video?.user_id}`;
-  // const t = GetVideoBySubscriptions(video?.user_id);
-  // const p = getSubscribersByUserId(video?.user_id);
-  // const vid = getVideosByUserId(video?.user_id);
-  // const likeVid=getLikedVideosByUserId("2ecb3438-d8ae-4c06-9042-a0340e953051");
-  // console.log('vid>>>',vid);
-  // console.log('data>>>>>',t);
-  // console.log('ddddd>>>',p);
-  // console.log('likedVid>>>',video?.user_id,likeVid);
-  
   /* ----------------------------- RENDER ----------------------------- */
 
   return (
@@ -220,7 +211,7 @@ const Video: React.FC = () => {
       {/* RIGHT SIDEBAR */}
       <div>
         <CurrentQueue />
-        <SuggestedVideo where="Video" />
+        <SuggestedVideo where="video" />
       </div>
     </div>
   );
