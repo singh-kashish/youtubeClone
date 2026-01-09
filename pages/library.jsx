@@ -1,22 +1,17 @@
 import { useUser } from "@supabase/auth-helpers-react";
 import React from "react";
-// import { GET_PROFILE } from "../graphql/queries";
 import styles from "./styles/library.module.css";
 import VideoIcon from "../src/components/videos/VideoIcon";
 import Link from "next/link";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Shimmer from "../src/components/Shimmer";
-
+import {useVideosByUserId} from "../src/hooks/useVideosByUserId";
 function Library() {
   const user = useUser();
-  // const { loading, error, data } = useQuery(GET_PROFILE, {
-  //   variables: {
-  //     id: user?.id,
-  //   },
-  // });
+  const {videos,loading} = useVideosByUserId(user?.id);
   const videosFound = () => {
-    if (data?.profiles?.video.length == 0) {
+    if (videos.length == 0) {
       return (
         <h6 className="font-sans font-bold text-xl w-full text-center text-red-400 mb-1 pb-1 ml-[50%]">
           You haven't uploaded any video yet
@@ -41,7 +36,7 @@ function Library() {
           </h6>
         </Link>
       );
-    } else if (!data) {
+    } else if (!videos && loading) {
       return (
         <div className="ml-[225px] mt-2 grid grid-cols-3 gap-2 w-dvw min-h-screen  bg-zinc-900">
           <Shimmer />
@@ -50,7 +45,7 @@ function Library() {
     } else {
       return (
         <div id={styles.main}>
-          {data?.profiles?.video?.map((pie) => (
+          {videos?.map((pie) => (
             <div id={styles.col} key={pie?.id}>
               <div id={styles.row}>
                 <Link href={`/video/edit/${pie.id}`}>

@@ -1,6 +1,7 @@
 // src/supabase/queries/videos.ts
 import { supabase } from "../../utils/supabase";
-export async function getVideosByUserId(userId: string) {
+
+export function getVideosByUserId(userId: string) {
   return supabase
     .from("video")
     .select(`
@@ -15,7 +16,7 @@ export async function getVideosByUserId(userId: string) {
       videoStatus,
       created_at,
       user_id,
-      profiles:profiles!video_user_id_fkey (  -- ✅ IMPORTANT
+      profiles:profiles!video_user_id_fkey (
         id,
         username,
         full_name,
@@ -23,4 +24,4 @@ export async function getVideosByUserId(userId: string) {
       )
     `)
     .eq("user_id", userId);
-};
+}

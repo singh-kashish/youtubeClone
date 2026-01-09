@@ -8,7 +8,7 @@ type Props = {
 };
 
 const SuggestedVideos: React.FC<Props> = ({ videos, where }) => {
-  return <InfiniteVideoGrid videos={videos} where={where}/>;
+  return <InfiniteVideoGrid where={where}/>;
 };
 
 export default SuggestedVideos;

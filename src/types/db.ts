@@ -19,8 +19,9 @@ export interface Video {
   videoStatus: boolean;
   created_at: string;
   user_id: string;
-  profiles?: Profile;
+  profiles: Profile; // ✅ OBJECT, not array
 }
+
 
 export interface Subscriber {
   id: string;
