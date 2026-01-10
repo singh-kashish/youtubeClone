@@ -100,7 +100,7 @@ const VideoIcon: React.FC<VideoIconProps> = ({ video, where, allowHover }) => {
       )}
       <div className="ml-1">
         <Link href={`/video/${video.id}`} style={{ textDecoration: "none" }}>
-        <h6 className={roboto.className} style={{ color: "#f9f6ee", whiteSpace: "pre-wrap", overflowWrap: "break-word", width: "80%" }}>
+        <h6 className={`${roboto.className} text-[#f9f6ee] w-[80%] line-clamp-2`} style={{ color: "#f9f6ee", whiteSpace: "pre-wrap", overflowWrap: "break-word", width: "80%" }}>
           {video?.title}
         </h6>
         </Link>

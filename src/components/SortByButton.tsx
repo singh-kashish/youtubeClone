@@ -21,7 +21,7 @@ const SortByButton = () => {
     <select
       value={sortBy}
       onChange={(e) => handleChange(e.target.value)}
-      className="bg-black text-white px-3 py-1 rounded"
+      className="bg-slate-800 text-white px-6 py-2 rounded-full mr-2 hover:cursor-pointer"
     >
       <option value="recent">Recent</option>
       <option value="older">Older</option>

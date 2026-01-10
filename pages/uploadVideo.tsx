@@ -170,7 +170,7 @@ function uploadVideo() {
     );
   } else {
     return (
-      <div className="m-[15%] text-center">
+      <div className="m-[15%] text-center text-white">
         LogIn to the application, you can't upload without logging in.
       </div>
     );
