@@ -7,6 +7,10 @@ import { Router, useRouter } from "next/router";
 import CustomizedStepper from "../src/components/CustomizedStepper";
 import MouseOverPopover from "../src/components/MouseOverPopover";
 import uuid from "../src/components/uuid";
+
+import { addVideo } from "../src/supabase/queries";
+import { VideoInsert } from "../src/types/db";
+
 type FormData = {
   videoTitle: string;
   videoDescription: string;
@@ -18,7 +22,6 @@ type FormData = {
 function uploadVideo() {
   const Router = useRouter();
   const user = useUser();
-  //const [insertVideo] = useMutation(ADD_VIDEO);
   const {
     register,
     setValue,
@@ -45,28 +48,29 @@ function uploadVideo() {
       formData.videoUrl =
         isValidHttpUrl(formData.videoUrl) === false ? "" : formData.videoUrl;
           const idToInsert = uuid();
-      const {
-        data: { insertVideo: newVideo },
-      } = await insertVideo({
-        variables: {
-          id:idToInsert,
-          user_id: user?.id,
-          video_status: formData.videoStatus,
-          videoUrl: formData.videoUrl,
-          thumbnailUrl: formData.thumbnailUrl,
-          title: formData.videoTitle,
-          videoStatus: formData.videoStatus,
-          description: formData.videoDescription,
-          likes: 0,
-          dislikes: 0,
-          viewCount: 0,
-        },
-      });
+
+          const payload: VideoInsert = {
+        id: idToInsert,
+        user_id: user!.id,
+        title: formData.videoTitle,
+        description: formData.videoDescription || null,
+        videoUrl: isValidHttpUrl(formData.videoUrl) ? formData.videoUrl : null,
+        thumbnailUrl: isValidHttpUrl(formData.thumbnailUrl)
+          ? formData.thumbnailUrl
+          : null,
+        videoStatus: formData.videoStatus,
+        likes: 0,
+        dislikes: 0,
+        viewCount: 0,
+      };
+
+      const video = await addVideo(payload);
+
       toast.success("New Video Created!", {
         id: notification,
       });
       toast.dismiss();
-      Router.push(`video/edit/${newVideo.id}`);
+      Router.push(`video/edit/${idToInsert}`);
     } catch (error) {
       toast.error("Whoops something went wrong!", {
         id: notification,
@@ -170,7 +174,7 @@ function uploadVideo() {
     );
   } else {
     return (
-      <div className="m-[15%] text-center text-white">
+      <div className="m-[15%] text-center">
         LogIn to the application, you can't upload without logging in.
       </div>
     );

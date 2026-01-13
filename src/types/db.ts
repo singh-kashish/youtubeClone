@@ -35,3 +35,28 @@ export interface LikedVideo {
   liked: boolean;
   video: Video;
 }
+
+// src/types/db.ts
+
+export interface VideoRow {
+  id: string;
+  user_id: string;
+  title: string;
+  description: string | null;
+  videoUrl: string | null;
+  thumbnailUrl: string | null;
+  videoStatus: boolean;
+  likes: number;
+  dislikes: number;
+  viewCount: number;
+  created_at: string;
+}
+
+
+export type VideoInsert = Omit<
+  VideoRow,
+  "created_at"
+>;
+export interface VideoWithProfile extends VideoRow {
+  profiles: Profile;
+}

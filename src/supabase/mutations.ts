@@ -1,19 +1,35 @@
 import { supabase } from "../utils/supabase";
-
+import { Video } from "../types/db";
 type RefetchFn = () => Promise<void>;
 
-/* ---------------------------------- VIDEO ---------------------------------- */
+/* ---------------- ADD VIDEO ---------------- */
 
-export async function addVideo(payload: any, refetch?: RefetchFn) {
-  const res = await supabase.from("video").insert(payload).single();
-  if (refetch) await refetch();
-  return res;
+export async function addVideo(payload: Omit<Video, "created_at">) {
+  const { data, error } = await supabase
+    .from("video")
+    .insert(payload)
+    .select()
+    .single();
+
+  if (error) throw error;
+  return data;
 }
 
-export async function updateVideo(id: string, payload: any, refetch?: RefetchFn) {
-  const res = await supabase.from("video").update(payload).eq("id", id).single();
-  if (refetch) await refetch();
-  return res;
+/* ---------------- UPDATE VIDEO ---------------- */
+
+export async function updateVideo(
+  videoId: string,
+  payload: Partial<Video>
+) {
+  const { data, error } = await supabase
+    .from("video")
+    .update(payload)
+    .eq("id", videoId)
+    .select()
+    .single();
+
+  if (error) throw error;
+  return data;
 }
 
 export async function deleteVideo(id: string, refetch?: RefetchFn) {

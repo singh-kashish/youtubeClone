@@ -1,6 +1,59 @@
 import { supabase } from "../utils/supabase";
-
+import { VideoInsert, VideoRow, VideoWithProfile } from "../types/db";
 /* ---------------------------------- VIDEOS ---------------------------------- */
+
+/* ---------------------------------- CREATE --------------------------------- */
+
+export async function addVideo(payload: VideoInsert) {
+  const { data, error } = await supabase
+    .from("video")
+    .insert(payload)
+    .select("*")
+    .single<VideoRow>();
+
+  if (error) throw error;
+  return data;
+}
+
+/* ---------------------------------- UPDATE --------------------------------- */
+
+export async function updateVideo(
+  id: string,
+  payload: Partial<VideoInsert>
+) {
+  const { data, error } = await supabase
+    .from("video")
+    .update(payload)
+    .eq("id", id)
+    .select("*")
+    .single<VideoRow>();
+
+  if (error) throw error;
+  return data;
+}
+
+/* ----------------------------------- READ ---------------------------------- */
+
+export async function getVideoByIdForUpload(videoId: string) {
+  const { data, error } = await supabase
+    .from("video")
+    .select(
+      `
+      *,
+      profiles (
+        id,
+        username,
+        avatar_url
+      )
+    `
+    )
+    .eq("id", videoId)
+    .single<VideoWithProfile>();
+
+  if (error) throw error;
+  return data;
+}
+
 
 export async function getVideos() {
   return supabase

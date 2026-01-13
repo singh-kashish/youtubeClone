@@ -9,6 +9,8 @@ import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import CustomizedSteppers from "../../../src/components/CustomizedStepper";
 import MouseOverPopover from "../../../src/components/MouseOverPopover";
 import VideoShimmer from "../../../src/components/shimmers/VideoShimmer";
+import { getVideoByIdForUpload, updateVideo } from "../../../src/supabase/queries";
+import { VideoWithProfile } from "../../../src/types/db";
 
 type FormData = {
   videoTitle: string;
@@ -22,13 +24,21 @@ function EditVideo() {
   const Router = useRouter();
   const user = useUser();
   const supabase = useSupabaseClient<any>();
-  const { loading, error, data } = useGetVideoByIdQuery({
-    variables: {
-      id: Router?.query?.video_id as string,
-    },
-  });
-  console.log('dsafdasf>',data);
-  const video = data?.video as Video;
+  const [video,setVideo] = useState<any>({});
+    useEffect(() => {
+    if (!Router.query.video_id) return;
+
+    getVideoByIdForUpload(Router.query.video_id as string)
+      .then((data) => {
+        setVideo(data);
+        setValue("videoTitle", data.title);
+        setValue("videoDescription", data.description ?? "");
+        setValue("thumbnailUrl", data.thumbnailUrl ?? "");
+        setValue("videoUrl", data.videoUrl ?? "");
+        setValue("videoStatus", data.videoStatus);
+      });
+  }, [Router.query.video_id]);
+  //const video = data?.video as Video;
   const {
     register,
     setValue,
@@ -36,15 +46,15 @@ function EditVideo() {
     watch,
     formState: { errors },
   } = useForm<FormData>();
-  useEffect(() => {
-    if(video && video?.title && video?.description && video?.thumbnailUrl && video?.videoStatus && video?.videoUrl){
-      setValue("videoTitle", video?.title);
-      setValue("videoDescription", video?.description);
-      setValue("thumbnailUrl", video?.thumbnailUrl);
-      setValue("videoUrl", video?.videoUrl);
-      setValue("videoStatus", video?.videoStatus);
-    }
-    }, [video]);
+  // useEffect(() => {
+  //   if(video && video?.title && video?.description && video?.thumbnailUrl && video?.videoStatus && video?.videoUrl){
+  //     setValue("videoTitle", video?.title);
+  //     setValue("videoDescription", video?.description);
+  //     setValue("thumbnailUrl", video?.thumbnailUrl);
+  //     setValue("videoUrl", video?.videoUrl);
+  //     setValue("videoStatus", video?.videoStatus);
+  //   }
+  //   }, [video]);
   function isValidHttpUrl(string: any) {
     let url: any;
     try {
@@ -58,7 +68,7 @@ function EditVideo() {
   const [video_url, set_video_url] = useState("");
   const [thumbnailUploading, setThumbnailUploading] = useState(false);
   const [videoUploading, setVideoUploading] = useState(false);
-  const [updateVideo] = useMutation(UPDATE_VIDEO);
+
   const onSubmit = handleSubmit(async (formData) => {
     const notification = toast.loading("Saving changes to this video...");
     try {
@@ -68,19 +78,16 @@ function EditVideo() {
           : formData.thumbnailUrl;
       formData.videoUrl =
         isValidHttpUrl(formData.videoUrl) === false ? "" : formData.videoUrl;
-      const {
-        data: { updateVideo: video },
-      } = await updateVideo({
-        variables: {
-          id: Router.query.video_id,
-          user_id: user?.id,
-          video_status: formData.videoStatus,
-          videoUrl: formData.videoUrl,
-          thumbnailUrl: formData.thumbnailUrl,
-          title: formData.videoTitle,
-          videoStatus: formData.videoStatus,
-          description: formData.videoDescription,
-        },
+      await updateVideo(video!.id, {
+        title: formData.videoTitle,
+        description: formData.videoDescription || null,
+        thumbnailUrl: isValidHttpUrl(formData.thumbnailUrl)
+          ? formData.thumbnailUrl
+          : null,
+        videoUrl: isValidHttpUrl(formData.videoUrl)
+          ? formData.videoUrl
+          : null,
+        videoStatus: formData.videoStatus,
       });
       toast.success("Changes were saved!", {
         id: notification,
@@ -127,6 +134,8 @@ function EditVideo() {
         "m4p",
         "m4v",
         "mov",
+        "mp3",
+        "aac"
       ];
       if (
         allowedfileTypes?.includes(
@@ -206,7 +215,6 @@ function EditVideo() {
               ? "Video Uploading..."
               : "Upload the video or put the url above"}
           </p>
-          <DotSpinner size={30} speed={0.9} color="orange" />
         </div>
       );
     } else {
@@ -222,7 +230,6 @@ function EditVideo() {
               ? "Thumbnail Uploading..."
               : "Upload the thumbnail or put the url above"}
           </p>
-          <DotSpinner size={30} speed={0.9} color="orange" />
         </div>
       );
     } else {
