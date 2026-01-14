@@ -24,6 +24,9 @@ import { useLikes } from "../../src/hooks/likes/useLikes";
 
 import { getLikedVideosByUserId, getSubscribersByUserId, GetVideoBySubscriptions, getVideosByUserId } from "../../src/supabase/queries";
 
+import { useDispatch } from "react-redux";
+import { addToPlaylist } from "../../reduxReducers/playlistSlice";
+
 const robotoBold = Roboto({ weight: "700", subsets: ["latin"] });
 const roboto = Roboto({ weight: "500", subsets: ["latin"] });
 
@@ -31,11 +34,14 @@ const Video: React.FC = () => {
   const router = useRouter();
   const { video_id } = router.query;
   const user = useUser();
-
+  const dispatch = useDispatch();
   /* ----------------------------- DATA HOOKS ----------------------------- */
 
   const { video, loading } = useVideo(video_id as string);
   console.log('videoData>',video,loading);
+  useEffect(()=>{
+    if(video)dispatch(addToPlaylist(video));
+  },[video_id])
   const {
     comments,
     createComment,
@@ -98,13 +104,14 @@ const Video: React.FC = () => {
   /* ----------------------------- RENDER ----------------------------- */
 
   return (
-    <div className="min-h-screen md:pl-3 pt-5" id={styles.main}>
+    <div className="min-h-screen md:pl-3" id={styles.main}>
       <div className="w-full">
         {/* VIDEO PLAYER */}
         <div id={styles.video}>
           <VideoPlayerWithPersistence
             videoUrl={video.videoUrl}
             videoId={video.id}
+            height="100%"
           />
         </div>
 

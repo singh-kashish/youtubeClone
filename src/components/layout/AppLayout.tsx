@@ -49,8 +49,8 @@ const AppLayout: React.FC<Props> = ({ children }) => {
       {/* MAIN CONTENT */}
       <main
         style={{
-          marginTop: HEADER_HEIGHT,
           marginLeft: sidebarWidth,
+          marginTop: "10px",
           transition: "margin-left 0.25s ease",
         }}
         className="min-h-[calc(100vh-64px)] overflow-x-hidden"

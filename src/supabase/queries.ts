@@ -32,6 +32,18 @@ export async function updateVideo(
   return data;
 }
 
+export async function updateViewCountOnVideo(id:string, count:number){
+  const {data,error} = await supabase
+    .from("video")
+    .update({"viewCount":count+1})
+    .eq("id",id)
+    .select("*")
+    .single();
+  
+  if(error)throw error;
+  return data;
+}
+
 /* ----------------------------------- READ ---------------------------------- */
 
 export async function getVideoByIdForUpload(videoId: string) {

@@ -12,6 +12,7 @@ const playlistSlice = createSlice({
   initialState,
   reducers: {
     addToPlaylist(state, action: PayloadAction<Video>) {
+      console.log('pip>',action,state);
       if (!state.value.find((v) => v.id === action.payload.id)) {
         state.value.push(action.payload);
       }

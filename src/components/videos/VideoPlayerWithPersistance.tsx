@@ -14,21 +14,28 @@
 
   const Player: React.FC<Props> = ({ videoUrl, videoId, height = "70vh" }) => {
     const list = useSelector((s: rootState) => s.playlist.value as { id: string }[]);
-    const idx = list.findIndex((v) => v.id === videoId);
+    const idx = list.findIndex(v => v.id === videoId);
+    /* ---------- advance queue ---------- */
+    
+    const nextVideo = () => {
+      clear();
+      if (idx !== -1 && idx < list.length - 1) {
+        r.push(`/video/${list[idx + 1].id}`);
+      }
+    };
     const r = useRouter();
-
+    console.log('kite',list,idx,r);
     /* ---------- restore position ---------- */
-    const [start] = useState(() => parseFloat(localStorage.getItem(KEY + videoId) ?? "0"));
+    const [start, setStart] = useState(0);
+
+    useEffect(() => {
+      setStart(parseFloat(localStorage.getItem(KEY + videoId) ?? "0"));
+    }, [videoId]);
 
     /* ---------- save position helpers ---------- */
     const save = (sec: number) => localStorage.setItem(KEY + videoId, String(sec));
     const clear = () => localStorage.removeItem(KEY + videoId);
-
-    /* ---------- advance queue ---------- */
-    const nextVideo = () => {
-      clear();
-      if (idx !== -1 && idx < list.length - 1) r.push(`/video/${list[idx + 1].id}`);
-    };
+    
 
     /* ---------- native / react-player switch ---------- */
     if (videoUrl.includes("supabase")) {
@@ -59,13 +66,15 @@
       <ReactPlayer
         ref={pRef}
         url={videoUrl}
-        playing
-        controls
+        playing={true}
+        preload={true}
+        controls={true}
         width="100%"
         height={height}
         onReady={() => start && pRef.current?.seekTo(start, "seconds")}
         onProgress={(s) => save(s.playedSeconds)}
         onEnded={nextVideo}
+        playbackRate={1}
       />
     );
   };

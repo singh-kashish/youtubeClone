@@ -1,19 +1,17 @@
 import { supabase } from "../utils/supabase";
-import { Video } from "../types/db";
+import { Video, VideoInsert, VideoRow } from "../types/db";
 type RefetchFn = () => Promise<void>;
 
 /* ---------------- ADD VIDEO ---------------- */
 
-export async function addVideo(payload: Omit<Video, "created_at">) {
-  const { data, error } = await supabase
+export async function addVideo(payload: VideoInsert) {
+  return supabase
     .from("video")
     .insert(payload)
-    .select()
-    .single();
-
-  if (error) throw error;
-  return data;
+    .select("*")
+    .single<VideoRow>();
 }
+
 
 /* ---------------- UPDATE VIDEO ---------------- */
 
@@ -196,3 +194,12 @@ export async function deleteSubscriber(
   if (refetch) await refetch();
   return res;
 }
+ // -------x   rpc call   x-------
+export async function incrementView(videoId: string) {
+  const { error } = await supabase.rpc("increment_video_view", {
+    video_id: videoId,
+  });
+
+  if (error) console.error("view increment failed", error);
+}
+

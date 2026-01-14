@@ -246,7 +246,7 @@
     background-color: rgb(69, 69, 69);
   }
   #video {
-    height: 70vh !important;
+    height: 100vh !important;
     width: 100% !important;
   }
 }
