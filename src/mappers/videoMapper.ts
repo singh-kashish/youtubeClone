@@ -19,3 +19,14 @@ export function mapVideoRow(row: VideoRow): Video {
     profiles: row.profiles?.[0] ?? null,
   };
 }
+
+import { Video_Icon } from "../types/interaces";
+
+export function toVideoIcon(video: Video): Video_Icon {
+  return {
+    ...video,
+    viewCount: video.viewCount ?? 0,
+    likes: video.likes ?? 0,
+    dislikes: video.dislikes ?? 0,
+  };
+}

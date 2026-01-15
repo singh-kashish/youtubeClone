@@ -7,11 +7,11 @@ import PlayCircleFilledIcon from "@mui/icons-material/PlayCircleFilled";
 import VideoIcon from "./videos/VideoIcon";
 import { useRouter } from "next/router";
 import DeleteIcon from "@mui/icons-material/Delete";
-import {
-  DELETE_PLAYLIST,
-  DELETE_PLAYLIST_VIDEO,
-} from "../../graphql/mutations";
-import { useMutation } from "@apollo/client";
+// import {
+//   DELETE_PLAYLIST,
+//   DELETE_PLAYLIST_VIDEO,
+// } from "../../graphql/mutations";
+//import { useMutation } from "@apollo/client";
 import toast from "react-hot-toast";
 //import { GET_PLAYLIST_FOR_USER } from "../../graphql/queries";
 import { useUser } from "@supabase/auth-helpers-react";

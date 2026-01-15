@@ -31,7 +31,7 @@ const Profile: React.FC = () => {
    */
   const { profile, videos, loading, error } =
     useProfileWithVideos(userId);
-  console.log(profile);
+  console.log(profile,'videos>',videos);
   /**
    * ===================== RENDER STATES =====================
    */

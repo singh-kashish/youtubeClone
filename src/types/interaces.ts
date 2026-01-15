@@ -10,15 +10,15 @@ export interface Profile_Icon {
 export interface Video_Icon {
   id: string;
   title: string;
-  description: string | null;
+  description?: string | null | undefined;
   videoUrl: string;
-  thumbnailUrl: string | null;
+  thumbnailUrl?: string | null | undefined;
   viewCount: number;
-  likes: number;
-  dislikes: number;
+  likes?: number;
+  dislikes?: number;
   videoStatus: boolean;
   created_at: string | null;
-  user_id: string;
+  user_id?: string;
   profiles: Profile_Icon | null;
 }
 

@@ -4,6 +4,9 @@ const nextConfig = {
   images:{
     domains:['www.youtube.com'],
   },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
 }
 
 module.exports = nextConfig

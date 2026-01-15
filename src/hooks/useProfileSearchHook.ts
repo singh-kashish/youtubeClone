@@ -1,6 +1,6 @@
 // src/hooks/useProfileSearchHook.ts
 import { useMemo, useState, useEffect } from "react";
-import { fetchProfilesByName } from "../modules/profile";
+//import { fetchProfilesByName } from "../modules/profile";
 
 const useProfileSearchHook = (text: string) => {
   const [data, setData] = useState<any[]>([]);
@@ -14,12 +14,12 @@ const useProfileSearchHook = (text: string) => {
     }
     setLoading(true);
     console.log("Fetching profiles for text:", text);
-    let tada = fetchProfilesByName("rus");
-    console.log(tada);
-    fetchProfilesByName(text).then((res) => {
-      setData(res.Profiles || []);
-      setLoading(false);
-    });
+    // let tada = fetchProfilesByName("rus");
+    // console.log(tada);
+    // fetchProfilesByName(text).then((res) => {
+    //   setData(res.Profiles || []);
+    //   setLoading(false);
+    // });
   }, [text]);
 
   return useMemo(() => (loading ? [] : data), [data, loading]);

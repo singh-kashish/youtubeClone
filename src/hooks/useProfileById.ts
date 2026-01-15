@@ -54,6 +54,9 @@ export function useProfileWithVideos(userId?: string) {
               viewCount,
               videoStatus,
               created_at,
+              likes,
+              dislikes,
+              user_id,
 
               profiles (
                 id,

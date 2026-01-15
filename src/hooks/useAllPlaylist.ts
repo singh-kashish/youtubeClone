@@ -1,7 +1,7 @@
 // src/hooks/useAllPlaylist.ts
 import { useUser } from "@supabase/auth-helpers-react";
 import { useEffect, useMemo, useState } from "react";
-import { loadAllPlaylists } from "../modules/playlistService";
+
 
 const useAllPlaylist = () => {
   const user = useUser();
@@ -11,16 +11,16 @@ const useAllPlaylist = () => {
 
   useEffect(() => {
     setLoading(true);
-    loadAllPlaylists()
-      .then((res) => {
-        setData(res.playlists);
-        setLoading(false);
-        setError(res.error);
-      })
-      .catch((err) => {
-        setError(err);
-        setLoading(false);
-      });
+    // loadAllPlaylists()
+    //   .then((res) => {
+    //     setData(res.playlists);
+    //     setLoading(false);
+    //     setError(res.error);
+    //   })
+    //   .catch((err) => {
+    //     setError(err);
+    //     setLoading(false);
+    //   });
   }, []);
 
   const userPlaylists = useMemo(() => {

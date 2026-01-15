@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useUser } from "@supabase/auth-helpers-react";
 import { TextField } from "@mui/material";
-import VideoIcon from "../../../src/components/VideoIcon";
+import VideoIcon from "../../../src/components/videos/VideoIcon";
 import Delete from "@mui/icons-material/Delete";
 // import {
 //   DELETE_PLAYLIST_VIDEO,
