@@ -8,7 +8,6 @@ type Props = {
   children: React.ReactNode;
 };
 
-const HEADER_HEIGHT = 64;
 const SIDEBAR_EXPANDED = 240;
 const SIDEBAR_COLLAPSED = 72;
 
@@ -38,7 +37,7 @@ const AppLayout: React.FC<Props> = ({ children }) => {
         handleSubmit={handleSubmit}
       />
 
-      {/* FIXED SIDEBAR */}
+      {/* FIXED SIDEBAR (desktop only) */}
       <LeftHeader
         densityClicked={densityClicked}
         searchText={searchText}
@@ -48,12 +47,12 @@ const AppLayout: React.FC<Props> = ({ children }) => {
 
       {/* MAIN CONTENT */}
       <main
+        className="min-h-[calc(100vh-64px)] min-w-fit overflow-x-hidden pt-2 transition-all duration-200"
         style={{
-          marginLeft: sidebarWidth,
-          marginTop: "10px",
-          transition: "margin-left 0.25s ease",
+          marginLeft: typeof window !== "undefined" && window.innerWidth >= 1024
+            ? sidebarWidth
+            : 0,
         }}
-        className="min-h-[calc(100vh-64px)] overflow-x-hidden"
       >
         {children}
       </main>

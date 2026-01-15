@@ -39,9 +39,11 @@ const Video: React.FC = () => {
 
   const { video, loading } = useVideo(video_id as string);
   console.log('videoData>',video,loading);
-  useEffect(()=>{
-    if(video)dispatch(addToPlaylist(video));
-  },[video_id])
+  useEffect(() => {
+  if (!video) return;
+  dispatch(addToPlaylist(video));
+}, [video]);
+
   const {
     comments,
     createComment,
