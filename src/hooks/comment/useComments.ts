@@ -14,7 +14,7 @@ export function useComments(videoId: string) {
     setError(null);
 
     const { data, error } = await supabase
-      .from("comments")
+      .from("comment")
       .select(`
         id,
         text,
@@ -25,7 +25,9 @@ export function useComments(videoId: string) {
           username,
           full_name,
           avatar_url
-        )
+        ),
+        likedComments(
+        *)
       `)
       .eq("video_id", videoId)
       .order("created_at", { ascending: false });

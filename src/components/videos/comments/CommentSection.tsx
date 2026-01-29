@@ -13,6 +13,7 @@ const CommentSection = ({
   user: any;
   addCommentOptimistically: (newComment: CommentWithProfile) => void;
 }) => {
+  console.log('c',comments);
   return (
     <Comment
       comments={comments}

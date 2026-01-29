@@ -47,7 +47,7 @@ const AppLayout: React.FC<Props> = ({ children }) => {
 
       {/* MAIN CONTENT */}
       <main
-        className="min-h-[calc(100vh-64px)] min-w-fit overflow-x-hidden pt-2 transition-all duration-200"
+        className="min-h-[calc(100vh-64px)] min-w-fit overflow-x-hidden transition-all duration-200"
         style={{
           marginLeft: typeof window !== "undefined" && window.innerWidth >= 1024
             ? sidebarWidth

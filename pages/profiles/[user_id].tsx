@@ -6,6 +6,7 @@ import { Roboto } from "next/font/google";
 import VideoIcon from "../../src/components/videos/VideoIcon";
 import ProfileShimmer from "../../src/components/shimmers/ProfileShimmer";
 import { useProfileWithVideos } from "../../src/hooks/useProfileById";
+import { mapVideoRow, toVideoIcon } from "../../src/mappers/videoMapper";
 
 const roboto = Roboto({
   weight: "700",
@@ -103,7 +104,7 @@ const Profile: React.FC = () => {
             {videos.map((video) => (
               <VideoIcon
                 key={video.id}
-                video={video}
+                video={toVideoIcon(video)}
                 where="profile"
                 allowHover
               />

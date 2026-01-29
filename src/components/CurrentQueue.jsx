@@ -23,7 +23,7 @@ function CurrentQueue() {
       };
       const videoPosition = playlist.findIndex(findIdx) + 1;
       return (
-        <div id={styles.main} className="border border-dashed border-gray-200 rounded border-spacing-96">
+        <div id={styles.main} className=" shadow-md shadow-rose-50 w-full rounded">
           <h1 className={roboto.className} id={styles.headin}>
             Current Queue
           </h1>

@@ -50,7 +50,7 @@ const InfiniteVideoGrid: React.FC<Props> = ({ where }) => {
   }, [loading, hasMore, dispatch]);
 
   return (
-    <main className="flex flex-col">
+    <main className="flex flex-col mt-3 ml-3">
       <div className="flex justify-end">
         <SortByButton />
       </div>

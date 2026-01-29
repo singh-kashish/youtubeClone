@@ -5,17 +5,17 @@ import ReorderIcon from "@mui/icons-material/Reorder";
 import { useEffect, useRef, useState } from "react";
 const Queue = ({ playlist }: { playlist: Array<Video> }) => {
   return (
-    <div>
+    <div className="flex flex-col justify-start items-between">
       {playlist?.map((vid: Video, index: number) => {
         return (
-          <div className="flex items-center" key={index}>
+          <div className="flex items-center w-full justify-between" key={index}>
             <VideoIcon
               video={vid}
               where="playlist"
               allowHover={false}
             />
-            <ReorderIcon className="cursor-pointer hover:shadow-lg hover:shadow-red-600 rounded-full hover:bg-red-400 hover:text-gray-900" />
-          </div>
+            {/* <ReorderIcon className="cursor-pointer hover:shadow-lg hover:shadow-red-600 rounded-full hover:bg-red-400 hover:text-gray-900" />*/}
+          </div> 
         );
       })}
     </div>

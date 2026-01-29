@@ -21,6 +21,7 @@ interface Props {
 }
 
 const EveryComment: React.FC<Props> = ({ comment, user, setComments }) => {
+  console.log('eL',comment);
   const [likes, setLikes] = useState<LikedComment[]>(comment.likedComments);
   const [editCall, setEditCall] = useState(false);
   const [textForEdit, setTextForEdit] = useState(comment.text);

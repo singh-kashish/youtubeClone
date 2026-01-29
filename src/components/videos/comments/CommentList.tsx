@@ -11,6 +11,7 @@ interface Props {
 }
 
 const CommentList: React.FC<Props> = ({ user, comments, setComments }) => {
+  console.log('cL>',comments);
   return (
     <div id={styles.main}>
       {comments

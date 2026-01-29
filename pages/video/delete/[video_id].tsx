@@ -5,6 +5,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import styles from "./[video_id].module.css";
 import VideoShimmer from '../../../src/components/shimmers/VideoShimmer';
+import { useVideo } from "../../../src/hooks/video/useVideo";
 
 type FormData = {
   videoTitle: string;
@@ -16,6 +17,7 @@ type FormData = {
 
 function DeleteVideo() {
   const Router = useRouter();
+  const { video_id } = Router.query;
   const user = useUser();
   const supabase = useSupabaseClient<any>();
   // const { loading, error, data } = useQuery(GET_VIDEO_BY_ID, {
@@ -24,6 +26,8 @@ function DeleteVideo() {
   //   },
   // });
   // const video: any = data?.video;
+  const { video, loading } = useVideo(video_id as string);
+  console.log('videoData>',video,loading);
   const {
     register,
     setValue,

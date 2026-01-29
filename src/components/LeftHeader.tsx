@@ -21,7 +21,7 @@ export type LeftHeaderProps = {
   handleSubmit?: (e: React.FormEvent) => void;
 };
 
-const HEADER_HEIGHT = 65;
+const HEADER_HEIGHT = 62;
 
 const LeftHeader: React.FC<LeftHeaderProps> = ({
   densityClicked,
@@ -158,7 +158,7 @@ const NavItem: React.FC<NavItemProps> = ({
       <div
         id={collapsed ? "row_icon" : "row"}
         onClick={() => onSelect(index)}
-        className="cursor-pointer text-white"
+        className="cursor-pointer text-white pt-[6px]"
         style={{
           backgroundColor: selected === index ? "#2d2d2d" : "transparent",
         }}
